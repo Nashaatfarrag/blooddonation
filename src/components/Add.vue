@@ -1,12 +1,12 @@
 <template>
   <div>
-    <b-img
-      src="https://www.awarenessdays.com/wp-content/uploads/2018/07/iStock-693244582-1024x683.jpg"
+    <b-container
       fluid
-      style="max-height:200px"
-      alt="Responsive image"
-    ></b-img>
-
+      class=""
+      style="background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12); height:200px"
+    >
+      <p id="ads" class="header-container mx-auto">تبرعك بالدم ينقذ حياة</p>
+    </b-container>
     <b-container>
       <br />
       <div v-if="!show">
@@ -137,12 +137,24 @@ export default {
   font-family: myFirstFont;
   src: url("../font/HelveticaNeueW23forSKY-Bd.ttf");
 }
-.Addform {
+@font-face {
+  font-family: mySecFont;
+  src: url("../font/UniversNextArabic-Regular_2.ttf");
+}
+.Addform , #ads{
   font-family: myFirstFont;
 }
 input {
   text-align: right;
-  color: rgb(173, 170, 170);
+  font-family: mySecFont;
+  font-weight: bold;
+}
+.header-container{
+  vertical-align: middle ;
+}
+#ads{
+  padding-top: 60px;
+  color: antiquewhite;
 }
 </style>
 
