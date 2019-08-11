@@ -1,18 +1,81 @@
 let donorInfo = [
-  { name: "محمد نشأت", age: 23 , type : "A+" , tel : "01012490898" },
-  { name: "Ahmed Khalid", age: 25 , type : "A+" , tel : "01012490898" },
-  { name: "Abdo Elsharkawy", age: 22 , type : "A+" , tel : "01012490898" },
-  { name: "محمد نشأت", age: 23 , type : "B+" , tel : "01012490898" },
-  { name: "Ahmed Khalid", age: 25 , type : "A-" , tel : "01012490898" },
-  { name: "Abdo Elsharkawy", age: 22 , type : "B-" , tel : "01012490898" }
+  {
+    name: "محمد نشأت",
+    age: 23,
+    bloodType: "A+",
+    
+    contactInfo: { tel: "01012490898" }
+  },
+  {
+    name: "محمد نشأت",
+    age: 23,
+    bloodType: "A+",
+    
+    contactInfo: { tel: "01012490898" }
+  },
+  {
+    name: "محمد نشأت",
+    age: 23,
+    bloodType: "A+",
+    contactInfo: { tel: "01012490898" }
+  },
+  {
+    name: "محمد نشأت",
+    age: 23,
+    bloodType: "A+",
+    contactInfo: { tel: "01012490898" }
+  },
+  {
+    name: "محمد نشأت",
+    age: 23,
+    bloodType: "A+",
+    contactInfo: { tel: "01012490898" }
+  }
 ];
 
+const axios = require("axios");
+//let apiUrl = "http://localhost:5000/donor/";
+let apiUrl = "https://dry-spire-81070.herokuapp.com/donor/";
+
 function getAll() {
-  return donorInfo;
-}
-function add(element){
-  donorInfo.push(element);
+  axios
+    .get(apiUrl)
+    .then(response => {
+      let donors = response.data;
+
+      //console.log(donors);
+      return donors
+    })
+    .catch(function(error) {
+      alert(error);
+      return null ;
+    });
+
 }
 
-module.exports = { getAll , add };
+// let element = {
+//   contactInfo: {
+//     tel: "01012490898",
+//     mail: "nashaatfarrag@gmail.com"
+//   },
+//   basicInfo: {
+//     nationalId: 20154545484,
+//     birthDate: "1970-01-01T05:32:40.323Z"
+//   },
+//   name: "Mohamed Nashaat",
+//   bloodType: "A+"
+// };
 
+function add(element) {
+  axios
+    .post(apiUrl, element)
+    .then(function(response) {
+      console.log(element);
+    })
+    .catch(function(error) {
+      //console.log(error.response.data);
+      alert(error.response.data);
+    });
+}
+
+module.exports = { getAll, add };

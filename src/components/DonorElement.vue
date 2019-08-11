@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mb-1 box-shadow" rounded="2" align="left">
+  <b-container class="mb-2 box-shadow" rounded="2" align="left">
     <b-row>
       <b-col class="m-2">
         <b-row v-animate-css="'rotateInUpLeft'">
@@ -7,11 +7,11 @@
         </b-row>
         <b-row>
           <p style="color:#999999">
-            Age : {{donor.age}}
+            Age : {{12}}
             <br />
-            Type : {{donor.type}}
+            Type : {{donor.bloodType}}
             <br />
-            Tel : {{donor.tel}}
+            Tel : {{donor.contactInfo.tel}}
           </p>
         </b-row>
       </b-col>

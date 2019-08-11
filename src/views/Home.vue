@@ -1,11 +1,6 @@
 <template>
   <div class="container">
-    <b-form-select
-      v-model="selected"
-      :options="options"
-      class="mb-3"
-      style="max-width=calc(1/3*vw)"
-    >
+    <b-form-select v-model="selected" :options="options" class="mb-3" style="max-width=calc(12rem)">
       <!-- This slot appears above the options from 'options' prop -->
       <template slot="first">
         <option :value="null" disabled>-- Please select an option --</option>
@@ -13,7 +8,7 @@
     </b-form-select>
 
     <!-- mapping donors data into donor element -->
-    <b-card-group deck align="left">
+    <b-card-group deck >
       <Donor v-for="donor in ( selected ? filtered : donors )" :donor="donor" :key="donor.id" />
     </b-card-group>
   </div>
@@ -44,6 +39,7 @@ export default {
     };
   },
   mounted: function() {
+    //console.log(Db.getAll());
     this.donors = Db.getAll();
   },
   computed: {

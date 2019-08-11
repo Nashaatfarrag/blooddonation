@@ -1,17 +1,26 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link  to="/">Show</router-link> |
-      <router-link to="/add">Add</router-link>
+      <router-link class="btn  " to="/">إعرض المتبرعين</router-link> |
+      <router-link  class="btn " to="/add">تسجيل متبرع</router-link> |
+      <router-link  class="btn " to="/adddonation">أضف تبرعا</router-link>
     </div>
     <router-view/>
   </div>
 </template>
 
 <style>
-
+@font-face {
+  font-family: myFirstFont;
+  src: url("./font/HelveticaNeueW23forSKY-Bd.ttf");
+}
+@font-face {
+  font-family: mySecFont;
+  src: url("./font/UniversNextArabic-Regular_2.ttf");
+}
 #app {
   font-family: 'Helvetica', Helvetica, Arial, sans-serif;
+  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -20,6 +29,8 @@
 }
 #nav {
   padding: 30px;
+  font-family: myFirstFont ; 
+  
 }
 
 #nav a {

@@ -2,28 +2,29 @@
   <div>
     <b-container
       fluid
-      class=""
-      style="background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12); height:200px"
+      class
+      style="background-image: linear-gradient(to top, #051937, #35255b, #722670, #b31771, #eb125d);; height:12rem"
     >
       <p id="ads" class="header-container mx-auto">تبرعك بالدم ينقذ حياة</p>
     </b-container>
     <b-container>
       <br />
       <div v-if="!show">
-        <p>
-          <i class="fas fa-check"></i> done
-        </p>
+        <font-awesome-icon :icon="myIcon" size="6x" style="color:green;" />
+        <br>
+        <strong class="mu-2">done</strong>
       </div>
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show" align="right" class="Addform">
-        <b-form-group id="input-group-2" label="الإسم" label-for="input-2">
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show"  class="Addform">
+        <b-form-group id="input-group-2" label="الإسم" label-for="input-2" align="right">
           <b-form-input
             id="input-2"
             v-model="form.name"
+            type="text"
             required
             placeholder="من فضلك ادخل الإسم ثلاثي"
           ></b-form-input>
         </b-form-group>
-        <b-form-group id="input-group-1" label=" : البريد الإليكتروني " label-for="input-1">
+        <b-form-group id="input-group-1" label=" : البريد الإليكتروني " label-for="input-1" size="sm"  align="right">
           <b-form-input
             id="input-1"
             v-model="form.email"
@@ -33,51 +34,63 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-5" label=" : رقم الموبايل " label-for="input-5">
+        <b-form-group id="input-group-5" label=" : رقم الموبايل " label-for="input-5" align="right">
           <b-form-input
             id="input-5"
             v-model="form.tel"
-            type="phone"
+            type="number"
             required
             placeholder="رقم موبايل للتواصل"
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-6" label=" : الرقم القومي" label-for="input-6">
+        <b-form-group id="input-group-6" label=" : الرقم القومي" label-for="input-6" align="right">
           <b-form-input
             id="input-6"
             v-model="form.basicInfo.nationalId"
-            type="phone"
+            type="number"
             required
             placeholder="من فضلك أدخل الرقم القومي"
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-3" label=" : الفصيلة " label-for="input-3">
-          <b-form-select id="input-3" v-model="form.type" :options="types" required></b-form-select>
+        <b-form-group id="input-group-4" label=" : تاريخ الميلاد" label-for="input-4" align="right">
+          <b-form-input
+            id="input-4"
+            v-model="form.basicInfo.birthDate"
+            type="date"
+            required
+            placeholder="من فضلك أدخل تاريح ميلادك"
+          ></b-form-input>
         </b-form-group>
 
-        <!-- <b-form-group id="input-group-4">
-        <b-form-checkbox-group v-model="form.checked" id="checkboxes-4">
-          <b-form-checkbox value="me">Check me out</b-form-checkbox>
-          <b-form-checkbox value="that">Check that out</b-form-checkbox>
-        </b-form-checkbox-group>
-        </b-form-group>-->
+        <b-form-group id="input-group-3" label=" : الفصيلة " label-for="input-3" align="right">
+          <b-form-select id="input-3" v-model="form.bloodType" :options="types" required></b-form-select>
+        </b-form-group>
+        <b-form-group id="input-group-7" label=" : النوع " label-for="input-7" align="right">
+          <b-form-select id="input-7" v-model="form.gender" :options="genders" required></b-form-select>
+        </b-form-group>
 
-        <b-button class="m-1" type="submit" variant="primary">Submit</b-button>
-        <b-button class="m-1" type="reset" variant="danger">Reset</b-button>
+        <b-button class="m-1" type="submit" align="center" variant="primary">إرسال</b-button>
+        <b-button class="m-1" type="reset" align="center" variant="danger">إعادة ملئ</b-button>
       </b-form>
     </b-container>
+    
   </div>
 </template>
 
 <script>
 import Db from "../services/getDonors";
+import Test from "./Test.vue";
+
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faSpinner, faCheck, faCheckCircle, faAmbulance } from "@fortawesome/free-solid-svg-icons";
+
 export default {
   name: "Add",
-
   data() {
     return {
+      myIcon : faCheck, 
       // tel
       // mail
       // national
@@ -86,33 +99,51 @@ export default {
       // name
       done: false,
       form: {
-        email: "",
         name: "",
-        tel: "",
+        gender: "",
+        bloodType: null,
+        contactInfo: { tel: "", email: "" },
         basicInfo: {
-          nationalId: ""
-        },
-        type: null,
-        checked: []
+          nationalId: "",
+          birthDate: ""
+        }
       },
+      myIcon: faSpinner,
+      genders: [
+        { text: "ذكر", value: "male" },
+        { text: "أنثي", value: "female" }
+      ],
       types: [
-        { text: "Select One", value: null },
-        "A+",
-        "A-",
-        "O+",
-        "O-",
-        "B+",
-        "B-",
-        "AB+",
-        "AB-"
+        { text: "A+", value: "A+" },
+        { text: "O+", value: "O+" },
+        { text: "B+", value: "B+" },
+        { text: "AB+", value: "AB+" },
+        { text: "A-", value: "A-" },
+        { text: "O-", value: "O-" },
+        { text: "AB-", value: "AB-" },
+        { text: "B-", value: "B-" }
       ],
       show: true
     };
   },
+  components: {
+    FontAwesomeIcon , Test
+  },
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      Db.add(this.form);
+      Db.add({
+        name: this.form.name,
+        bloodType: this.form.bloodType,
+        contactInfo: {
+          tel: this.form.contactInfo.tel,
+          mail: this.form.contactInfo.email
+        },
+        basicInfo: {
+          nationalId: this.form.basicInfo.nationalId,
+          birthDate: this.form.birthDate
+        }
+      });
       this.show = false;
     },
     onReset(evt) {
@@ -133,15 +164,8 @@ export default {
 </script>
 
 <style>
-@font-face {
-  font-family: myFirstFont;
-  src: url("../font/HelveticaNeueW23forSKY-Bd.ttf");
-}
-@font-face {
-  font-family: mySecFont;
-  src: url("../font/UniversNextArabic-Regular_2.ttf");
-}
-.Addform , #ads{
+.Addform,
+#ads {
   font-family: myFirstFont;
 }
 input {
@@ -149,12 +173,13 @@ input {
   font-family: mySecFont;
   font-weight: bold;
 }
-.header-container{
-  vertical-align: middle ;
+.header-container {
+  vertical-align: middle;
 }
-#ads{
+#ads {
   padding-top: 60px;
-  color: antiquewhite;
+  color: white;
+  font-size: xx-large;
 }
 </style>
 
