@@ -11,10 +11,10 @@
       <br />
       <div v-if="!show">
         <font-awesome-icon :icon="myIcon" size="6x" style="color:green;" />
-        <br>
+        <br />
         <strong class="mu-2">done</strong>
       </div>
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show"  class="Addform">
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="Addform">
         <b-form-group id="input-group-2" label="الإسم" label-for="input-2" align="right">
           <b-form-input
             id="input-2"
@@ -24,7 +24,13 @@
             placeholder="من فضلك ادخل الإسم ثلاثي"
           ></b-form-input>
         </b-form-group>
-        <b-form-group id="input-group-1" label=" : البريد الإليكتروني " label-for="input-1" size="sm"  align="right">
+        <b-form-group
+          id="input-group-1"
+          label=" : البريد الإليكتروني "
+          label-for="input-1"
+          size="sm"
+          align="right"
+        >
           <b-form-input
             id="input-1"
             v-model="form.email"
@@ -37,14 +43,22 @@
         <b-form-group id="input-group-5" label=" : رقم الموبايل " label-for="input-5" align="right">
           <b-form-input
             id="input-5"
-            v-model="form.tel"
+            v-model="form.contactInfo.tel"
             type="number"
             required
             placeholder="رقم موبايل للتواصل"
           ></b-form-input>
+                    <b-form-invalid-feedback :state="validationPhone">رقم الموبايل مكون من 11 رقماً</b-form-invalid-feedback>
+          <b-form-valid-feedback :state="validationPhone">تمام</b-form-valid-feedback>
         </b-form-group>
 
-        <b-form-group id="input-group-6" label=" : الرقم القومي" label-for="input-6" align="right">
+        <b-form-group
+          id="input-group-6"
+          label=" : الرقم القومي"
+          label-for="input-6"
+          :state="validation"
+          align="right"
+        >
           <b-form-input
             id="input-6"
             v-model="form.basicInfo.nationalId"
@@ -52,6 +66,8 @@
             required
             placeholder="من فضلك أدخل الرقم القومي"
           ></b-form-input>
+          <b-form-invalid-feedback :state="validationID">يجب أن يكون الرقم القومى 14 رقم</b-form-invalid-feedback>
+          <b-form-valid-feedback :state="validationID">تمام</b-form-valid-feedback>
         </b-form-group>
 
         <b-form-group id="input-group-4" label=" : تاريخ الميلاد" label-for="input-4" align="right">
@@ -75,7 +91,6 @@
         <b-button class="m-1" type="reset" align="center" variant="danger">إعادة ملئ</b-button>
       </b-form>
     </b-container>
-    
   </div>
 </template>
 
@@ -84,20 +99,18 @@ import Db from "../services/getDonors";
 import Test from "./Test.vue";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faSpinner, faCheck, faCheckCircle, faAmbulance } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSpinner,
+  faCheck,
+  faCheckCircle,
+  faAmbulance
+} from "@fortawesome/free-solid-svg-icons";
 
 export default {
   name: "Add",
   data() {
     return {
-      myIcon : faCheck, 
-      // tel
-      // mail
-      // national
-      // birth
-      // bloodtype
-      // name
-      done: false,
+      myIcon: faCheck,
       form: {
         name: "",
         gender: "",
@@ -105,10 +118,9 @@ export default {
         contactInfo: { tel: "", email: "" },
         basicInfo: {
           nationalId: "",
-          birthDate: ""
+          birthDate: null
         }
       },
-      myIcon: faSpinner,
       genders: [
         { text: "ذكر", value: "male" },
         { text: "أنثي", value: "female" }
@@ -127,21 +139,31 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon , Test
+    FontAwesomeIcon,
+    Test
+  },
+  computed:{
+    validationID() {
+        return this.form.basicInfo.nationalId.length == 14 && this.form.basicInfo.nationalId[0] === '2'  },
+        validationPhone(){
+          return this.form.contactInfo.tel.length == 11 
+        }
   },
   methods: {
+
     onSubmit(evt) {
       evt.preventDefault();
       Db.add({
         name: this.form.name,
         bloodType: this.form.bloodType,
+        gender : this.form.gender ,
         contactInfo: {
           tel: this.form.contactInfo.tel,
           mail: this.form.contactInfo.email
         },
         basicInfo: {
           nationalId: this.form.basicInfo.nationalId,
-          birthDate: this.form.birthDate
+          birthDate: this.form.basicInfo.birthDate
         }
       });
       this.show = false;

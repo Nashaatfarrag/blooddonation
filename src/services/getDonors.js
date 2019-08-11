@@ -1,57 +1,54 @@
 let donorInfo = [
-  {
-    name: "محمد نشأت",
-    age: 23,
-    bloodType: "A+",
-    
-    contactInfo: { tel: "01012490898" }
-  },
-  {
-    name: "محمد نشأت",
-    age: 23,
-    bloodType: "A+",
-    
-    contactInfo: { tel: "01012490898" }
-  },
-  {
-    name: "محمد نشأت",
-    age: 23,
-    bloodType: "A+",
-    contactInfo: { tel: "01012490898" }
-  },
-  {
-    name: "محمد نشأت",
-    age: 23,
-    bloodType: "A+",
-    contactInfo: { tel: "01012490898" }
-  },
-  {
-    name: "محمد نشأت",
-    age: 23,
-    bloodType: "A+",
-    contactInfo: { tel: "01012490898" }
-  }
+  // {
+  //   name: "محمد نشأت",
+  //   age: 23,
+  //   bloodType: "A+",
+
+  //   contactInfo: { tel: "01012490898" }
+  // },
+  // {
+  //   name: "محمد نشأت",
+  //   age: 23,
+  //   bloodType: "A+",
+
+  //   contactInfo: { tel: "01012490898" }
+  // },
+  // {
+  //   name: "محمد نشأت",
+  //   age: 23,
+  //   bloodType: "A+",
+  //   contactInfo: { tel: "01012490898" }
+  // },
+  // {
+  //   name: "محمد نشأت",
+  //   age: 23,
+  //   bloodType: "A+",
+  //   contactInfo: { tel: "01012490898" }
+  // },
+  // {
+  //   name: "محمد نشأت",
+  //   age: 23,
+  //   bloodType: "A+",
+  //   contactInfo: { tel: "01012490898" }
+  // }
 ];
 
 const axios = require("axios");
 //let apiUrl = "http://localhost:5000/donor/";
 let apiUrl = "https://dry-spire-81070.herokuapp.com/donor/";
 
-function getAll() {
-  axios
-    .get(apiUrl)
-    .then(response => {
-      let donors = response.data;
+// function getAll() {
+//   axios
+//     .get(apiUrl)
+//     .then(response => {
+//       let donors = response.data;
+//       donorInfo = donors
+//     })
+//     .catch(function(error) {
+//       alert(error.data);
+//     });
 
-      //console.log(donors);
-      return donors
-    })
-    .catch(function(error) {
-      alert(error);
-      return null ;
-    });
-
-}
+// }
 
 // let element = {
 //   contactInfo: {

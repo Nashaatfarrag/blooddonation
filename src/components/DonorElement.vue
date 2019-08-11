@@ -1,20 +1,6 @@
 <template>
   <b-container class="mb-2 box-shadow" rounded="2" align="left">
     <b-row>
-      <b-col class="m-2">
-        <b-row v-animate-css="'rotateInUpLeft'">
-          <h5 class>{{donor.name}}</h5>
-        </b-row>
-        <b-row>
-          <p style="color:#999999">
-            Age : {{12}}
-            <br />
-            Type : {{donor.bloodType}}
-            <br />
-            Tel : {{donor.contactInfo.tel}}
-          </p>
-        </b-row>
-      </b-col>
       <b-col v-animate-css="'fadeIn'">
         <b-img
           rounded="circle"
@@ -24,6 +10,20 @@
           src="https://upload.wikimedia.org/wikipedia/en/e/ee/Unknown-person.gif"
           alt="Image 3"
         ></b-img>
+      </b-col>
+      <b-col class="m-2">
+        <b-row v-animate-css="'rotateInUpLeft'">
+          <h6 class>{{donor.name}}</h6>
+        </b-row>
+        <b-row>
+          <p style="color:#999999">
+            Age : {{age}}
+            <br />
+            Type : {{donor.bloodType}}
+            <br />
+            Tel : {{donor.contactInfo.tel}}
+          </p>
+        </b-row>
       </b-col>
     </b-row>
   </b-container>
@@ -38,6 +38,13 @@ export default {
   props: {
     msg: String,
     donor: Object
+  },
+  computed:{
+    age : function(){
+      let birthdate = new Date( this.donor.basicInfo.birthDate );
+      return(Math.floor((Date.now() - birthdate) / ( 3600 * 24 *365 *1000)) );
+  
+    }
   }
 };
 </script>

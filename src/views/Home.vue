@@ -8,7 +8,7 @@
     </b-form-select>
 
     <!-- mapping donors data into donor element -->
-    <b-card-group deck >
+    <b-card-group deck>
       <Donor v-for="donor in ( selected ? filtered : donors )" :donor="donor" :key="donor.id" />
     </b-card-group>
   </div>
@@ -18,7 +18,9 @@
 // @ is an alias to /src
 import Donor from "@/components/DonorElement.vue";
 import Db from "../services/getDonors";
-
+const axios = require("axios");
+//let apiUrl = "http://localhost:5000/donor/";
+let apiUrl = "https://dry-spire-81070.herokuapp.com/donor/";
 export default {
   name: "home",
   data() {
@@ -35,12 +37,25 @@ export default {
         { value: "B-", text: "B-" },
         { value: "AB-", text: "AB-" }
       ],
-      donors: null
+      donors: []
     };
   },
-  mounted: function() {
+  mounted() {
     //console.log(Db.getAll());
-    this.donors = Db.getAll();
+    this.getAll();
+  },
+  methods: {
+    getAll: async function() {
+      await axios
+        .get(apiUrl)
+        .then(response => {
+          this.donors = response.data;
+          //console.log(response.data ) ;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
   },
   computed: {
     filtered: function(selected) {
