@@ -1,11 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link class="btn  " to="/">إعرض المتبرعين</router-link> |
-      <router-link  class="btn " to="/add">تسجيل متبرع</router-link> |
-      <router-link  class="btn " to="/adddonation">أضف تبرعا</router-link>
+      <router-link class="btn btn-light m-1" to="/">إعرض المتبرعين</router-link>
+      <router-link class="btn btn-light m-1" to="/add">تسجيل متبرع</router-link>
+      <router-link class="btn btn-light m-1" to="/adddonation">أضف تبرعا</router-link>
+      <router-link class="btn btn-light m-1" to="/about">عنا</router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -19,18 +20,17 @@
   src: url("./font/UniversNextArabic-Regular_2.ttf");
 }
 #app {
-  font-family: 'Helvetica', Helvetica, Arial, sans-serif;
-  
+  font-family: "Helvetica", Helvetica, Arial, sans-serif;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background-color:whitesmoke;
+  background-color: whitesmoke;
   color: #2c3e50;
 }
 #nav {
   padding: 30px;
-  font-family: myFirstFont ; 
-  
+  font-family: myFirstFont;
 }
 
 #nav a {
@@ -39,6 +39,6 @@
 }
 
 #nav a.router-link-exact-active {
-  color: #FB4334;
+  color: #fb4334;
 }
 </style>

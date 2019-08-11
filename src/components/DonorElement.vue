@@ -1,22 +1,22 @@
 <template>
-  <b-container class="mb-2 box-shadow" rounded="2" align="left">
+  <b-container class="mb-2 box-shadow" rounded="2" align="left" >
     <b-row>
-      <b-col v-animate-css="'fadeIn'">
+      <b-col v-animate-css="'fadeIn'" class="col-4">
         <b-img
           rounded="circle"
-          class="p-2"
-          height="100"
-          width="100"
+          class="mt-2"
+          height="70"
+          width="70"
           src="https://upload.wikimedia.org/wikipedia/en/e/ee/Unknown-person.gif"
           alt="Image 3"
         ></b-img>
       </b-col>
       <b-col class="m-2">
-        <b-row v-animate-css="'rotateInUpLeft'">
-          <h6 class>{{donor.name}}</h6>
+        <b-row class="animated ">
+          <h5 style="font-family:myFirstFont" class>{{donor.name}}</h5>
         </b-row>
         <b-row>
-          <p style="color:#999999">
+          <p style="color:#A7A7A7">
             Age : {{age}}
             <br />
             Type : {{donor.bloodType}}
@@ -32,12 +32,14 @@
 <script>
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import { delay } from 'q';
 
 export default {
   name: "DonorElement",
   props: {
     msg: String,
-    donor: Object
+    donor: Object,
+  delay : Number
   },
   computed:{
     age : function(){

@@ -8,8 +8,17 @@
     </b-form-select>
 
     <!-- mapping donors data into donor element -->
-    <b-card-group deck>
-      <Donor v-for="donor in ( selected ? filtered : donors )" :donor="donor" :key="donor.id" />
+    <div v-if="!donors">
+      <font-awesome-icon :icon="myIcon" spin />
+    </div>
+    <b-card-group v-else-if="donors" deck>
+      <Donor
+        class="animated fadeInLeftBig"
+        v-for="(donor,index) in ( selected ? filtered : donors )"
+        :donor="donor"
+        :key="donor.id"
+        :style="myStyle(index)"
+      />
     </b-card-group>
   </div>
 </template>
@@ -18,6 +27,7 @@
 // @ is an alias to /src
 import Donor from "@/components/DonorElement.vue";
 import Db from "../services/getDonors";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 const axios = require("axios");
 //let apiUrl = "http://localhost:5000/donor/";
 let apiUrl = "https://dry-spire-81070.herokuapp.com/donor/";
@@ -25,6 +35,7 @@ export default {
   name: "home",
   data() {
     return {
+      myIcon: faSpinner,
       selected: null,
       options: [
         { value: null, text: "All types" },
@@ -46,20 +57,23 @@ export default {
   },
   methods: {
     getAll: async function() {
-      await axios
+      axios
         .get(apiUrl)
         .then(response => {
           this.donors = response.data;
           //console.log(response.data ) ;
         })
         .catch(function(error) {
-          console.log(error);
+          alert(error.errmsg);
         });
+    },
+    myStyle: function(index) {
+      return "animation-delay : " + index*500 + "ms" ;
     }
   },
   computed: {
     filtered: function(selected) {
-      return this.donors.filter(donor => donor.type === this.selected);
+      return this.donors.filter(donor => donor.bloodType === this.selected);
     }
   },
   components: {
@@ -67,3 +81,10 @@ export default {
   }
 };
 </script>
+<style scoped>
+.ain {
+  animation-duration: 3s;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+}
+</style>
