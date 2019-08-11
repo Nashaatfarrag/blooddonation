@@ -9,10 +9,12 @@
     </b-container>
     <b-container>
       <br />
-      <div v-if="!show">
-        <font-awesome-icon :icon="myIcon" size="6x" style="color:green;" />
-        <br />
-        <strong class="mu-2">done</strong>
+      <div v-if="!show" align="center">
+        <font-awesome-icon :icon="myIcon" size="7x" style="color:green;" />
+        <br>
+        <br>
+        <br>
+        <strong style="font-size:larger;" class="text-success mt-2">done</strong>
       </div>
       <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="Addform">
         <b-form-group id="input-group-2" label="الإسم" label-for="input-2" align="right">
@@ -48,7 +50,7 @@
             required
             placeholder="رقم موبايل للتواصل"
           ></b-form-input>
-                    <b-form-invalid-feedback :state="validationPhone">رقم الموبايل مكون من 11 رقماً</b-form-invalid-feedback>
+                    <b-form-invalid-feedback :state="validationPhone"> يجب ان يكون رقم الموبايل مكون من 11 رقماً</b-form-invalid-feedback>
           <b-form-valid-feedback :state="validationPhone">تمام</b-form-valid-feedback>
         </b-form-group>
 

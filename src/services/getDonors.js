@@ -75,4 +75,4 @@ function add(element) {
     });
 }
 
-module.exports = { getAll, add };
+module.exports = {  add };
