@@ -35,7 +35,7 @@ let donorInfo = [
 
 const axios = require("axios");
 //let apiUrl = "http://localhost:5000/donor/";
-let apiUrl = "https://dry-spire-81070.herokuapp.com/donor/";
+let apiUrl = "https://tatayblooddonationapi.herokuapp.com/donor/";
 
 // function getAll() {
 //   axios
@@ -75,4 +75,4 @@ function add(element) {
     });
 }
 
-module.exports = {  add };
+module.exports = {  add , apiUrl };

@@ -11,9 +11,9 @@
       <br />
       <div v-if="!show" align="center">
         <font-awesome-icon :icon="myIcon" size="7x" style="color:green;" />
-        <br>
-        <br>
-        <br>
+        <br />
+        <br />
+        <br />
         <strong style="font-size:larger;" class="text-success mt-2">done</strong>
       </div>
       <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="Addform">
@@ -35,7 +35,7 @@
         >
           <b-form-input
             id="input-1"
-            v-model="form.email"
+            v-model="form.contactInfo.mail"
             type="email"
             required
             placeholder="يرجي إدخال بريد إليكترونى صالح"
@@ -50,7 +50,9 @@
             required
             placeholder="رقم موبايل للتواصل"
           ></b-form-input>
-                    <b-form-invalid-feedback :state="validationPhone"> يجب ان يكون رقم الموبايل مكون من 11 رقماً</b-form-invalid-feedback>
+          <b-form-invalid-feedback
+            :state="validationPhone"
+          >يجب ان يكون رقم الموبايل مكون من 11 رقماً</b-form-invalid-feedback>
           <b-form-valid-feedback :state="validationPhone">تمام</b-form-valid-feedback>
         </b-form-group>
 
@@ -99,6 +101,9 @@
 <script>
 import Db from "../services/getDonors";
 import Test from "./Test.vue";
+const axios = require("axios");
+//let apiUrl = "http://localhost:5000/donor/";
+//let apiUrl = "https://dry-spire-81070.herokuapp.com/donor/";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
@@ -113,11 +118,12 @@ export default {
   data() {
     return {
       myIcon: faCheck,
+    
       form: {
         name: "",
         gender: "",
         bloodType: null,
-        contactInfo: { tel: "", email: "" },
+        contactInfo: { tel: "", mail: "" },
         basicInfo: {
           nationalId: "",
           birthDate: null
@@ -144,30 +150,57 @@ export default {
     FontAwesomeIcon,
     Test
   },
-  computed:{
+  computed: {
     validationID() {
-        return this.form.basicInfo.nationalId.length == 14 && this.form.basicInfo.nationalId[0] === '2'  },
-        validationPhone(){
-          return this.form.contactInfo.tel.length == 11 
-        }
+      return (
+        this.form.basicInfo.nationalId.length == 14 &&
+        this.form.basicInfo.nationalId[0] === "2"
+      );
+    },
+    validationPhone() {
+      return this.form.contactInfo.tel.length == 11;
+    }
   },
   methods: {
-
     onSubmit(evt) {
       evt.preventDefault();
-      Db.add({
+      let element = {
         name: this.form.name,
         bloodType: this.form.bloodType,
-        gender : this.form.gender ,
+        imgUrl: "Hi",
         contactInfo: {
           tel: this.form.contactInfo.tel,
-          mail: this.form.contactInfo.email
+          mail: this.form.contactInfo.mail
         },
         basicInfo: {
           nationalId: this.form.basicInfo.nationalId,
-          birthDate: this.form.basicInfo.birthDate
+          birthDate: this.form.basicInfo.birthDate,
+          gender: this.form.gender,
         }
-      });
+      };
+      axios
+        .post(Db.apiUrl, element)
+        .then(function(response) {
+          console.log(element);
+        })
+        .catch(function(error) {
+          //console.log(error.response.data);
+          alert(error.response.data);
+        });
+      // Db.add({
+      //   name: this.form.name,
+      //   bloodType: this.form.bloodType,
+      //   gender : this.form.gender ,
+      //   imgUrl: "Hi",
+      //   contactInfo: {
+      //     tel: this.form.contactInfo.tel,
+      //     mail: this.form.contactInfo.mail,
+      //   },
+      //   basicInfo: {
+      //     nationalId: this.form.basicInfo.nationalId,
+      //     birthDate: this.form.basicInfo.birthDate
+      //   }
+      // });
       this.show = false;
     },
     onReset(evt) {

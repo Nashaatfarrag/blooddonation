@@ -30,7 +30,7 @@ import Db from "../services/getDonors";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 const axios = require("axios");
 //let apiUrl = "http://localhost:5000/donor/";
-let apiUrl = "https://dry-spire-81070.herokuapp.com/donor/";
+//let apiUrl = "https://tatayblooddonationapi.herokuapp.com/";
 export default {
   name: "home",
   data() {
@@ -48,7 +48,8 @@ export default {
         { value: "B-", text: "B-" },
         { value: "AB-", text: "AB-" }
       ],
-      donors: []
+      donors: null,
+      pass: "12345"
     };
   },
   mounted() {
@@ -58,7 +59,7 @@ export default {
   methods: {
     getAll: async function() {
       axios
-        .get(apiUrl)
+        .get(Db.apiUrl)
         .then(response => {
           this.donors = response.data;
           //console.log(response.data ) ;
@@ -68,7 +69,7 @@ export default {
         });
     },
     myStyle: function(index) {
-      return "animation-delay : " + index*500 + "ms" ;
+      return "animation-delay : " + index * 500 + "ms";
     }
   },
   computed: {
