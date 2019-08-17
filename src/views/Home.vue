@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="margin-top:40px">
+  <div class="container" style="margin-top:40px;padding-bottom:60px">
     <b-form @submit="checkOTP" v-if="show" class="Addform">
       <b-form-group id="input-group-2" label="OTP" label-for="input-2" align="center">
         <b-form-input
@@ -31,7 +31,7 @@
       <div v-if="!donors">
         <font-awesome-icon :icon="myIcon" spin />
       </div>
-      <b-card-group v-else-if="donors" deck>
+      <b-card-group v-else-if="donors" deck align="left">
         <Donor
           class="animated fadeInLeftBig"
           v-for="(donor,index) in ( selected ? filtered : donors )"
@@ -72,7 +72,7 @@ export default {
       ],
       donors: null,
       show: true,
-      OTP: ""
+      OTP: "" 
     };
   },
   mounted() {

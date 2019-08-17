@@ -1,6 +1,6 @@
 <template>
   <b-container class="mb-2 box-shadow" rounded="2" align="left">
-    <b-row>
+    <b-row @click="toggleSelected">
       <b-col v-animate-css="'fadeIn'" class="col-4">
         <!-- <b-img
           rounded="circle"
@@ -39,6 +39,13 @@
         </b-row>
       </b-col>
     </b-row>
+    <b-row v-if="selected" > 
+      <b-col class="text-center">
+        <b-row v-for="donation in donor.donationDates" :key="donation._id" align="center">
+          <p>{{donation.when}}</p>
+        </b-row>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
@@ -59,7 +66,8 @@ export default {
   data() {
     return {
       maleIcon: faMale,
-      femaleIcon: faFemale
+      femaleIcon: faFemale,
+      selected : false ,
     };
   },
   props: {
@@ -82,6 +90,11 @@ export default {
       } else {
         return true;
       }
+    }
+  },
+  methods : {
+    toggleSelected(){
+      this.selected = !this.selected ;
     }
   }
 };
