@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import VAnimateCss from "v-animate-css";
 
+
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

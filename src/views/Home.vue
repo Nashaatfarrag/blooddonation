@@ -1,25 +1,46 @@
 <template>
-  <div class="container">
-    <b-form-select v-model="selected" :options="options" class="mb-3" style="max-width=calc(12rem)">
-      <!-- This slot appears above the options from 'options' prop -->
-      <template slot="first">
-        <option :value="null" disabled>-- Please select an option --</option>
-      </template>
-    </b-form-select>
+  <div class="container" style="margin-top:40px">
+    <b-form @submit="checkOTP" v-if="show" class="Addform">
+      <b-form-group id="input-group-2" label="OTP" label-for="input-2" align="center">
+        <b-form-input
+          id="input-2"
+          v-model="OTP"
+          type="text"
+          required
+          style="max-width:500px"
+          placeholder="من فضلك ادخل الكود السري لعرض بيانات المتبرعين"
+        ></b-form-input>
+        <p>للحصول على الكود برجاء التواصل مع الأدمن على الرقم 01012490898</p>
+      </b-form-group>
+      <b-button class="m-1" type="submit" align="center" variant="primary">إرسال</b-button>
+    </b-form>
+    <div v-if="!show">
+      <b-form-select
+        v-model="selected"
+        :options="options"
+        class="mb-3"
+        style="max-width=calc(12rem)"
+      >
+        <!-- This slot appears above the options from 'options' prop -->
+        <template slot="first">
+          <option :value="null" disabled>-- Please select an option --</option>
+        </template>
+      </b-form-select>
 
-    <!-- mapping donors data into donor element -->
-    <div v-if="!donors">
-      <font-awesome-icon :icon="myIcon" spin />
+      <!-- mapping donors data into donor element -->
+      <div v-if="!donors">
+        <font-awesome-icon :icon="myIcon" spin />
+      </div>
+      <b-card-group v-else-if="donors" deck>
+        <Donor
+          class="animated fadeInLeftBig"
+          v-for="(donor,index) in ( selected ? filtered : donors )"
+          :donor="donor"
+          :key="donor.id"
+          :style="myStyle(index)"
+        />
+      </b-card-group>
     </div>
-    <b-card-group v-else-if="donors" deck>
-      <Donor
-        class="animated fadeInLeftBig"
-        v-for="(donor,index) in ( selected ? filtered : donors )"
-        :donor="donor"
-        :key="donor.id"
-        :style="myStyle(index)"
-      />
-    </b-card-group>
   </div>
 </template>
 
@@ -31,6 +52,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 const axios = require("axios");
 //let apiUrl = "http://localhost:5000/donor/";
 //let apiUrl = "https://tatayblooddonationapi.herokuapp.com/";
+
 export default {
   name: "home",
   data() {
@@ -49,7 +71,8 @@ export default {
         { value: "AB-", text: "AB-" }
       ],
       donors: null,
-      pass: "12345"
+      show: true,
+      OTP: ""
     };
   },
   mounted() {
@@ -57,6 +80,11 @@ export default {
     this.getAll();
   },
   methods: {
+    checkOTP() {
+      if (this.OTP == "hunter") {
+        this.show = false;
+      }
+    },
     getAll: async function() {
       axios
         .get(Db.apiUrl)

@@ -5,7 +5,7 @@
       class
       style="background-image: linear-gradient(to top, #051937, #35255b, #722670, #b31771, #eb125d);; height:12rem"
     >
-      <p id="ads" class="header-container mx-auto">تبرعك بالدم ينقذ حياة</p>
+      <p id="ads" class="header-container">تبرعك بالدم ينقذ حياة</p>
     </b-container>
     <b-container>
       <br />
@@ -56,7 +56,7 @@
           <b-form-valid-feedback :state="validationPhone">تمام</b-form-valid-feedback>
         </b-form-group>
 
-        <b-form-group
+        <!-- <b-form-group
           id="input-group-6"
           label=" : الرقم القومي"
           label-for="input-6"
@@ -72,7 +72,7 @@
           ></b-form-input>
           <b-form-invalid-feedback :state="validationID">يجب أن يكون الرقم القومى 14 رقم</b-form-invalid-feedback>
           <b-form-valid-feedback :state="validationID">تمام</b-form-valid-feedback>
-        </b-form-group>
+        </b-form-group>-->
 
         <b-form-group id="input-group-4" label=" : تاريخ الميلاد" label-for="input-4" align="right">
           <b-form-input
@@ -100,7 +100,6 @@
 
 <script>
 import Db from "../services/getDonors";
-import Test from "./Test.vue";
 const axios = require("axios");
 //let apiUrl = "http://localhost:5000/donor/";
 //let apiUrl = "https://dry-spire-81070.herokuapp.com/donor/";
@@ -118,7 +117,6 @@ export default {
   data() {
     return {
       myIcon: faCheck,
-    
       form: {
         name: "",
         gender: "",
@@ -147,17 +145,17 @@ export default {
     };
   },
   components: {
-    FontAwesomeIcon,
-    Test
+    FontAwesomeIcon
   },
   computed: {
-    validationID() {
-      return (
-        this.form.basicInfo.nationalId.length == 14 &&
-        this.form.basicInfo.nationalId[0] === "2"
-      );
-    },
+    // validationID() {
+    //   return (
+    //     this.form.basicInfo.nationalId.length == 14 &&
+    //     this.form.basicInfo.nationalId[0] === "2"
+    //   );
+    // },
     validationPhone() {
+    
       return this.form.contactInfo.tel.length == 11;
     }
   },
@@ -173,9 +171,9 @@ export default {
           mail: this.form.contactInfo.mail
         },
         basicInfo: {
-          nationalId: this.form.basicInfo.nationalId,
+          //nationalId: this.form.basicInfo.nationalId,
           birthDate: this.form.basicInfo.birthDate,
-          gender: this.form.gender,
+          gender: this.form.gender
         }
       };
       axios

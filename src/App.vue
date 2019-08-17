@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div id="nav" style="border-bottom:2px solid black">
       <router-link class="btn btn-light m-1" to="/">إعرض المتبرعين</router-link>
       <router-link class="btn btn-light m-1" to="/add">تسجيل متبرع</router-link>
       <router-link class="btn btn-light m-1" to="/adddonation">أضف تبرعا</router-link>
