@@ -34,8 +34,8 @@ let donorInfo = [
 ];
 
 const axios = require("axios");
-let apiUrl = "http://localhost:5000/donor/";
-//let apiUrl = "https://tatayblooddonationapi.herokuapp.com/donor/";
+//let apiUrl = "http://localhost:5000/donor/";
+let apiUrl = "https://tatayblooddonationapi.herokuapp.com/donor/";
 
 // function getAll() {
 //   axios

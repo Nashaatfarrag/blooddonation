@@ -10,11 +10,17 @@
           src=""
           alt="Image 3"
         ></b-img>-->
-        <font-awesome-icon
-          style="font-size:80px"
-          class="m-3"
-          :icon="donor.basicInfo.gender === 'male'? maleIcon: femaleIcon"
-        />
+        <b-row class=" text-center">
+          <b-col>
+          <font-awesome-icon
+            style="font-size:70px"
+            class="m-3"
+            :icon="donor.basicInfo.gender === 'male'? maleIcon: femaleIcon"
+          /></b-col>
+        </b-row>
+        <b-row align="center" :style="available? 'background-color:green': 'background-color:red'">
+          <b-col style="color:white; font-family:myFirstFont">{{available? 'متاح': "غير متاح"}}</b-col>
+        </b-row>
       </b-col>
       <b-col class="m-2">
         <b-row class="animated">
@@ -27,6 +33,8 @@
             Type : {{donor.bloodType}}
             <br />
             Tel : {{donor.contactInfo.tel}}
+            <br />
+            Times : {{donor.donationDates.length}}
           </p>
         </b-row>
       </b-col>
@@ -63,6 +71,17 @@ export default {
     age: function() {
       let birthdate = new Date(this.donor.basicInfo.birthDate);
       return Math.floor((Date.now() - birthdate) / (3600 * 24 * 365 * 1000));
+    },
+    available: function() {
+      if (this.donor.donationDates.length > 0) {
+        return (
+          (Date.now() - new Date(this.donor.donationDates[0].when)) /
+            (1000 * 3600 * 24) >
+          120
+        );
+      } else {
+        return true;
+      }
     }
   }
 };
