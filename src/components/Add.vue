@@ -17,7 +17,7 @@
         <strong style="font-size:larger;" class="text-success mt-2">done</strong>
       </div>
       <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="Addform">
-        <b-form-group id="input-group-2" label="الإسم" label-for="input-2" align="right">
+        <b-form-group id="input-group-2" label="* : الإسم" label-for="input-2" align="right">
           <b-form-input
             id="input-2"
             v-model="form.name"
@@ -37,12 +37,16 @@
             id="input-1"
             v-model="form.contactInfo.mail"
             type="email"
-            required
             placeholder="يرجي إدخال بريد إليكترونى صالح"
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-5" label=" : رقم الموبايل " label-for="input-5" align="right">
+        <b-form-group
+          id="input-group-5"
+          label="* : رقم الموبايل "
+          label-for="input-5"
+          align="right"
+        >
           <b-form-input
             id="input-5"
             v-model="form.contactInfo.tel"
@@ -52,7 +56,7 @@
           ></b-form-input>
           <b-form-invalid-feedback
             :state="validationPhone"
-          >يجب ان يكون رقم الموبايل مكون من 11 رقماً</b-form-invalid-feedback>
+          >رقم موبايل غير صحيح -- يجب أن يكون مكون من 11 رقما</b-form-invalid-feedback>
           <b-form-valid-feedback :state="validationPhone">تمام</b-form-valid-feedback>
         </b-form-group>
 
@@ -74,7 +78,12 @@
           <b-form-valid-feedback :state="validationID">تمام</b-form-valid-feedback>
         </b-form-group>-->
 
-        <b-form-group id="input-group-4" label=" : تاريخ الميلاد" label-for="input-4" align="right">
+        <b-form-group
+          id="input-group-4"
+          label="* : تاريخ الميلاد"
+          label-for="input-4"
+          align="right"
+        >
           <b-form-input
             id="input-4"
             v-model="form.basicInfo.birthDate"
@@ -83,11 +92,10 @@
             placeholder="من فضلك أدخل تاريح ميلادك"
           ></b-form-input>
         </b-form-group>
-
-        <b-form-group id="input-group-3" label=" : الفصيلة " label-for="input-3" align="right">
+        <b-form-group id="input-group-3" label="* : الفصيلة " label-for="input-3" align="right">
           <b-form-select id="input-3" v-model="form.bloodType" :options="types" required></b-form-select>
         </b-form-group>
-        <b-form-group id="input-group-7" label=" : النوع " label-for="input-7" align="right">
+        <b-form-group id="input-group-7" label="* : النوع " label-for="input-7" align="right">
           <b-form-select id="input-7" v-model="form.gender" :options="genders" required></b-form-select>
         </b-form-group>
 
@@ -155,51 +163,54 @@ export default {
     //   );
     // },
     validationPhone() {
-    
-      return this.form.contactInfo.tel.length == 11;
+      return (
+        this.form.contactInfo.tel.length == 11 &&
+        this.form.contactInfo.tel.slice(0, 2) === "01"
+      );
     }
   },
   methods: {
-    onSubmit(evt) {
-      evt.preventDefault();
-      let element = {
-        name: this.form.name,
-        bloodType: this.form.bloodType,
-        imgUrl: "Hi",
-        contactInfo: {
-          tel: this.form.contactInfo.tel,
-          mail: this.form.contactInfo.mail
-        },
-        basicInfo: {
-          //nationalId: this.form.basicInfo.nationalId,
-          birthDate: this.form.basicInfo.birthDate,
-          gender: this.form.gender
-        }
-      };
-      axios
+    async onSubmit(evt) {
+      await axios.get(Db.apiUrl + this.form.contactInfo.tel).then(res => {
+        //console.log(res.data)
+        if (res.data) {
+          this.$swal({
+            text: "يوجد متبرع بنفس رقم الموبايل",
+            type: "warning"
+          });
+        } else {
+          evt.preventDefault();
+          let element = {
+            name: this.form.name,
+            bloodType: this.form.bloodType,
+            imgUrl: "Hi",
+            contactInfo: {
+              tel: this.form.contactInfo.tel,
+              mail: this.form.contactInfo.mail
+            },
+            basicInfo: {
+              //nationalId: this.form.basicInfo.nationalId,
+              birthDate: this.form.basicInfo.birthDate,
+              gender: this.form.gender
+            }
+          };
+                 axios
         .post(Db.apiUrl, element)
         .then(function(response) {
-          console.log(element);
+          //console.log(response);
+          alert("Added to dataBase");
         })
         .catch(function(error) {
-          //console.log(error.response.data);
-          alert(error.response.data);
+          console.log(error);
+          //alert(error.response.data);
         });
-      // Db.add({
-      //   name: this.form.name,
-      //   bloodType: this.form.bloodType,
-      //   gender : this.form.gender ,
-      //   imgUrl: "Hi",
-      //   contactInfo: {
-      //     tel: this.form.contactInfo.tel,
-      //     mail: this.form.contactInfo.mail,
-      //   },
-      //   basicInfo: {
-      //     nationalId: this.form.basicInfo.nationalId,
-      //     birthDate: this.form.basicInfo.birthDate
-      //   }
-      // });
+
       this.show = false;
+
+        }
+      });
+
+
     },
     onReset(evt) {
       evt.preventDefault();
