@@ -136,7 +136,8 @@ export default {
                 toWhom: this.toWhom
               })
               .then(res => {
-                console.log(res);
+                
+                this.$router.push('/')
               })
               .catch(err => {
                 console.log(err);

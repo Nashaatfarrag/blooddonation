@@ -54,10 +54,7 @@
             required
             placeholder="رقم موبايل للتواصل"
           ></b-form-input>
-          <b-form-invalid-feedback
-            :state="validationPhone"
-          >رقم موبايل غير صحيح -- يجب أن يكون مكون من 11 رقما</b-form-invalid-feedback>
-          <b-form-valid-feedback :state="validationPhone">تمام</b-form-valid-feedback>
+
         </b-form-group>
 
         <!-- <b-form-group
@@ -98,7 +95,11 @@
         <b-form-group id="input-group-7" label="* : النوع " label-for="input-7" align="right">
           <b-form-select id="input-7" v-model="form.gender" :options="genders" required></b-form-select>
         </b-form-group>
-
+          <b-form-invalid-feedback
+            :state="validationPhone"
+            align="right"
+          >رقم موبايل غير صحيح -- يجب أن يكون مكون من 11 رقما</b-form-invalid-feedback>
+          <b-form-valid-feedback :state="validationPhone">تمام</b-form-valid-feedback>
         <b-button class="m-1" type="submit" align="center" variant="primary">إرسال</b-button>
         <b-button class="m-1" type="reset" align="center" variant="danger">إعادة ملئ</b-button>
       </b-form>
