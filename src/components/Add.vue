@@ -54,7 +54,6 @@
             required
             placeholder="رقم موبايل للتواصل"
           ></b-form-input>
-
         </b-form-group>
 
         <!-- <b-form-group
@@ -95,11 +94,12 @@
         <b-form-group id="input-group-7" label="* : النوع " label-for="input-7" align="right">
           <b-form-select id="input-7" v-model="form.gender" :options="genders" required></b-form-select>
         </b-form-group>
-          <b-form-invalid-feedback
+        <!-- <b-form-invalid-feedback
             :state="validationPhone"
             align="right"
           >رقم موبايل غير صحيح -- يجب أن يكون مكون من 11 رقما</b-form-invalid-feedback>
-          <b-form-valid-feedback :state="validationPhone">تمام</b-form-valid-feedback>
+        <b-form-valid-feedback :state="validationPhone" align="right">تمام</b-form-valid-feedback>-->
+        <p align="right" style="color:red" v-for="err in validationPhone"  :key="err" class="animated pulse">{{err}}  <font-awesome-icon :v-if="err" :icon="myIcon"/></p>
         <b-button class="m-1" type="submit" align="center" variant="primary">إرسال</b-button>
         <b-button class="m-1" type="reset" align="center" variant="danger">إعادة ملئ</b-button>
       </b-form>
@@ -118,14 +118,15 @@ import {
   faSpinner,
   faCheck,
   faCheckCircle,
-  faAmbulance
+  faAmbulance,
+  faTimes
 } from "@fortawesome/free-solid-svg-icons";
 
 export default {
   name: "Add",
   data() {
     return {
-      myIcon: faCheck,
+      myIcon: faTimes,
       form: {
         name: "",
         gender: "",
@@ -157,61 +158,78 @@ export default {
     FontAwesomeIcon
   },
   computed: {
-    // validationID() {
-    //   return (
-    //     this.form.basicInfo.nationalId.length == 14 &&
-    //     this.form.basicInfo.nationalId[0] === "2"
-    //   );
-    // },
     validationPhone() {
-      return (
-        this.form.contactInfo.tel.length == 11 &&
-        this.form.contactInfo.tel.slice(0, 2) === "01"
-      );
+      let err = [];
+            if (
+        (this.form.name.length > 25 || this.form.name.length < 12 )
+        && this.form.name
+      ) {
+        err[0] = " عدد حروف الإسم لا يقل عن 12 ولا يزيد عن 25";
+      }
+      if (
+        this.form.contactInfo.tel.length !== 11 &&
+        this.form.contactInfo.tel 
+        && !(this.form.contactInfo.tel.slice(0, 2) != '01')
+      ) {
+        err[4] = " رقم موبايل غير صحيح";
+      }
+      let myDate = new Date(this.form.basicInfo.birthDate);
+      let year = myDate.getFullYear();
+      let month = myDate.getMonth();
+      let day = myDate.getDate();
+      let calc = new Date(year + 18, month, day);
+      if (this.form.basicInfo.birthDate && calc > Date.now()) {
+        err[2] = "  تاريخ ميلادك أصغر من ان تتبرع بالدم ";
+      }
+      return err.filter(h => {return h});
     }
   },
   methods: {
     async onSubmit(evt) {
-      await axios.get(Db.apiUrl + this.form.contactInfo.tel).then(res => {
-        //console.log(res.data)
-        if (res.data) {
-          this.$swal({
-            text: "يوجد متبرع بنفس رقم الموبايل",
-            type: "warning"
-          });
-        } else {
-          evt.preventDefault();
-          let element = {
-            name: this.form.name,
-            bloodType: this.form.bloodType,
-            imgUrl: "Hi",
-            contactInfo: {
-              tel: this.form.contactInfo.tel,
-              mail: this.form.contactInfo.mail
-            },
-            basicInfo: {
-              //nationalId: this.form.basicInfo.nationalId,
-              birthDate: this.form.basicInfo.birthDate,
-              gender: this.form.gender
-            }
-          };
-                 axios
-        .post(Db.apiUrl, element)
-        .then(function(response) {
-          //console.log(response);
-          alert("Added to dataBase");
-        })
-        .catch(function(error) {
-          console.log(error);
-          //alert(error.response.data);
+      if (!this.validationPhone) {
+        await axios.get(Db.apiUrl + this.form.contactInfo.tel).then(res => {
+          //console.log(res.data)
+          if (res.data) {
+            this.$swal({
+              text: "يوجد متبرع بنفس رقم الموبايل",
+              type: "warning"
+            });
+          } else {
+            evt.preventDefault();
+            let element = {
+              name: this.form.name,
+              bloodType: this.form.bloodType,
+              imgUrl: "Hi",
+              contactInfo: {
+                tel: this.form.contactInfo.tel,
+                mail: this.form.contactInfo.mail
+              },
+              basicInfo: {
+                //nationalId: this.form.basicInfo.nationalId,
+                birthDate: this.form.basicInfo.birthDate,
+                gender: this.form.gender
+              }
+            };
+            axios
+              .post(Db.apiUrl, element)
+              .then(function(response) {
+                console.log(response);
+                alert("Added to dataBase");
+              })
+              .catch(function(error) {
+                console.log(error);
+                //alert(error.response.data);
+              });
+
+            this.show = false;
+          }
         });
-
-      this.show = false;
-
-        }
-      });
-
-
+      } else {
+        this.$swal({
+          text: "خطأ في التسجيل",
+          type: "warning"
+        });
+      }
     },
     onReset(evt) {
       evt.preventDefault();

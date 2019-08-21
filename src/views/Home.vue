@@ -8,9 +8,9 @@
           type="text"
           required
           style="max-width:500px"
-          placeholder="من فضلك ادخل الكود السري لعرض بيانات المتبرعين"
+          placeholder="ادخل الكود السري لعرض بيانات المتبرعين"
         ></b-form-input>
-        <p>للحصول على الكود برجاء التواصل مع الأدمن على الرقم 01012490898</p>
+        <p style="margin-top:10px">to have the OTP please contact the admin on : <br> 01095848087 </p>
       </b-form-group>
       <b-button class="m-1" type="submit" align="center" variant="primary">إرسال</b-button>
     </b-form>

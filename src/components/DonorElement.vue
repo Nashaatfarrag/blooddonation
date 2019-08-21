@@ -86,7 +86,7 @@ export default {
     },
     available: function() {
       if (this.donor.donationDates.length > 0) {
-        console.log(_.maxBy(this.donor.donationDates,'when').when);
+       // console.log(_.maxBy(this.donor.donationDates,'when').when);
         return (
           (Date.now() - new Date(_.maxBy(this.donor.donationDates,'when').when)) /
             (1000 * 3600 * 24) >

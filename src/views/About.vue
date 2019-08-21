@@ -1,6 +1,11 @@
 <template>
-  <div class="about">
-    <p>This is an about page</p>
+  <div class="container" style="padding-top:50px;padding-bottom:50px">
+    
+    <p  align="right">:تعليمات 
+      <br>
+      <br>
+      يجب أن يكون سن المتبرع أكثر من 18 عاماً - 
+    </p>
     <b-btn v-on:click="roure">Back to Add</b-btn>
   </div>
 </template>
