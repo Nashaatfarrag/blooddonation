@@ -99,7 +99,16 @@
             align="right"
           >رقم موبايل غير صحيح -- يجب أن يكون مكون من 11 رقما</b-form-invalid-feedback>
         <b-form-valid-feedback :state="validationPhone" align="right">تمام</b-form-valid-feedback>-->
-        <p align="right" style="color:red" v-for="err in validationPhone"  :key="err" class="animated pulse">{{err}}  <font-awesome-icon :v-if="err" :icon="myIcon"/></p>
+        <p
+          align="right"
+          style="color:red"
+          v-for="err in validationPhone"
+          :key="err"
+          class="animated pulse"
+        >
+          {{err}}
+          <font-awesome-icon :v-if="err" :icon="myIcon" />
+        </p>
         <b-button class="m-1" type="submit" align="center" variant="primary">إرسال</b-button>
         <b-button class="m-1" type="reset" align="center" variant="danger">إعادة ملئ</b-button>
       </b-form>
@@ -160,18 +169,18 @@ export default {
   computed: {
     validationPhone() {
       let err = [];
-            if (
-        (this.form.name.length > 25 || this.form.name.length < 12 )
-        && this.form.name
+      if (
+        (this.form.name.length > 25 || this.form.name.length < 12) &&
+        this.form.name
       ) {
         err[0] = " عدد حروف الإسم لا يقل عن 12 ولا يزيد عن 25";
       }
       if (
         this.form.contactInfo.tel.length !== 11 &&
-        this.form.contactInfo.tel 
-        && !(this.form.contactInfo.tel.slice(0, 2) != '01')
+        this.form.contactInfo.tel &&
+        !(this.form.contactInfo.tel.slice(0, 2) != "01")
       ) {
-        err[4] = " رقم موبايل غير صحيح";
+        err[1] = " رقم موبايل غير صحيح";
       }
       let myDate = new Date(this.form.basicInfo.birthDate);
       let year = myDate.getFullYear();
@@ -181,12 +190,27 @@ export default {
       if (this.form.basicInfo.birthDate && calc > Date.now()) {
         err[2] = "  تاريخ ميلادك أصغر من ان تتبرع بالدم ";
       }
-      return err.filter(h => {return h});
+      if (err.length > 0) {
+        return err.filter(h => {
+          return h;
+        });
+      } else {
+        return false;
+      }
     }
   },
   methods: {
+ 
     async onSubmit(evt) {
-      if (!this.validationPhone) {
+      //console.log(this.validationPhone);
+      
+      //console.log(this.validationPhone());
+      if (this.validationPhone) {
+        this.$swal({
+          text: "خطأ في التسجيل",
+          type: "warning"
+        });
+      } else {
         await axios.get(Db.apiUrl + this.form.contactInfo.tel).then(res => {
           //console.log(res.data)
           if (res.data) {
@@ -223,11 +247,6 @@ export default {
 
             this.show = false;
           }
-        });
-      } else {
-        this.$swal({
-          text: "خطأ في التسجيل",
-          type: "warning"
         });
       }
     },

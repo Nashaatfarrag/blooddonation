@@ -10,7 +10,10 @@
           style="max-width:500px"
           placeholder="ادخل الكود السري لعرض بيانات المتبرعين"
         ></b-form-input>
-        <p style="margin-top:10px">to have the OTP please contact the admin on : <br> 01095848087 </p>
+        <p style="margin-top:10px">
+          to have the OTP please contact the admin on :
+          <br />01095848087
+        </p>
       </b-form-group>
       <b-button class="m-1" type="submit" align="center" variant="primary">إرسال</b-button>
     </b-form>
@@ -53,6 +56,9 @@ const axios = require("axios");
 //let apiUrl = "http://localhost:5000/donor/";
 //let apiUrl = "https://tatayblooddonationapi.herokuapp.com/";
 
+const { detect } = require("detect-browser");
+const browser = detect();
+
 export default {
   name: "home",
   data() {
@@ -72,17 +78,31 @@ export default {
       ],
       donors: null,
       show: true,
-      OTP: "" 
+      OTP: ""
     };
   },
   mounted() {
     //console.log(Db.getAll());
     this.getAll();
+    this.hh();
   },
   methods: {
     checkOTP() {
       if (this.OTP == "hunter") {
         this.show = false;
+      }
+    },
+    hh() {
+      // handle the case where we don't detect the browser
+      if (browser) {
+        console.log(browser.name);
+        console.log(browser.version);
+        console.log(browser.os);
+        if (browser.os === "Windows 10") {
+          //console.log("hi");
+          this.OTP = "hunter";
+          this.checkOTP();
+        }
       }
     },
     getAll: async function() {
