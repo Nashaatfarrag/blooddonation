@@ -13,7 +13,7 @@
               placeholder="من فضلك ادخل رقم الموبايل "
             ></b-form-input>
           </b-form-group>
-          <b-button @click="getUser" type="submit" variant="primary">تحقق من وجود المتبرع</b-button>
+          <b-button @click="getUser" type="button" variant="primary">تحقق من وجود المتبرع</b-button>
         </b-form>
       </b-col>
     </b-row>
@@ -81,7 +81,7 @@
             ></b-form-input>
           </b-form-group>
         </b-form>
-        <b-button @click="sendDonation" variant="primary">إرسال الطلب</b-button>
+        <b-button @click="sendDonation" type="button" variant="primary">إرسال الطلب</b-button>
       </b-col>
     </b-row>
   </b-container>

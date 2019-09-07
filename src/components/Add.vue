@@ -16,7 +16,7 @@
         <br />
         <strong style="font-size:larger;" class="text-success mt-2">done</strong>
       </div>
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="Addform">
+      <b-form  @reset="onReset" v-if="show" class="Addform">
         <b-form-group id="input-group-2" label="* : الإسم" label-for="input-2" align="right">
           <b-form-input
             id="input-2"
@@ -109,7 +109,7 @@
           {{err}}
           <font-awesome-icon :v-if="err" :icon="myIcon" />
         </p>
-        <b-button class="m-1" type="submit" align="center" variant="primary">إرسال</b-button>
+        <b-button class="m-1" type="button" @click="onSubmit" align="center" variant="primary">إرسال</b-button>
         <b-button class="m-1" type="reset" align="center" variant="danger">إعادة ملئ</b-button>
       </b-form>
     </b-container>
