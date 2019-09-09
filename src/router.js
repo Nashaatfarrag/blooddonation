@@ -32,6 +32,10 @@ export default new Router({
       path: "/adddonation",
       name: "addDonation",
       component: addDonation
+    },
+    {
+      path : '*',
+      redirect : "/"
     }
   ]
 });
