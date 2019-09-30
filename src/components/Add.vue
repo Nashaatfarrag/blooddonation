@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-row>
     <b-container
       fluid
       class
@@ -113,7 +113,7 @@
         <b-button class="m-1" type="reset" align="center" variant="danger">إعادة ملئ</b-button>
       </b-form>
     </b-container>
-  </div>
+  </b-row>
 </template>
 
 <script>

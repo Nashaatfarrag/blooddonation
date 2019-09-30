@@ -17,17 +17,16 @@
       </b-form-group>
       <b-button class="m-1" @click="checkOTP" align="center" variant="primary">إرسال</b-button>
     </b-form>
+    
     <div v-if="!show">
+      إختر الفصيلة 
+      <br>
       <b-form-select
         v-model="selected"
         :options="options"
         class="mb-3"
         style="max-width=calc(12rem)"
       >
-        <!-- This slot appears above the options from 'options' prop -->
-        <template slot="first">
-          <option :value="null" disabled>-- Please select an option --</option>
-        </template>
       </b-form-select>
 
       <!-- mapping donors data into donor element -->
