@@ -14,7 +14,7 @@ export default {
   methods : {
     roure : function(){
       this.$router.push('/add')
-      console.log(this)
+     
     }
   }
 }

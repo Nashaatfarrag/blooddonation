@@ -1,6 +1,6 @@
 <template>
   <div class="container" style="margin-top:40px;padding-bottom:60px">
-    <b-form @submit="checkOTP" v-if="show" class="Addform">
+    <b-form  v-if="show" class="Addform">
       <b-form-group id="input-group-2" label="OTP" label-for="input-2" align="center">
         <b-form-input
           id="input-2"
@@ -15,7 +15,7 @@
           <br />01095848087
         </p>
       </b-form-group>
-      <b-button class="m-1" type="submit" align="center" variant="primary">إرسال</b-button>
+      <b-button class="m-1" @click="checkOTP" align="center" variant="primary">إرسال</b-button>
     </b-form>
     <div v-if="!show">
       <b-form-select
@@ -88,21 +88,21 @@ export default {
   },
   methods: {
     checkOTP() {
-      if (this.OTP == "hunter") {
+      if (this.OTP === "hunter") {
         this.show = false;
       }
     },
     hh() {
       // handle the case where we don't detect the browser
       if (browser) {
-        console.log(browser.name);
-        console.log(browser.version);
-        console.log(browser.os);
-        if (browser.os === "Windows 10") {
+        // console.log(browser.name);
+        // console.log(browser.version);
+        // console.log(browser.os);
+        // if (browser.os === "Windows 10") {
           //console.log("hi");
           this.OTP = "hunter";
           this.checkOTP();
-        }
+        
       }
     },
     getAll: async function() {
