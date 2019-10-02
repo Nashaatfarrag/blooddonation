@@ -10,17 +10,26 @@
           src=""
           alt="Image 3"
         ></b-img>-->
-        <b-row class=" text-center">
+        <b-row class="text-center">
           <b-col>
-          <font-awesome-icon
-            style="font-size:60px ; color:#797979"
-            class="m-3"
-
-            :icon="donor.basicInfo.gender === 'male'? maleIcon: femaleIcon"
-          /></b-col>
+            <font-awesome-icon
+              style="font-size:60px ; color:#797979"
+              class="m-3"
+              :icon="donor.basicInfo.gender === 'male'? maleIcon: femaleIcon"
+            />
+          </b-col>
         </b-row>
-        <b-row align="center" :style="available? 'background-color:green': 'background-color:red'">
+        <b-row align="center" :class="available? 'bg-success': 'bg-danger'">
           <b-col style="color:white; font-family:myFirstFont">{{available? 'متاح': "غير متاح"}}</b-col>
+        </b-row>
+        <b-row class="justify-content-center" style="padding-top:3px">
+          <b-button
+            size="sm"
+            class="w-100 copy"
+            variant="info"
+            style="border-radius:0;"
+            v-clipboard="donor.contactInfo.tel"
+          >نسخ الرقم</b-button>
         </b-row>
       </b-col>
       <b-col class="m-2">
@@ -40,10 +49,17 @@
         </b-row>
       </b-col>
     </b-row>
-    <b-row v-if="selected" style="border-radius:10px" align="right"> 
+    <b-row v-if="selected" style="border-radius:10px" align="right">
       <b-col class="text-right">
-        <b-row style="background-color:#E0E0E0; " class="p-1" v-for="donation in donor.donationDates" :key="donation._id" align="center">
-        <font-awesome-icon :icon="dateIcon" class="m-2" /><p class="m-1">   {{"  " +myDate(donation.when)}}</p>
+        <b-row
+          style="background-color:#E0E0E0; "
+          class="p-1"
+          v-for="donation in donor.donationDates"
+          :key="donation._id"
+          align="center"
+        >
+          <font-awesome-icon :icon="dateIcon" class="m-2" />
+          <p class="m-1">{{" " +myDate(donation.when)}}</p>
         </b-row>
       </b-col>
     </b-row>
@@ -70,8 +86,8 @@ export default {
     return {
       maleIcon: faMale,
       femaleIcon: faFemale,
-      selected : false ,
-      dateIcon : faCheckCircle
+      selected: false,
+      dateIcon: faCheckCircle
     };
   },
   props: {
@@ -86,9 +102,10 @@ export default {
     },
     available: function() {
       if (this.donor.donationDates.length > 0) {
-       // console.log(_.maxBy(this.donor.donationDates,'when').when);
+        // console.log(_.maxBy(this.donor.donationDates,'when').when);
         return (
-          (Date.now() - new Date(_.maxBy(this.donor.donationDates,'when').when)) /
+          (Date.now() -
+            new Date(_.maxBy(this.donor.donationDates, "when").when)) /
             (1000 * 3600 * 24) >
           120
         );
@@ -97,14 +114,16 @@ export default {
       }
     }
   },
-  methods : {
-    toggleSelected(){
-      this.selected = !this.selected ;
+  methods: {
+    toggleSelected() {
+      this.selected = !this.selected;
     },
-    myDate : function(date){
+    myDate: function(date) {
       //console.log(date)
       let hi = new Date(date);
-      return ( hi.getFullYear() + " - " + (hi.getMonth() +1  )+ " - " + hi.getDate());
+      return (
+        hi.getFullYear() + " - " + (hi.getMonth() + 1) + " - " + hi.getDate()
+      );
     }
   }
 };
@@ -115,7 +134,9 @@ export default {
 /* * {
   border: 1px red solid;
 } */
-
+.copy {
+  font-family: myFirstFont;
+}
 .container {
   font-family: "Helvetica", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
