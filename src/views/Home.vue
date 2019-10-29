@@ -129,6 +129,8 @@ export default {
   }
 };
 </script>
+
+
 <style scoped>
 .ain {
   animation-duration: 3s;

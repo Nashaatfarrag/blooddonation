@@ -100,7 +100,7 @@ export default {
       user: null,
       when: null,
       toWhom: null,
-      OTP: null
+      OTP: "01552" ,
     };
   },
   methods: {

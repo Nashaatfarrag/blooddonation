@@ -7,7 +7,7 @@
     >
       <p id="ads" class="header-container">تبرعك بالدم ينقذ حياة</p>
     </b-container>
-    <b-container>
+    <b-container class="mb-3">
       <br />
       <div v-if="!show" align="center">
         <font-awesome-icon :icon="myIcon" size="7x" style="color:green;" />

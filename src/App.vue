@@ -1,7 +1,7 @@
 <template>
   <b-container fluid id="app">
     <b-row class="mainHeader p-2 bg-dark">
-      <b-col class="text-center " >بنك دم تطاي</b-col>
+      <b-col class="text-center " >بنك الدم </b-col>
     </b-row>
     <b-row id="nav" style="border-bottom:2px solid black" class="justify-content-center">
       <router-link class="btn btn-light m-1" to="/">إعرض المتبرعين</router-link>

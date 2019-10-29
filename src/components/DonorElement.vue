@@ -1,15 +1,7 @@
 <template>
   <b-container class="mb-2 box-shadow" rounded="2" align="left">
-    <b-row @click="toggleSelected">
+    <b-row>
       <b-col v-animate-css="'fadeIn'" class="col-4">
-        <!-- <b-img
-          rounded="circle"
-          class="mt-2"
-          height="70"
-          width="70"
-          src=""
-          alt="Image 3"
-        ></b-img>-->
         <b-row class="text-center">
           <b-col>
             <font-awesome-icon
@@ -19,8 +11,13 @@
             />
           </b-col>
         </b-row>
-        <b-row align="center" :class="available? 'bg-success': 'bg-danger'">
-          <b-col style="color:white; font-family:myFirstFont">{{available? 'متاح': "غير متاح"}}</b-col>
+        <b-row
+          align="center"
+          :class="(available === 'جديد' )? 'bg-dark': (available )? 'bg-success': 'bg-danger'"
+        >
+          <b-col
+            style="color:white; font-family:myFirstFont"
+          >{{(available === 'جديد' )? 'جديد': available ? 'متاح': "غير متاح"}}</b-col>
         </b-row>
         <b-row class="justify-content-center" style="padding-top:3px">
           <b-button
@@ -36,7 +33,7 @@
         <b-row class="animated">
           <h5 style="font-family:myFirstFont" class>{{donor.name}}</h5>
         </b-row>
-        <b-row>
+        <b-row @click="toggleSelected">
           <p style="color:#433F40">
             Age : {{age}}
             <br />
@@ -46,6 +43,7 @@
             <br />
             Times : {{donor.donationDates.length}}
           </p>
+          
         </b-row>
       </b-col>
     </b-row>
@@ -102,15 +100,14 @@ export default {
     },
     available: function() {
       if (this.donor.donationDates.length > 0) {
-        // console.log(_.maxBy(this.donor.donationDates,'when').when);
         return (
           (Date.now() -
             new Date(_.maxBy(this.donor.donationDates, "when").when)) /
             (1000 * 3600 * 24) >
-          120
+          90
         );
       } else {
-        return true;
+        return "جديد";
       }
     }
   },
