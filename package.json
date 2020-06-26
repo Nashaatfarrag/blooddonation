@@ -7,25 +7,26 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.21",
-    "@fortawesome/free-solid-svg-icons": "^5.10.1",
-    "@fortawesome/vue-fontawesome": "^0.1.6",
+    "@fortawesome/fontawesome-svg-core": "^1.2.29",
+    "@fortawesome/free-solid-svg-icons": "^5.13.1",
+    "@fortawesome/vue-fontawesome": "^0.1.10",
     "animate.css": "^3.7.2",
-    "axios": "^0.19.0",
-    "bootstrap": "^4.3.1",
-    "bootstrap-vue": "^2.0.0-rc.27",
-    "core-js": "^2.6.5",
-    "detect-browser": "^4.6.0",
+    "axios": "^0.19.2",
+    "bootstrap": "^4.5.0",
+    "bootstrap-vue": "^2.15.0",
+    "core-js": "^2.6.11",
+    "detect-browser": "^4.8.0",
     "v-animate-css": "0.0.3",
-    "v-clipboard": "^2.2.2",
-    "vue": "^2.6.10",
-    "vue-router": "^3.0.3",
-    "vue-sweetalert2": "^2.1.1"
+    "v-clipboard": "^2.2.3",
+    "vue": "^2.6.11",
+    "vue-analytics": "^5.22.1",
+    "vue-router": "^3.3.4",
+    "vue-sweetalert2": "^2.1.5"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.9.0",
-    "@vue/cli-service": "^3.9.0",
-    "vue-template-compiler": "^2.6.10"
+    "@vue/cli-plugin-babel": "^3.12.1",
+    "@vue/cli-service": "^4.4.6",
+    "vue-template-compiler": "^2.6.11"
   },
   "postcss": {
     "plugins": {
