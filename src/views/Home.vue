@@ -1,6 +1,6 @@
 <template>
   <div class="container" style="margin-top:40px;padding-bottom:60px">
-    <b-form  v-if="show" class="Addform">
+    <b-form v-if="show" class="Addform">
       <b-form-group id="input-group-2" label="OTP" label-for="input-2" align="center">
         <b-form-input
           id="input-2"
@@ -17,21 +17,28 @@
       </b-form-group>
       <b-button class="m-1" @click="checkOTP" align="center" variant="primary">إرسال</b-button>
     </b-form>
-    
+
     <div v-if="!show">
-      إختر الفصيلة 
-      <br>
+      إختر الفصيلة
+      <br />
       <b-form-select
         v-model="selected"
         :options="options"
         class="mb-3"
         style="max-width=calc(12rem)"
-      >
-      </b-form-select>
+      ></b-form-select>
 
       <!-- mapping donors data into donor element -->
       <div v-if="!donors">
-        <font-awesome-icon :icon="myIcon" spin />
+        <lottie-player
+          src="https://assets10.lottiefiles.com/private_files/lf30_kzoKGW.json"
+          background="transparent"
+          speed="1"
+          style="width: 100%; height: 100%;"
+          loop
+          autoplay
+        ></lottie-player>
+        <!-- <font-awesome-icon :icon="myIcon" spin /> -->
       </div>
       <b-card-group v-else-if="donors" deck align="left">
         <Donor
@@ -98,10 +105,9 @@ export default {
         // console.log(browser.version);
         // console.log(browser.os);
         // if (browser.os === "Windows 10") {
-          //console.log("hi");
-          this.OTP = "hunter";
-          this.checkOTP();
-        
+        //console.log("hi");
+        this.OTP = "hunter";
+        this.checkOTP();
       }
     },
     getAll: async function() {

@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid id="app">
+  <b-container fluid id="main">
     <b-row class="mainHeader p-2 bg-dark">
       <b-col class="text-center " >بنك الدم </b-col>
     </b-row>
@@ -22,13 +22,18 @@
   font-family: mySecFont;
   src: url("./font/UniversNextArabic-Regular_2.ttf");
 }
-#app {
+#main{
+ 
+background-color: whitesmoke;
+
+}
+#main {
   font-family: "Helvetica", Helvetica, Arial, sans-serif;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background-color: whitesmoke;
+  
   color: #2c3e50;
 }
 #nav {
