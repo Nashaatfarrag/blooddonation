@@ -1,90 +1,101 @@
 <template>
-  <b-container style="margin-top:30px;padding-bottom:50px">
-    <b-row>
-      <b-col>
-        <b-form>
-          <b-form-group id="input-group-2" label="رقم الموبايل" label-for="input-2" align="right">
-            <b-form-input
-              id="input-2"
-              v-model="Phone"
-              type="number"
-              required
-              style="max-width:500px"
-              placeholder="من فضلك ادخل رقم الموبايل "
-            ></b-form-input>
-          </b-form-group>
-          <b-button @click="getUser" type="button" variant="primary">تحقق من وجود المتبرع</b-button>
-        </b-form>
-      </b-col>
-    </b-row>
-    <b-row style="margin-top:20px" v-if="user" align="center">
-      <b-col>
-        <b-card
-          style="max-width:350px"
-          :title="user.name"
-          img-alt="Image"
-          img-top
-          tag="article"
-          class="mb-2"
-        >
-          <b-card-text>
-            {{user.contactInfo.tel}}
-            <br />
-            {{user.contactInfo.mail}}
-          </b-card-text>
-        </b-card>
-      </b-col>
-    </b-row>
-    <b-row v-if="user">
-      <b-col>
-        <b-form>
-          <b-form-group
-            id="input-group-4"
-            label=" * : تاريخ أخر تبرع"
-            label-for="input-4"
-            align="right"
+  <v-container>
+    <b-container style="margin-top:30px;padding-bottom:50px">
+      <b-row>
+        <b-col>
+          <b-form>
+            <b-form-group
+              id="input-group-2"
+              label="رقم الموبايل"
+              label-for="input-2"
+              align="right"
+            >
+              <b-form-input
+                id="input-2"
+                v-model="Phone"
+                type="number"
+                required
+                style="max-width:500px"
+                placeholder="من فضلك ادخل رقم الموبايل "
+              ></b-form-input>
+            </b-form-group>
+            <b-button @click="getUser" type="button" variant="primary"
+              >تحقق من وجود المتبرع</b-button
+            >
+          </b-form>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top:20px" v-if="user" align="center">
+        <b-col>
+          <b-card
+            style="max-width:350px"
+            :title="user.name"
+            img-alt="Image"
+            img-top
+            tag="article"
+            class="mb-2"
           >
-            <b-form-input
-              id="input-4"
-              v-model="when"
-              type="date"
-              required
-              placeholder="من فضلك أدخل تاريخ أخر تبرع"
-            ></b-form-input>
-          </b-form-group>
+            <b-card-text>
+              {{ user.contactInfo.tel }}
+              <br />
+              {{ user.contactInfo.mail }}
+            </b-card-text>
+          </b-card>
+        </b-col>
+      </b-row>
+      <b-row v-if="user">
+        <b-col>
+          <b-form>
+            <b-form-group
+              id="input-group-4"
+              label=" * : تاريخ أخر تبرع"
+              label-for="input-4"
+              align="right"
+            >
+              <b-form-input
+                id="input-4"
+                v-model="when"
+                type="date"
+                required
+                placeholder="من فضلك أدخل تاريخ أخر تبرع"
+              ></b-form-input>
+            </b-form-group>
 
-          <b-form-group
-            id="input-group-1"
-            label=" : هاتف الشخص المتبرع له"
-            label-for="input-1"
-            align="right"
+            <b-form-group
+              id="input-group-1"
+              label=" : هاتف الشخص المتبرع له"
+              label-for="input-1"
+              align="right"
+            >
+              <b-form-input
+                id="input-1"
+                v-model="toWhom"
+                type="number"
+                placeholder="رقم موبايل الشخص المريض"
+              ></b-form-input>
+            </b-form-group>
+            <b-form-group
+              id="input-group-3"
+              label=" * : الكود التأكيدي"
+              label-for="input-3"
+              align="right"
+            >
+              <b-form-input
+                id="input-3"
+                v-model="OTP"
+                type="number"
+                required
+                placeholder="الكود التأكيدي"
+              ></b-form-input>
+            </b-form-group>
+          </b-form>
+          <b-button @click="sendDonation" type="button" variant="primary"
+            >إرسال الطلب</b-button
           >
-            <b-form-input
-              id="input-1"
-              v-model="toWhom"
-              type="number"
-              placeholder="رقم موبايل الشخص المريض"
-            ></b-form-input>
-          </b-form-group>
-          <b-form-group
-            id="input-group-3"
-            label=" * : الكود التأكيدي"
-            label-for="input-3"
-            align="right"
-          >
-            <b-form-input
-              id="input-3"
-              v-model="OTP"
-              type="number"
-              required
-              placeholder="الكود التأكيدي"
-            ></b-form-input>
-          </b-form-group>
-        </b-form>
-        <b-button @click="sendDonation" type="button" variant="primary">إرسال الطلب</b-button>
-      </b-col>
-    </b-row>
-  </b-container>
+        </b-col>
+      </b-row>
+    </b-container>
+  </v-container>
 </template>
 
 <script>
@@ -100,17 +111,17 @@ export default {
       user: null,
       when: null,
       toWhom: null,
-      OTP: "01552" ,
+      OTP: "01552",
     };
   },
   methods: {
     async getUser() {
       await axios
         .get(Db.apiUrl + this.Phone)
-        .then(res => {
+        .then((res) => {
           this.user = res.data;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -121,25 +132,24 @@ export default {
           title: "هل تريد الاستمرار؟",
           type: "question",
           customClass: {
-            icon: "swal2-arabic-question-mark"
+            icon: "swal2-arabic-question-mark",
           },
           confirmButtonText: "نعم",
           cancelButtonText: "لا",
           showCancelButton: true,
-          showCloseButton: true
-        }).then(result => {
+          showCloseButton: true,
+        }).then((result) => {
           if (result.value) {
             //console.log(result.value);
             axios
               .put(Db.apiUrl + this.user._id, {
                 when: this.when,
-                toWhom: this.toWhom
+                toWhom: this.toWhom,
               })
-              .then(res => {
-                
-                this.$router.push('/')
+              .then((res) => {
+                this.$router.push("/");
               })
-              .catch(err => {
+              .catch((err) => {
                 console.log(err);
               });
           } else {
@@ -148,11 +158,11 @@ export default {
       } else {
         alert("كود تأكيدي خاطئ");
       }
-    }
-  }
+    },
+  },
 };
 </script>
-<style >
+<style>
 .container {
   font-family: myFirstFont;
 }

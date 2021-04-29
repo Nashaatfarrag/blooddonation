@@ -1,7 +1,78 @@
 <template>
-  <div class="container" style="margin-top:40px;padding-bottom:60px">
-    <b-form v-if="show" class="Addform">
-      <b-form-group id="input-group-2" label="OTP" label-for="input-2" align="center">
+  <v-container style="padding:30px">
+    <v-row>
+      <v-col>
+        <div v-if="!show">
+          <!-- إختر الفصيلة
+          <br />
+          <b-form-select
+            v-model="selected"
+            :options="options"
+            class="mb-3"
+            style="max-width=calc(12rem)"
+          ></b-form-select> -->
+
+          <v-select
+            outlined
+            label="إختر الفصيلة"
+            v-model="selected"
+            :items="options"
+          ></v-select>
+
+          <!-- mapping donors data into donor element -->
+          <div v-if="!donors">
+            <lottie-player
+              src="https://assets10.lottiefiles.com/private_files/lf30_kzoKGW.json"
+              background="transparent"
+              speed="1"
+              style="width: 100%; height: 100%;"
+              loop
+              autoplay
+            ></lottie-player>
+            <!-- <font-awesome-icon :icon="myIcon" spin /> -->
+          </div>
+          <div v-else>
+            <v-data-table
+            disable-sort
+              :items="selected ? filtered : donors"
+              :headers="tableHeaders"
+            >
+              <template v-slot:[`item.actions`]="{ item }">
+                <a :href="`tel:${item.contactInfo.tel}`">
+                  <v-icon color="primary">mdi-phone</v-icon>
+                </a>
+              </template>
+              <template v-slot:[`item.status`]="{ item }">
+                <v-icon :color="getStatus(item)">mdi-account</v-icon>
+              </template>
+              <template v-slot:[`item.age`]="{ item }">
+                {{ calcAge(item.basicInfo.birthDate) }}
+              </template>
+              <template v-slot:[`item.count`]="{ item }">
+                {{ item.donationDates.length }}
+              </template>
+            </v-data-table>
+          </div>
+          <!-- <b-card-group v-else-if="donors" deck align="left">
+       
+        <Donor
+          class="animated fadeInLeftBig"
+          v-for="(donor,index) in ( selected ? filtered : donors )"
+          :donor="donor"
+          :key="donor.id"
+          :style="myStyle(index)"
+        />
+      </b-card-group> -->
+        </div>
+      </v-col>
+    </v-row>
+    <!-- <b-form v-if="show" class="Addform">
+      <b-form-group
+        id="input-group-2"
+        label="OTP"
+        label-for="input-2"
+        align="center"
+      >
         <b-form-input
           id="input-2"
           v-model="OTP"
@@ -15,42 +86,11 @@
           <br />01095848087
         </p>
       </b-form-group>
-      <b-button class="m-1" @click="checkOTP" align="center" variant="primary">إرسال</b-button>
-    </b-form>
-
-    <div v-if="!show">
-      إختر الفصيلة
-      <br />
-      <b-form-select
-        v-model="selected"
-        :options="options"
-        class="mb-3"
-        style="max-width=calc(12rem)"
-      ></b-form-select>
-
-      <!-- mapping donors data into donor element -->
-      <div v-if="!donors">
-        <lottie-player
-          src="https://assets10.lottiefiles.com/private_files/lf30_kzoKGW.json"
-          background="transparent"
-          speed="1"
-          style="width: 100%; height: 100%;"
-          loop
-          autoplay
-        ></lottie-player>
-        <!-- <font-awesome-icon :icon="myIcon" spin /> -->
-      </div>
-      <b-card-group v-else-if="donors" deck align="left">
-        <Donor
-          class="animated fadeInLeftBig"
-          v-for="(donor,index) in ( selected ? filtered : donors )"
-          :donor="donor"
-          :key="donor.id"
-          :style="myStyle(index)"
-        />
-      </b-card-group>
-    </div>
-  </div>
+      <b-button class="m-1" @click="checkOTP" align="center" variant="primary"
+        >إرسال</b-button
+      >
+    </b-form> -->
+  </v-container>
 </template>
 
 <script>
@@ -69,6 +109,14 @@ export default {
   name: "home",
   data() {
     return {
+      tableHeaders: [
+        { value: "name", text: "الإسم" },
+        { value: "bloodType", text: "الفصيلة" },
+        { value: "actions", text: "إتصل" },
+        { value: "status", text: "الحالة" },
+        { value: "age", text: "العمر" },
+        { value: "count", text: "عدد مرات التبرع" },
+      ],
       myIcon: faSpinner,
       selected: null,
       options: [
@@ -80,11 +128,11 @@ export default {
         { value: "O-", text: "O-" },
         { value: "A-", text: "A-" },
         { value: "B-", text: "B-" },
-        { value: "AB-", text: "AB-" }
+        { value: "AB-", text: "AB-" },
       ],
       donors: null,
       show: true,
-      OTP: ""
+      OTP: "",
     };
   },
   mounted() {
@@ -93,6 +141,22 @@ export default {
     this.hh();
   },
   methods: {
+    calcAge(val) {
+      let x = new Date(val);
+
+      return Math.floor((Date.now() - x) / 3600000 / 365 / 24);
+    },
+    getStatus({ donationDates }) {
+      let min = 100000;
+      donationDates.forEach((element) => {
+        let x = new Date(element.when);
+        let diff = Math.floor((Date.now() - x) / 3600000 / 24);
+        console.log(diff);
+        min = diff < min ? diff : min;
+      });
+
+      return min < 120 ? "error" : "success";
+    },
     checkOTP() {
       if (this.OTP === "hunter") {
         this.show = false;
@@ -113,7 +177,7 @@ export default {
     getAll: async function() {
       axios
         .get(Db.apiUrl)
-        .then(response => {
+        .then((response) => {
           this.donors = response.data;
           //console.log(response.data ) ;
         })
@@ -123,19 +187,18 @@ export default {
     },
     myStyle: function(index) {
       return "animation-delay : " + index * 500 + "ms";
-    }
+    },
   },
   computed: {
     filtered: function(selected) {
-      return this.donors.filter(donor => donor.bloodType === this.selected);
-    }
+      return this.donors.filter((donor) => donor.bloodType === this.selected);
+    },
   },
   components: {
-    Donor
-  }
+    Donor,
+  },
 };
 </script>
-
 
 <style scoped>
 .ain {
