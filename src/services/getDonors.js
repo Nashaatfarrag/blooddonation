@@ -3,14 +3,12 @@ let donorInfo = [
   //   name: "محمد نشأت",
   //   age: 23,
   //   bloodType: "A+",
-
   //   contactInfo: { tel: "01012490898" }
   // },
   // {
   //   name: "محمد نشأت",
   //   age: 23,
   //   bloodType: "A+",
-
   //   contactInfo: { tel: "01012490898" }
   // },
   // {
@@ -66,13 +64,13 @@ let apiUrl = "https://tatayblooddonationapi.herokuapp.com/donor/";
 function add(element) {
   axios
     .post(apiUrl, element)
-    .then(function(response) {
+    .then(function (response) {
       console.log(element);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       //console.log(error.response.data);
       alert(error.response.data);
     });
 }
 
-module.exports = {  add , apiUrl };
+module.exports = { add, apiUrl };

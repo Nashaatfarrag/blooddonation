@@ -4,7 +4,7 @@ import router from "./router";
 import VAnimateCss from "v-animate-css";
 import VueSweetalert2 from "vue-sweetalert2";
 import Clipboard from "v-clipboard";
-import BootstrapVue from "bootstrap-vue";
+// import BootstrapVue from "bootstrap-vue";
 import VueAnalytics from "vue-analytics";
 
 // If you don't need the styles, do not connect
@@ -16,7 +16,7 @@ import {
   FontAwesomeLayersText,
 } from "@fortawesome/vue-fontawesome";
 
-import vuetify from './plugins/vuetify'
+import vuetify from "./plugins/vuetify";
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("font-awesome-layers", FontAwesomeLayers);
@@ -29,12 +29,12 @@ Vue.use(VueAnalytics, {
   router,
 });
 
-Vue.use(BootstrapVue);
+// Vue.use(BootstrapVue);
 Vue.use(VAnimateCss);
 Vue.config.productionTip = false;
 
 new Vue({
   router,
   vuetify,
-  render: (h) => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

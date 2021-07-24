@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer app v-model="drawer" absolute right temporary>
+    <v-navigation-drawer v-model="drawer" absolute right temporary>
       <v-list nav dense>
         <v-list-item-group
           v-model="group"
@@ -29,9 +29,10 @@
     </v-app-bar>
 
     <v-main>
-      <div id="particles-js">
+      <!-- <div id="particles-js">
         <router-view />
-      </div>
+      </div> -->
+      <router-view></router-view>
     </v-main>
 
     <v-footer>

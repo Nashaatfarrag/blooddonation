@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <b-container style="margin-top:30px;padding-bottom:50px">
-      <b-row>
-        <b-col>
+    <v-container style="margin-top: 30px; padding-bottom: 50px">
+      <v-row>
+        <v-col>
           <b-form>
             <b-form-group
               id="input-group-2"
@@ -15,20 +15,20 @@
                 v-model="Phone"
                 type="number"
                 required
-                style="max-width:500px"
+                style="max-width: 500px"
                 placeholder="من فضلك ادخل رقم الموبايل "
               ></b-form-input>
             </b-form-group>
-            <b-button @click="getUser" type="button" variant="primary"
-              >تحقق من وجود المتبرع</b-button
+            <v-btn @click="getUser" type="button" variant="primary"
+              >تحقق من وجود المتبرع</v-btn
             >
           </b-form>
-        </b-col>
-      </b-row>
-      <b-row style="margin-top:20px" v-if="user" align="center">
-        <b-col>
+        </v-col>
+      </v-row>
+      <v-row style="margin-top: 20px" v-if="user" align="center">
+        <v-col>
           <b-card
-            style="max-width:350px"
+            style="max-width: 350px"
             :title="user.name"
             img-alt="Image"
             img-top
@@ -41,10 +41,10 @@
               {{ user.contactInfo.mail }}
             </b-card-text>
           </b-card>
-        </b-col>
-      </b-row>
-      <b-row v-if="user">
-        <b-col>
+        </v-col>
+      </v-row>
+      <v-row v-if="user">
+        <v-col>
           <b-form>
             <b-form-group
               id="input-group-4"
@@ -89,12 +89,12 @@
               ></b-form-input>
             </b-form-group>
           </b-form>
-          <b-button @click="sendDonation" type="button" variant="primary"
-            >إرسال الطلب</b-button
+          <v-btn @click="sendDonation" type="button" variant="primary"
+            >إرسال الطلب</v-btn
           >
-        </b-col>
-      </b-row>
-    </b-container>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 

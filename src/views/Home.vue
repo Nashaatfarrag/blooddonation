@@ -1,5 +1,5 @@
 <template>
-  <v-container style="padding:30px">
+  <v-container style="padding: 30px">
     <v-row>
       <v-col>
         <div v-if="!show">
@@ -25,7 +25,7 @@
               src="https://assets10.lottiefiles.com/private_files/lf30_kzoKGW.json"
               background="transparent"
               speed="1"
-              style="width: 100%; height: 100%;"
+              style="width: 100%; height: 100%"
               loop
               autoplay
             ></lottie-player>
@@ -33,7 +33,7 @@
           </div>
           <div v-else>
             <v-data-table
-            disable-sort
+              disable-sort
               :items="selected ? filtered : donors"
               :headers="tableHeaders"
             >
@@ -86,8 +86,8 @@
           <br />01095848087
         </p>
       </b-form-group>
-      <b-button class="m-1" @click="checkOTP" align="center" variant="primary"
-        >إرسال</b-button
+      <v-btn class="m-1" @click="checkOTP" align="center" variant="primary"
+        >إرسال</v-btn
       >
     </b-form> -->
   </v-container>
@@ -151,7 +151,7 @@ export default {
       donationDates.forEach((element) => {
         let x = new Date(element.when);
         let diff = Math.floor((Date.now() - x) / 3600000 / 24);
-        console.log(diff);
+
         min = diff < min ? diff : min;
       });
 
@@ -174,23 +174,23 @@ export default {
         this.checkOTP();
       }
     },
-    getAll: async function() {
+    getAll: async function () {
       axios
         .get(Db.apiUrl)
         .then((response) => {
           this.donors = response.data;
           //console.log(response.data ) ;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           alert(error.errmsg);
         });
     },
-    myStyle: function(index) {
+    myStyle: function (index) {
       return "animation-delay : " + index * 500 + "ms";
     },
   },
   computed: {
-    filtered: function(selected) {
+    filtered: function (selected) {
       return this.donors.filter((donor) => donor.bloodType === this.selected);
     },
   },
