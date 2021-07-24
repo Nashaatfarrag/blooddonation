@@ -94,8 +94,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import Donor from "@/components/DonorElement.vue";
 import Db from "../services/getDonors";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 const axios = require("axios");
@@ -174,28 +172,25 @@ export default {
         this.checkOTP();
       }
     },
-    getAll: async function () {
+    getAll: async function() {
       axios
         .get(Db.apiUrl)
         .then((response) => {
           this.donors = response.data;
           //console.log(response.data ) ;
         })
-        .catch(function (error) {
+        .catch(function(error) {
           alert(error.errmsg);
         });
     },
-    myStyle: function (index) {
+    myStyle: function(index) {
       return "animation-delay : " + index * 500 + "ms";
     },
   },
   computed: {
-    filtered: function (selected) {
+    filtered: function() {
       return this.donors.filter((donor) => donor.bloodType === this.selected);
     },
-  },
-  components: {
-    Donor,
   },
 };
 </script>

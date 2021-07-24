@@ -1,35 +1,35 @@
-let donorInfo = [
-  // {
-  //   name: "محمد نشأت",
-  //   age: 23,
-  //   bloodType: "A+",
-  //   contactInfo: { tel: "01012490898" }
-  // },
-  // {
-  //   name: "محمد نشأت",
-  //   age: 23,
-  //   bloodType: "A+",
-  //   contactInfo: { tel: "01012490898" }
-  // },
-  // {
-  //   name: "محمد نشأت",
-  //   age: 23,
-  //   bloodType: "A+",
-  //   contactInfo: { tel: "01012490898" }
-  // },
-  // {
-  //   name: "محمد نشأت",
-  //   age: 23,
-  //   bloodType: "A+",
-  //   contactInfo: { tel: "01012490898" }
-  // },
-  // {
-  //   name: "محمد نشأت",
-  //   age: 23,
-  //   bloodType: "A+",
-  //   contactInfo: { tel: "01012490898" }
-  // }
-];
+// let donorInfo = [
+//   // {
+//   //   name: "محمد نشأت",
+//   //   age: 23,
+//   //   bloodType: "A+",
+//   //   contactInfo: { tel: "01012490898" }
+//   // },
+//   // {
+//   //   name: "محمد نشأت",
+//   //   age: 23,
+//   //   bloodType: "A+",
+//   //   contactInfo: { tel: "01012490898" }
+//   // },
+//   // {
+//   //   name: "محمد نشأت",
+//   //   age: 23,
+//   //   bloodType: "A+",
+//   //   contactInfo: { tel: "01012490898" }
+//   // },
+//   // {
+//   //   name: "محمد نشأت",
+//   //   age: 23,
+//   //   bloodType: "A+",
+//   //   contactInfo: { tel: "01012490898" }
+//   // },
+//   // {
+//   //   name: "محمد نشأت",
+//   //   age: 23,
+//   //   bloodType: "A+",
+//   //   contactInfo: { tel: "01012490898" }
+//   // }
+// ];
 
 const axios = require("axios");
 //let apiUrl = "http://localhost:5000/donor/";
@@ -64,7 +64,7 @@ let apiUrl = "https://tatayblooddonationapi.herokuapp.com/donor/";
 function add(element) {
   axios
     .post(apiUrl, element)
-    .then(function (response) {
+    .then(function () {
       console.log(element);
     })
     .catch(function (error) {

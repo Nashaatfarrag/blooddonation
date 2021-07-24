@@ -163,12 +163,12 @@ import {
   maxLength,
   email,
   minLength,
-  requiredIf,
+  
 } from "vuelidate/lib/validators";
 //let apiUrl = "http://localhost:5000/donor/";
 //let apiUrl = "https://dry-spire-81070.herokuapp.com/donor/";
 import {
-  EmailErrors,
+  
   FieldErrors,
   UniqueFieldErrors,
   NotReqEmailErrors,
@@ -243,8 +243,8 @@ export default {
   components: {
     FontAwesomeIcon,
   },
-  computed: {
-    validationPhone() {
+  // computed: {
+    // validationPhone() {
       // let err = [];
       // if (
       //   (this.form.name.length > 25 || this.form.name.length < 12) &&
@@ -274,8 +274,8 @@ export default {
       // } else {
       //   return false;
       // }
-    },
-  },
+    // },
+  // },
   methods: {
     generateErrors(val, filedType, fieldValue) {
       if (filedType === "Email") return NotReqEmailErrors(val);

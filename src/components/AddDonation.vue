@@ -146,14 +146,13 @@ export default {
                 when: this.when,
                 toWhom: this.toWhom,
               })
-              .then((res) => {
+              .then(() => {
                 this.$router.push("/");
               })
               .catch((err) => {
                 console.log(err);
               });
-          } else {
-          }
+          } 
         });
       } else {
         alert("كود تأكيدي خاطئ");
