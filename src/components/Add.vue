@@ -1,24 +1,13 @@
 <template>
   <v-row>
-    <v-container
-      fluid
-      class
-      style="
-        background-image: linear-gradient(
-          to top,
-          #051937,
-          #35255b,
-          #722670,
-          #b31771,
-          #eb125d
-        );
-        height: 12rem;
-        text-align: center;
-      "
-    >
-      <p id="ads" class="header-container">تبرعك بالدم ينقذ حياة</p>
+    <v-container fluid id="grad-container">
+      <v-row style="  height: 15rem;" align="center" justify="center">
+        <v-col>
+          <p id="ads" class="header-container">تبرعك بالدم ينقذ حياة</p>
+        </v-col>
+      </v-row>
     </v-container>
-    <v-container class="mb-3">
+    <v-container>
       <v-row justify="center">
         <v-col md="10">
           <v-form @reset="onReset" v-if="show" class="Addform">
@@ -127,16 +116,6 @@
                 >
               </v-col>
             </v-row>
-            <p
-              align="right"
-              style="color: red"
-              v-for="err in validationPhone"
-              :key="err"
-              class="animated pulse"
-            >
-              {{ err }}
-              <font-awesome-icon :v-if="err" :icon="myIcon" />
-            </p>
           </v-form>
         </v-col>
       </v-row>
@@ -163,12 +142,10 @@ import {
   maxLength,
   email,
   minLength,
-  
 } from "vuelidate/lib/validators";
 //let apiUrl = "http://localhost:5000/donor/";
 //let apiUrl = "https://dry-spire-81070.herokuapp.com/donor/";
 import {
-  
   FieldErrors,
   UniqueFieldErrors,
   NotReqEmailErrors,
@@ -244,37 +221,37 @@ export default {
     FontAwesomeIcon,
   },
   // computed: {
-    // validationPhone() {
-      // let err = [];
-      // if (
-      //   (this.form.name.length > 25 || this.form.name.length < 12) &&
-      //   this.form.name
-      // ) {
-      //   err[0] = " عدد حروف الإسم لا يقل عن 12 ولا يزيد عن 25";
-      // }
-      // if (
-      //   this.form.contactInfo.tel.length !== 11 &&
-      //   this.form.contactInfo.tel &&
-      //   !(this.form.contactInfo.tel.slice(0, 2) != "01")
-      // ) {
-      //   err[1] = " رقم موبايل غير صحيح";
-      // }
-      // let myDate = new Date(this.form.basicInfo.birthDate);
-      // let year = myDate.getFullYear();
-      // let month = myDate.getMonth();
-      // let day = myDate.getDate();
-      // let calc = new Date(year + 18, month, day);
-      // if (this.form.basicInfo.birthDate && calc > Date.now()) {
-      //   err[2] = "  تاريخ ميلادك أصغر من ان تتبرع بالدم ";
-      // }
-      // if (err.length > 0) {
-      //   return err.filter((h) => {
-      //     return h;
-      //   });
-      // } else {
-      //   return false;
-      // }
-    // },
+  // validationPhone() {
+  // let err = [];
+  // if (
+  //   (this.form.name.length > 25 || this.form.name.length < 12) &&
+  //   this.form.name
+  // ) {
+  //   err[0] = " عدد حروف الإسم لا يقل عن 12 ولا يزيد عن 25";
+  // }
+  // if (
+  //   this.form.contactInfo.tel.length !== 11 &&
+  //   this.form.contactInfo.tel &&
+  //   !(this.form.contactInfo.tel.slice(0, 2) != "01")
+  // ) {
+  //   err[1] = " رقم موبايل غير صحيح";
+  // }
+  // let myDate = new Date(this.form.basicInfo.birthDate);
+  // let year = myDate.getFullYear();
+  // let month = myDate.getMonth();
+  // let day = myDate.getDate();
+  // let calc = new Date(year + 18, month, day);
+  // if (this.form.basicInfo.birthDate && calc > Date.now()) {
+  //   err[2] = "  تاريخ ميلادك أصغر من ان تتبرع بالدم ";
+  // }
+  // if (err.length > 0) {
+  //   return err.filter((h) => {
+  //     return h;
+  //   });
+  // } else {
+  //   return false;
+  // }
+  // },
   // },
   methods: {
     generateErrors(val, filedType, fieldValue) {
@@ -287,50 +264,34 @@ export default {
       this.$v.$touch();
 
       if (!this.$v.$invalid) {
-        if (this.validationPhone) {
-          this.$swal({
-            text: "خطأ في التسجيل",
-            type: "warning",
-          });
-        } else {
-          await axios.get(Db.apiUrl + this.form.contactInfo.tel).then((res) => {
-            //console.log(res.data)
-            if (res.data) {
-              this.$swal({
-                text: "يوجد متبرع بنفس رقم الموبايل",
-                type: "warning",
-              });
-            } else {
-              evt.preventDefault();
-              let element = {
-                name: this.form.name,
-                bloodType: this.form.bloodType,
-                imgUrl: "Hi",
-                contactInfo: {
-                  tel: this.form.contactInfo.tel,
-                  mail: this.form.contactInfo.mail,
-                },
-                basicInfo: {
-                  //nationalId: this.form.basicInfo.nationalId,
-                  birthDate: this.form.basicInfo.birthDate,
-                  gender: this.form.gender,
-                },
-              };
-              axios
-                .post(Db.apiUrl, element)
-                .then(function (response) {
-                  console.log(response);
-                  alert("Added to dataBase");
-                })
-                .catch(function (error) {
-                  console.log(error);
-                  //alert(error.response.data);
-                });
-
+        axios.get(Db.apiUrl + this.form.contactInfo.tel).then((res) => {
+          //console.log(res.data)
+          if (res.data) {
+            this.$swal({
+              text: "يوجد متبرع بنفس رقم الموبايل",
+              type: "warning",
+            });
+          } else {
+            evt.preventDefault();
+            let element = {
+              name: this.form.name,
+              bloodType: this.form.bloodType,
+              imgUrl: "Hi",
+              contactInfo: {
+                tel: this.form.contactInfo.tel,
+                mail: this.form.contactInfo.mail,
+              },
+              basicInfo: {
+                //nationalId: this.form.basicInfo.nationalId,
+                birthDate: this.form.basicInfo.birthDate,
+                gender: this.form.gender,
+              },
+            };
+            axios.post(Db.apiUrl, element).finally(() => {
               this.show = false;
-            }
-          });
-        }
+            });
+          }
+        });
       }
     },
     onReset(evt) {
@@ -351,6 +312,18 @@ export default {
 </script>
 
 <style>
+#grad-container {
+  background-image: linear-gradient(
+    to top,
+    #051937,
+    #35255b,
+    #722670,
+    #b31771,
+    #eb125d
+  );
+
+  text-align: center;
+}
 .Addform,
 #ads {
   font-family: myFirstFont;
@@ -360,12 +333,9 @@ input {
   font-family: mySecFont;
   font-weight: bold;
 }
-.header-container {
-  vertical-align: middle;
-}
+
 #ads {
-  padding-top: 60px;
   color: white;
-  font-size: xx-large;
+  font-size: 2rem;
 }
 </style>
