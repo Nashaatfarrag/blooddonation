@@ -160,8 +160,8 @@ export default {
     form: {
       name: {
         required,
-        maxLength: maxLength(10),
-        minLength: minLength(3),
+        maxLength: maxLength(32),
+        minLength: minLength(8),
       },
       gender: {
         required,
@@ -220,39 +220,6 @@ export default {
   components: {
     FontAwesomeIcon,
   },
-  // computed: {
-  // validationPhone() {
-  // let err = [];
-  // if (
-  //   (this.form.name.length > 25 || this.form.name.length < 12) &&
-  //   this.form.name
-  // ) {
-  //   err[0] = " عدد حروف الإسم لا يقل عن 12 ولا يزيد عن 25";
-  // }
-  // if (
-  //   this.form.contactInfo.tel.length !== 11 &&
-  //   this.form.contactInfo.tel &&
-  //   !(this.form.contactInfo.tel.slice(0, 2) != "01")
-  // ) {
-  //   err[1] = " رقم موبايل غير صحيح";
-  // }
-  // let myDate = new Date(this.form.basicInfo.birthDate);
-  // let year = myDate.getFullYear();
-  // let month = myDate.getMonth();
-  // let day = myDate.getDate();
-  // let calc = new Date(year + 18, month, day);
-  // if (this.form.basicInfo.birthDate && calc > Date.now()) {
-  //   err[2] = "  تاريخ ميلادك أصغر من ان تتبرع بالدم ";
-  // }
-  // if (err.length > 0) {
-  //   return err.filter((h) => {
-  //     return h;
-  //   });
-  // } else {
-  //   return false;
-  // }
-  // },
-  // },
   methods: {
     generateErrors(val, filedType, fieldValue) {
       if (filedType === "Email") return NotReqEmailErrors(val);
