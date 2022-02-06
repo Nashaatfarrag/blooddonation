@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-container fluid id="grad-container">
-      <v-row style="  height: 15rem;" align="center" justify="center">
+      <v-row style="height: 15rem" align="center" justify="center">
         <v-col>
           <p id="ads" class="header-container">تبرعك بالدم ينقذ حياة</p>
         </v-col>
@@ -10,6 +10,7 @@
     <v-container>
       <v-row justify="center">
         <v-col md="10">
+          حقل إجباري *
           <v-form @reset="onReset" v-if="show" class="Addform">
             <v-row>
               <v-col cols="12" md="4">
@@ -18,7 +19,7 @@
                   @input="$v.form.name.$touch()"
                   @blur="$v.form.name.$touch()"
                   :error-messages="generateErrors($v.form.name)"
-                  label="* : الإسم"
+                  label="الإسم : *"
                   v-model="form.name"
                   type="text"
                   required
@@ -51,7 +52,7 @@
                   @input="$v.form.contactInfo.tel.$touch()"
                   @blur="$v.form.contactInfo.tel.$touch()"
                   :error-messages="generateErrors($v.form.contactInfo.tel)"
-                  label="* : رقم الموبايل "
+                  label=" رقم الموبايل : *"
                   v-model="form.contactInfo.tel"
                   type="number"
                   required
@@ -65,7 +66,7 @@
                   @input="$v.form.basicInfo.birthDate.$touch()"
                   @blur="$v.form.basicInfo.birthDate.$touch()"
                   :error-messages="generateErrors($v.form.basicInfo.birthDate)"
-                  label="* : تاريخ الميلاد"
+                  label=" تاريخ الميلاد : *"
                   v-model="form.basicInfo.birthDate"
                   type="date"
                   required
@@ -79,7 +80,7 @@
                   @input="$v.form.bloodType.$touch()"
                   @blur="$v.form.bloodType.$touch()"
                   :error-messages="generateErrors($v.form.bloodType)"
-                  label="* : الفصيلة "
+                  label=" فصيلة الدم : * "
                   v-model="form.bloodType"
                   :items="types"
                   required
@@ -92,7 +93,7 @@
                   @input="$v.form.gender.$touch()"
                   @blur="$v.form.gender.$touch()"
                   :error-messages="generateErrors($v.form.gender)"
-                  label="* : النوع "
+                  label=" النوع : *"
                   v-model="form.gender"
                   :items="genders"
                   required

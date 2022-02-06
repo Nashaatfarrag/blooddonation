@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" absolute right temporary>
+    <v-navigation-drawer v-model="drawer" v-if="drawer" absolute right temporary>
       <v-list nav dense>
         <v-list-item-group
           v-model="group"
@@ -10,13 +10,13 @@
             <v-list-item-title>الرئيسية</v-list-item-title>
           </v-list-item>
 
+          <v-list-item to="/add">
+            <v-list-item-title>تسجيل متبرع</v-list-item-title>
+          </v-list-item>
           <v-list-item to="/adddonation">
             <v-list-item-title>أضف أخر تبرعا لك</v-list-item-title>
           </v-list-item>
 
-          <v-list-item to="/add">
-            <v-list-item-title>تسجيل متبرع</v-list-item-title>
-          </v-list-item>
 
           <v-list-item to="/about">
             <v-list-item-title>عنا</v-list-item-title>
@@ -24,11 +24,12 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="primary" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-    </v-app-bar>
+
 
     <v-main>
+          <v-app-bar app color="primary" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    </v-app-bar>
       <!-- <div id="particles-js">
         <router-view />
       </div> -->
@@ -41,7 +42,7 @@
           <a href="mailto:nashaatfarrag@gmail.com">
             <v-icon color="primary">mdi-mail</v-icon>
           </a>
-          &copy; Copyright 2021
+          &copy; Copyright 2022
         </v-col>
       </v-row>
     </v-footer>

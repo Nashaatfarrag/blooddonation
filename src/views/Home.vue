@@ -31,19 +31,34 @@
             ></lottie-player>
             <!-- <font-awesome-icon :icon="myIcon" spin /> -->
           </div>
-          <div v-else>
+          <div v-else class="py-2">
             <v-data-table
               disable-sort
               :items="selected ? filtered : donors"
               :headers="tableHeaders"
+              :page.sync="page"
+              items-per-page="7"
+              hide-default-footer
+              class="elevation-1"
+              @page-count="pageCount = $event"
             >
               <template v-slot:[`item.actions`]="{ item }">
-                <a :href="`tel:${item.contactInfo.tel}`">
+                <a
+                  style="text-decoration: none"
+                  :href="`tel:${item.contactInfo.tel}`"
+                >
                   <v-icon color="primary">mdi-phone</v-icon>
                 </a>
               </template>
               <template v-slot:[`item.status`]="{ item }">
-                <v-icon :color="getStatus(item)">mdi-account</v-icon>
+                <p
+                  :style="
+                    'color:' + (getStatus(item) === 'error' ? 'red' : 'green')
+                  "
+                >
+                  {{ getStatus(item) === "error" ? "غير متاح" : "متاح" }}
+                </p>
+                <!-- <v-icon >mdi-account </v-icon> -->
               </template>
               <template v-slot:[`item.age`]="{ item }">
                 {{ calcAge(item.basicInfo.birthDate) }}
@@ -53,6 +68,8 @@
               </template>
             </v-data-table>
           </div>
+          <v-pagination  v-model="page" :length="pageCount"></v-pagination>
+
           <!-- <b-card-group v-else-if="donors" deck align="left">
        
         <Donor
@@ -107,6 +124,8 @@ export default {
   name: "home",
   data() {
     return {
+      pageCount: 0,
+      page: 1,
       tableHeaders: [
         { value: "name", text: "الإسم" },
         { value: "bloodType", text: "الفصيلة" },
@@ -118,7 +137,7 @@ export default {
       myIcon: faSpinner,
       selected: null,
       options: [
-        { value: null, text: "All types" },
+        { value: null, text: "كل الفصائل" },
         { value: "O+", text: "O+" },
         { value: "A+", text: "A+" },
         { value: "B+", text: "B+" },
@@ -172,23 +191,23 @@ export default {
         this.checkOTP();
       }
     },
-    getAll: async function() {
+    getAll: async function () {
       axios
         .get(Db.apiUrl)
         .then((response) => {
           this.donors = response.data;
           //console.log(response.data ) ;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           alert(error.errmsg);
         });
     },
-    myStyle: function(index) {
+    myStyle: function (index) {
       return "animation-delay : " + index * 500 + "ms";
     },
   },
   computed: {
-    filtered: function() {
+    filtered: function () {
       return this.donors.filter((donor) => donor.bloodType === this.selected);
     },
   },

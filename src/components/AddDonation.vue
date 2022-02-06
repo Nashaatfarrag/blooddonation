@@ -152,7 +152,7 @@ export default {
               .catch((err) => {
                 console.log(err);
               });
-          } 
+          }
         });
       } else {
         alert("كود تأكيدي خاطئ");
