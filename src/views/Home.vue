@@ -37,7 +37,7 @@
               :items="selected ? filtered : donors"
               :headers="tableHeaders"
               :page.sync="page"
-              items-per-page="7"
+              :items-per-page="7"
               hide-default-footer
               class="elevation-1"
               @page-count="pageCount = $event"
