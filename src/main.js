@@ -24,16 +24,12 @@ Vue.component("font-awesome-layers-text", FontAwesomeLayersText);
 
 Vue.use(Clipboard);
 Vue.use(VueSweetalert2);
-let x = {};
-if (process.env.NODE_ENV === "production") {
-  x = {
-    id: "UA-146314933-1",
-    router,
-  };
-}
+
 
 Vue.use(VueGtag, {
-  config: x,
+  config: {
+    id: "G-D9DN1V31LJ",
+  },
 });
 // Vue.use(VueAnalytics, x);
 
