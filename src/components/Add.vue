@@ -12,6 +12,8 @@
         <v-col md="10">
           حقل إجباري *
           <v-form @reset="onReset" v-if="show" class="Addform">
+            <v-container>
+
             <v-row>
               <v-col cols="12" md="4">
                 <v-text-field
@@ -117,6 +119,7 @@
                 >
               </v-col>
             </v-row>
+            </v-container>
           </v-form>
         </v-col>
       </v-row>
