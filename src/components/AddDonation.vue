@@ -140,7 +140,6 @@ export default {
           showCloseButton: true,
         }).then((result) => {
           if (result.value) {
-            //console.log(result.value);
             axios
               .put(Db.apiUrl + this.user._id, {
                 when: this.when,

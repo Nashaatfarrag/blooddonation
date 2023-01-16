@@ -10,115 +10,116 @@
     <v-container>
       <v-row justify="center">
         <v-col md="10">
-          حقل إجباري *
           <v-form @reset="onReset" v-if="show" class="Addform">
+            حقل إجباري *
             <v-container>
+              <v-row>
+                <v-col cols="12" md="4">
+                  <v-text-field
+                    outlined
+                    @input="$v.form.name.$touch()"
+                    @blur="$v.form.name.$touch()"
+                    :error-messages="generateErrors($v.form.name)"
+                    label="الإسم : *"
+                    v-model="form.name"
+                    type="text"
+                    required
+                    placeholder="من فضلك ادخل الإسم ثلاثي"
+                  >
+                  </v-text-field>
+                </v-col>
 
-            <v-row>
-              <v-col cols="12" md="4">
-                <v-text-field
-                  outlined
-                  @input="$v.form.name.$touch()"
-                  @blur="$v.form.name.$touch()"
-                  :error-messages="generateErrors($v.form.name)"
-                  label="الإسم : *"
-                  v-model="form.name"
-                  type="text"
-                  required
-                  placeholder="من فضلك ادخل الإسم ثلاثي"
-                >
-                </v-text-field>
-              </v-col>
+                <v-col cols="12" md="4">
+                  <v-text-field
+                    outlined
+                    @input="$v.form.contactInfo.mail.$touch()"
+                    @blur="$v.form.contactInfo.mail.$touch()"
+                    :error-messages="
+                      generateErrors($v.form.contactInfo.mail, 'Email')
+                    "
+                    label=" : البريد الإليكتروني "
+                    v-model="form.contactInfo.mail"
+                    type="email"
+                    placeholder="يرجي إدخال بريد إليكترونى صالح"
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
 
-              <v-col cols="12" md="4">
-                <v-text-field
-                  outlined
-                  @input="$v.form.contactInfo.mail.$touch()"
-                  @blur="$v.form.contactInfo.mail.$touch()"
-                  :error-messages="
-                    generateErrors($v.form.contactInfo.mail, 'Email')
-                  "
-                  label=" : البريد الإليكتروني "
-                  v-model="form.contactInfo.mail"
-                  type="email"
-                  placeholder="يرجي إدخال بريد إليكترونى صالح"
-                >
-                </v-text-field>
-              </v-col>
-            </v-row>
+              <v-row>
+                <v-col cols="12" md="4">
+                  <v-text-field
+                    outlined
+                    @input="$v.form.contactInfo.tel.$touch()"
+                    @blur="$v.form.contactInfo.tel.$touch()"
+                    :error-messages="generateErrors($v.form.contactInfo.tel)"
+                    label=" رقم الموبايل : *"
+                    v-model="form.contactInfo.tel"
+                    type="number"
+                    required
+                    placeholder="رقم موبايل للتواصل"
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" md="4">
+                  <v-text-field
+                    outlined
+                    @input="$v.form.basicInfo.birthDate.$touch()"
+                    @blur="$v.form.basicInfo.birthDate.$touch()"
+                    :error-messages="
+                      generateErrors($v.form.basicInfo.birthDate)
+                    "
+                    label=" تاريخ الميلاد : *"
+                    v-model="form.basicInfo.birthDate"
+                    type="date"
+                    required
+                    placeholder="من فضلك أدخل تاريح ميلادك"
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" md="4">
+                  <v-select
+                    outlined
+                    @input="$v.form.bloodType.$touch()"
+                    @blur="$v.form.bloodType.$touch()"
+                    :error-messages="generateErrors($v.form.bloodType)"
+                    label=" فصيلة الدم : * "
+                    v-model="form.bloodType"
+                    :items="types"
+                    required
+                  >
+                  </v-select>
+                </v-col>
+                <v-col cols="12" md="4">
+                  <v-select
+                    outlined
+                    @input="$v.form.gender.$touch()"
+                    @blur="$v.form.gender.$touch()"
+                    :error-messages="generateErrors($v.form.gender)"
+                    label=" النوع : *"
+                    v-model="form.gender"
+                    :items="genders"
+                    required
+                  >
+                  </v-select>
+                </v-col>
+              </v-row>
 
-            <v-row>
-              <v-col cols="12" md="4">
-                <v-text-field
-                  outlined
-                  @input="$v.form.contactInfo.tel.$touch()"
-                  @blur="$v.form.contactInfo.tel.$touch()"
-                  :error-messages="generateErrors($v.form.contactInfo.tel)"
-                  label=" رقم الموبايل : *"
-                  v-model="form.contactInfo.tel"
-                  type="number"
-                  required
-                  placeholder="رقم موبايل للتواصل"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-text-field
-                  outlined
-                  @input="$v.form.basicInfo.birthDate.$touch()"
-                  @blur="$v.form.basicInfo.birthDate.$touch()"
-                  :error-messages="generateErrors($v.form.basicInfo.birthDate)"
-                  label=" تاريخ الميلاد : *"
-                  v-model="form.basicInfo.birthDate"
-                  type="date"
-                  required
-                  placeholder="من فضلك أدخل تاريح ميلادك"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-select
-                  outlined
-                  @input="$v.form.bloodType.$touch()"
-                  @blur="$v.form.bloodType.$touch()"
-                  :error-messages="generateErrors($v.form.bloodType)"
-                  label=" فصيلة الدم : * "
-                  v-model="form.bloodType"
-                  :items="types"
-                  required
-                >
-                </v-select>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-select
-                  outlined
-                  @input="$v.form.gender.$touch()"
-                  @blur="$v.form.gender.$touch()"
-                  :error-messages="generateErrors($v.form.gender)"
-                  label=" النوع : *"
-                  v-model="form.gender"
-                  :items="genders"
-                  required
-                >
-                </v-select>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col>
-                <v-btn
-                  class="ma-1"
-                  type="button"
-                  @click="onSubmit"
-                  align="center"
-                  color="primary"
-                  >إرسال</v-btn
-                >
-                <v-btn class="ma-1" type="reset" align="center" color="danger"
-                  >إعادة ملئ</v-btn
-                >
-              </v-col>
-            </v-row>
+              <v-row>
+                <v-col>
+                  <v-btn
+                    class="ma-1"
+                    type="button"
+                    @click="onSubmit"
+                    align="center"
+                    color="primary"
+                    >إرسال</v-btn
+                  >
+                  <v-btn class="ma-1" type="reset" align="center" color="danger"
+                    >إعادة ملئ</v-btn
+                  >
+                </v-col>
+              </v-row>
             </v-container>
           </v-form>
         </v-col>
@@ -155,7 +156,7 @@ import {
   NotReqEmailErrors,
 } from "@/utils/validation";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export default {
   name: "Add",
@@ -193,7 +194,7 @@ export default {
   },
   data() {
     return {
-      myIcon: faTimes,
+      myIcon: faCheck,
       form: {
         name: "",
         gender: "",
