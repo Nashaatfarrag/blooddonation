@@ -33,7 +33,7 @@
 
 const axios = require("axios");
 //let apiUrl = "http://localhost:5000/donor/";
-let apiUrl = "https://tatayblooddonationapi.herokuapp.com/donor/";
+let apiUrl = "https://protean-smile-255704.ew.r.appspot.com/donor";
 
 // function getAll() {
 //   axios
