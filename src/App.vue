@@ -13,9 +13,9 @@
           <v-list-item to="/add">
             <v-list-item-title>تسجيل متبرع</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/adddonation">
+          <!-- <v-list-item to="/adddonation">
             <v-list-item-title>أضف أخر تبرعا لك</v-list-item-title>
-          </v-list-item>
+          </v-list-item> -->
 
 
           <v-list-item to="/about">
@@ -42,7 +42,7 @@
           <a href="mailto:nashaatfarrag@gmail.com">
             <v-icon color="primary">mdi-mail</v-icon>
           </a>
-          &copy; Copyright 2022
+          &copy; Copyright 2024
         </v-col>
       </v-row>
     </v-footer>
