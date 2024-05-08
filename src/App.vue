@@ -1,6 +1,12 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" v-if="drawer" absolute right temporary>
+    <v-navigation-drawer
+      v-model="drawer"
+      v-if="drawer"
+      absolute
+      right
+      temporary
+    >
       <v-list nav dense>
         <v-list-item-group
           v-model="group"
@@ -17,7 +23,6 @@
             <v-list-item-title>أضف أخر تبرعا لك</v-list-item-title>
           </v-list-item> -->
 
-
           <v-list-item to="/about">
             <v-list-item-title>عنا</v-list-item-title>
           </v-list-item>
@@ -25,14 +30,10 @@
       </v-list>
     </v-navigation-drawer>
 
-
     <v-main>
-          <v-app-bar app color="primary" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-    </v-app-bar>
-      <!-- <div id="particles-js">
-        <router-view />
-      </div> -->
+      <v-app-bar app color="primary" dark>
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      </v-app-bar>
       <router-view></router-view>
     </v-main>
 
@@ -65,19 +66,6 @@ export default {
 </script>
 
 <style>
-/* *{
-  border : 1px red solid ;
-} */
-
-#particles-js {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 50% 50%;
-}
 @font-face {
   font-family: myFirstFont;
   src: url("./font/HelveticaNeueW23forSKY-Bd.ttf");

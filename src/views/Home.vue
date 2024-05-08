@@ -68,7 +68,11 @@
               </template>
             </v-data-table>
           </div>
-          <v-pagination  v-model="page" :length="pageCount"></v-pagination>
+          <v-pagination
+            v-on:input="anyMethod(page)"
+            v-model="page"
+            :length="pageCount"
+          ></v-pagination>
 
           <!-- <b-card-group v-else-if="donors" deck align="left">
        
@@ -115,7 +119,6 @@ import Db from "../services/getDonors";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 const axios = require("axios");
 //let apiUrl = "http://localhost:5000/donor/";
-//let apiUrl = "https://tatayblooddonationapi.herokuapp.com/";
 
 const { detect } = require("detect-browser");
 const browser = detect();
@@ -158,6 +161,13 @@ export default {
     this.hh();
   },
   methods: {
+    anyMethod(input) {
+      this.$gtag.event("changeTablePage", {
+        event_category: "Click",
+        event_label: "Change Page",
+        value: input,
+      });
+    },
     calcAge(val) {
       let x = new Date(val);
 

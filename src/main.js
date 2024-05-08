@@ -4,7 +4,6 @@ import router from "./router";
 import VAnimateCss from "v-animate-css";
 import VueSweetalert2 from "vue-sweetalert2";
 import Clipboard from "v-clipboard";
-// import BootstrapVue from "bootstrap-vue";
 
 // If you don't need the styles, do not connect
 import "sweetalert2/dist/sweetalert2.min.css";
@@ -25,15 +24,12 @@ Vue.component("font-awesome-layers-text", FontAwesomeLayersText);
 Vue.use(Clipboard);
 Vue.use(VueSweetalert2);
 
-
 Vue.use(VueGtag, {
   config: {
     id: "G-D9DN1V31LJ",
   },
 });
-// Vue.use(VueAnalytics, x);
 
-// Vue.use(BootstrapVue);
 Vue.use(VAnimateCss);
 Vue.config.productionTip = false;
 

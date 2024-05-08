@@ -2,6 +2,9 @@
   "name": "blooddonation",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=16.0.0 <17.0.0"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -18,7 +21,6 @@
     "v-animate-css": "0.0.3",
     "v-clipboard": "^2.2.3",
     "vue": "^2.6.14",
-    "vue-analytics": "^5.22.1",
     "vue-gtag": "^1.16.1",
     "vue-router": "^3.5.3",
     "vue-sweetalert2": "^2.1.5",
