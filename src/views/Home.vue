@@ -87,30 +87,6 @@
         </div>
       </v-col>
     </v-row>
-    <!-- <b-form v-if="show" class="Addform">
-      <b-form-group
-        id="input-group-2"
-        label="OTP"
-        label-for="input-2"
-        align="center"
-      >
-        <b-form-input
-          id="input-2"
-          v-model="OTP"
-          type="text"
-          required
-          style="max-width:500px"
-          placeholder="ادخل الكود السري لعرض بيانات المتبرعين"
-        ></b-form-input>
-        <p style="margin-top:10px">
-          to have the OTP please contact the admin on :
-          <br />01095848087
-        </p>
-      </b-form-group>
-      <v-btn class="m-1" @click="checkOTP" align="center" variant="primary"
-        >إرسال</v-btn
-      >
-    </b-form> -->
   </v-container>
 </template>
 
@@ -118,10 +94,6 @@
 import Db from "../services/getDonors";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 const axios = require("axios");
-//let apiUrl = "http://localhost:5000/donor/";
-
-const { detect } = require("detect-browser");
-const browser = detect();
 
 export default {
   name: "home",
@@ -156,7 +128,6 @@ export default {
     };
   },
   mounted() {
-    //console.log(Db.getAll());
     this.getAll();
     this.hh();
   },
@@ -184,29 +155,11 @@ export default {
 
       return min < 120 ? "error" : "success";
     },
-    checkOTP() {
-      if (this.OTP === "hunter") {
-        this.show = false;
-      }
-    },
-    hh() {
-      // handle the case where we don't detect the browser
-      if (browser) {
-        // console.log(browser.name);
-        // console.log(browser.version);
-        // console.log(browser.os);
-        // if (browser.os === "Windows 10") {
-        //console.log("hi");
-        this.OTP = "hunter";
-        this.checkOTP();
-      }
-    },
     getAll: async function () {
       axios
         .get(Db.apiUrl)
         .then((response) => {
           this.donors = response.data;
-          //console.log(response.data ) ;
         })
         .catch(function (error) {
           alert(error.errmsg);

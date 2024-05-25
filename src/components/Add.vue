@@ -237,7 +237,6 @@ export default {
 
       if (!this.$v.$invalid) {
         axios.get(Db.apiUrl + this.form.contactInfo.tel).then((res) => {
-          //console.log(res.data)
           if (res.data) {
             this.$swal({
               text: "يوجد متبرع بنفس رقم الموبايل",
