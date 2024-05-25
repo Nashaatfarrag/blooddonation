@@ -64,11 +64,7 @@ let apiUrl = "https://protean-smile-255704.ew.r.appspot.com/donor/";
 function add(element) {
   axios
     .post(apiUrl, element)
-    .then(function () {
-      console.log(element);
-    })
     .catch(function (error) {
-      //console.log(error.response.data);
       alert(error.response.data);
     });
 }

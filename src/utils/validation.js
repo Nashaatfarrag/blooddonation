@@ -36,7 +36,6 @@ function NumberErrors(val) {
 }
 function UniqueFieldErrors(val, flag) {
   const errors = [];
-  // console.log(flag);
   if (!val.$dirty) return errors;
   !val.required && errors.push("خطأ");
   !val.minLength && errors.push("خطأ");
