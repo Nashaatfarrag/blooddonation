@@ -2,15 +2,7 @@
   <v-container style="padding: 30px">
     <v-row>
       <v-col>
-        <div v-if="!show">
-          <!-- إختر الفصيلة
-          <br />
-          <b-form-select
-            v-model="selected"
-            :options="options"
-            class="mb-3"
-            style="max-width=calc(12rem)"
-          ></b-form-select> -->
+  
 
           <v-select
             outlined
@@ -74,17 +66,7 @@
             :length="pageCount"
           ></v-pagination>
 
-          <!-- <b-card-group v-else-if="donors" deck align="left">
-       
-        <Donor
-          class="animated fadeInLeftBig"
-          v-for="(donor,index) in ( selected ? filtered : donors )"
-          :donor="donor"
-          :key="donor.id"
-          :style="myStyle(index)"
-        />
-      </b-card-group> -->
-        </div>
+    
       </v-col>
     </v-row>
   </v-container>
@@ -129,7 +111,6 @@ export default {
   },
   mounted() {
     this.getAll();
-    this.hh();
   },
   methods: {
     anyMethod(input) {
