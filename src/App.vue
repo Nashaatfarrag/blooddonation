@@ -42,8 +42,8 @@
         <v-col class="text-center">
           <a href="mailto:nashaatfarrag@gmail.com">
             <v-icon color="primary">mdi-mail</v-icon>
-          </a>
-          &copy; Copyright 2024
+            </a>
+            &copy; Copyright {{ new Date().getFullYear() }}
         </v-col>
       </v-row>
     </v-footer>
