@@ -2,71 +2,67 @@
   <v-container style="padding: 30px">
     <v-row>
       <v-col>
-  
+        <v-select
+          outlined
+          label="إختر الفصيلة"
+          v-model="selected"
+          :items="options"
+        ></v-select>
 
-          <v-select
-            outlined
-            label="إختر الفصيلة"
-            v-model="selected"
-            :items="options"
-          ></v-select>
-
-          <!-- mapping donors data into donor element -->
-          <div v-if="!donors">
-            <lottie-player
-              src="https://assets10.lottiefiles.com/private_files/lf30_kzoKGW.json"
-              background="transparent"
-              speed="1"
-              style="width: 100%; height: 100%"
-              loop
-              autoplay
-            ></lottie-player>
-            <!-- <font-awesome-icon :icon="myIcon" spin /> -->
-          </div>
-          <div v-else class="py-2">
-            <v-data-table
-              disable-sort
-              :items="selected ? filtered : donors"
-              :headers="tableHeaders"
-              :page.sync="page"
-              :items-per-page="7"
-              hide-default-footer
-              class="elevation-1"
-              @page-count="pageCount = $event"
-            >
-              <template v-slot:[`item.actions`]="{ item }">
-                <a
-                  style="text-decoration: none"
-                  :href="`tel:${item.contactInfo.tel}`"
-                >
-                  <v-icon color="primary">mdi-phone</v-icon>
-                </a>
-              </template>
-              <template v-slot:[`item.status`]="{ item }">
-                <p
-                  :style="
-                    'color:' + (getStatus(item) === 'error' ? 'red' : 'green')
-                  "
-                >
-                  {{ getStatus(item) === "error" ? "غير متاح" : "متاح" }}
-                </p>
-                <!-- <v-icon >mdi-account </v-icon> -->
-              </template>
-              <template v-slot:[`item.age`]="{ item }">
-                {{ calcAge(item.basicInfo.birthDate) }}
-              </template>
-              <template v-slot:[`item.count`]="{ item }">
-                {{ item.donationDates.length }}
-              </template>
-            </v-data-table>
-          </div>
-          <v-pagination
-            v-on:input="anyMethod(page)"
-            v-model="page"
-            :length="pageCount"
-          ></v-pagination>
-
-    
+        <!-- mapping donors data into donor element -->
+        <div v-if="!donors">
+          <lottie-player
+            src="https://assets10.lottiefiles.com/private_files/lf30_kzoKGW.json"
+            background="transparent"
+            speed="1"
+            style="width: 100%; height: 100%"
+            loop
+            autoplay
+          ></lottie-player>
+          <!-- <font-awesome-icon :icon="myIcon" spin /> -->
+        </div>
+        <div v-else class="py-2">
+          <v-data-table
+            disable-sort
+            :items="selected ? filtered : donors"
+            :headers="tableHeaders"
+            :page.sync="page"
+            :items-per-page="7"
+            hide-default-footer
+            class="elevation-1"
+            @page-count="pageCount = $event"
+          >
+            <template v-slot:[`item.actions`]="{ item }">
+              <a
+                style="text-decoration: none"
+                :href="`tel:${item.contactInfo.tel}`"
+              >
+                <v-icon color="primary">mdi-phone</v-icon>
+              </a>
+            </template>
+            <template v-slot:[`item.status`]="{ item }">
+              <p
+                :style="
+                  'color:' + (getStatus(item) === 'error' ? 'red' : 'green')
+                "
+              >
+                {{ getStatus(item) === "error" ? "غير متاح" : "متاح" }}
+              </p>
+              <!-- <v-icon >mdi-account </v-icon> -->
+            </template>
+            <template v-slot:[`item.age`]="{ item }">
+              {{ calcAge(item.basicInfo.birthDate) }}
+            </template>
+            <template v-slot:[`item.count`]="{ item }">
+              {{ item.donationDates.length }}
+            </template>
+          </v-data-table>
+        </div>
+        <v-pagination
+          v-on:input="anyMethod(page)"
+          v-model="page"
+          :length="pageCount"
+        ></v-pagination>
       </v-col>
     </v-row>
   </v-container>

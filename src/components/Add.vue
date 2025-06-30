@@ -11,7 +11,9 @@
       <v-row justify="center">
         <v-col md="10">
           <v-form @reset="onReset" v-if="show" class="Addform">
-            حقل إجباري *
+            <p style="margin: 0; text-align: right">
+              <strong>حقل إجباري *</strong>
+            </p>
             <v-container>
               <v-row>
                 <v-col cols="12" md="4">
@@ -37,7 +39,7 @@
                     :error-messages="
                       generateErrors($v.form.contactInfo.mail, 'Email')
                     "
-                    label=" : البريد الإليكتروني "
+                    label=" البريد الإليكتروني :"
                     v-model="form.contactInfo.mail"
                     type="email"
                     placeholder="يرجي إدخال بريد إليكترونى صالح"
@@ -202,7 +204,11 @@ export default {
         contactInfo: { tel: "", mail: "" },
         basicInfo: {
           nationalId: "",
-          birthDate: null,
+          birthDate: new Date(
+            new Date().setFullYear(new Date().getFullYear() - 18)
+          )
+            .toISOString()
+            .slice(0, 10), // Default date: 18 years ago
         },
       },
       genders: [
@@ -292,7 +298,6 @@ export default {
     #b31771,
     #eb125d
   );
-
   text-align: center;
 }
 .Addform,
@@ -308,5 +313,13 @@ input {
 #ads {
   color: white;
   font-size: 2rem;
+}
+
+html,
+body,
+#app,
+.v-application {
+  overflow-x: hidden !important;
+  max-width: 100vw;
 }
 </style>
