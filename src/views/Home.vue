@@ -71,7 +71,7 @@
 <script>
 import Db from "../services/getDonors";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-const axios = require("axios");
+import axios from "axios";
 
 export default {
   name: "home",

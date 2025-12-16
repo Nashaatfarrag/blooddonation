@@ -1,9 +1,10 @@
-import Vue from "vue";
+import { createApp } from "vue";
+import 'vuetify/styles'
 import App from "./App.vue";
 import router from "./router";
 import VAnimateCss from "v-animate-css";
 import VueSweetalert2 from "vue-sweetalert2";
-import Clipboard from "v-clipboard";
+import clipboardPlugin from "./plugins/clipboard";
 
 // If you don't need the styles, do not connect
 import "sweetalert2/dist/sweetalert2.min.css";
@@ -15,26 +16,25 @@ import {
 } from "@fortawesome/vue-fontawesome";
 
 import vuetify from "./plugins/vuetify";
-import VueGtag from "vue-gtag";
+import { createGtag } from "vue-gtag";
 
-Vue.component("font-awesome-icon", FontAwesomeIcon);
-Vue.component("font-awesome-layers", FontAwesomeLayers);
-Vue.component("font-awesome-layers-text", FontAwesomeLayersText);
+const app = createApp(App);
 
-Vue.use(Clipboard);
-Vue.use(VueSweetalert2);
+app.component("font-awesome-icon", FontAwesomeIcon);
+app.component("font-awesome-layers", FontAwesomeLayers);
+app.component("font-awesome-layers-text", FontAwesomeLayersText);
 
-Vue.use(VueGtag, {
+app.use(clipboardPlugin);
+app.use(VueSweetalert2);
+
+app.use(createGtag, {
   config: {
     id: "G-D9DN1V31LJ",
   },
 });
 
-Vue.use(VAnimateCss);
-Vue.config.productionTip = false;
+app.use(VAnimateCss);
+app.use(router);
+app.use(vuetify);
 
-new Vue({
-  router,
-  vuetify,
-  render: (h) => h(App),
-}).$mount("#app");
+app.mount("#app");

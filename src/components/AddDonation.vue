@@ -100,7 +100,7 @@
 
 <script>
 import Db from "../services/getDonors";
-const axios = require("axios");
+import axios from "axios";
 
 export default {
   name: "addDonation",

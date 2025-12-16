@@ -125,7 +125,7 @@
 
 <script>
 import Db from "../services/getDonors";
-const axios = require("axios");
+import axios from "axios";
 import { validationMixin } from "vuelidate";
 import {
   required,

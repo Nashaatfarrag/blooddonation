@@ -53,14 +53,9 @@
 <script>
 export default {
   name: "App",
-  mounted() {
-    this.$vuetify.rtl = true;
-  },
-
   data: () => ({
     group: null,
     drawer: false,
-    //
   }),
 };
 </script>
