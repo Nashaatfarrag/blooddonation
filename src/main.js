@@ -4,6 +4,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import VueGtag from 'vue-gtag-next'
 
 import App from './App.vue'
 import DonorsTable from './pages/DonorsTable.vue'
@@ -31,4 +32,10 @@ const router = createRouter({
 const app = createApp(App)
 app.use(router)
 app.use(vuetify)
+app.use(VueGtag, {
+  property: {
+    id: 'G-D9DN1V31LJ'
+  },
+  isEnabled: import.meta.env.PROD // Only enable in production
+}, router)
 app.mount('#app')
