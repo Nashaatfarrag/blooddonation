@@ -1,102 +1,80 @@
 <template>
-  <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      v-if="drawer"
-      absolute
-      right
-      temporary
-    >
-      <v-list nav dense>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
+  <v-app dir="rtl">
+    <v-app-bar color="primary" elevation="4">
+      <v-app-bar-nav-icon @click="drawer = !drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
+      <v-app-bar-title class="font-weight-bold text-h5">نظام التبرع بالدم</v-app-bar-title>
+      <v-spacer></v-spacer>
+      
+      <!-- Desktop Navigation -->
+      <div class="d-none d-md-flex gap-2">
+        <v-btn 
+          to="/" 
+          variant="elevated"
+          color="white"
+          :active="$route.path === '/'"
+          class="px-6"
         >
-          <v-list-item to="/">
-            <v-list-item-title>الرئيسية</v-list-item-title>
-          </v-list-item>
+          <v-icon start>mdi-account-multiple</v-icon>
+          المتبرعون
+        </v-btn>
+        <v-btn 
+          to="/add" 
+          variant="elevated"
+          color="success"
+          :active="$route.path === '/add'"
+          class="px-6"
+        >
+          <v-icon start>mdi-plus-circle</v-icon>
+          تسجيل متبرع
+        </v-btn>
+      </div>
+    </v-app-bar>
 
-          <v-list-item to="/add">
-            <v-list-item-title>تسجيل متبرع</v-list-item-title>
-          </v-list-item>
-          <!-- <v-list-item to="/adddonation">
-            <v-list-item-title>أضف أخر تبرعا لك</v-list-item-title>
-          </v-list-item> -->
+    <!-- Mobile Navigation Drawer -->
+    <v-navigation-drawer 
+      v-model="drawer" 
+      temporary
+      class="hidden-md-and-up"
+    >
+      <v-list>
+        <v-list-item 
+          to="/"
+          :active="$route.path === '/'"
+          @click="drawer = false"
+          class="mb-2"
+        >
+          <template v-slot:prepend>
+            <v-icon>mdi-account-multiple</v-icon>
+          </template>
+          <v-list-item-title class="font-weight-bold">المتبرعون</v-list-item-title>
+        </v-list-item>
 
-          <v-list-item to="/about">
-            <v-list-item-title>عنا</v-list-item-title>
-          </v-list-item>
-        </v-list-item-group>
+        <v-list-item 
+          to="/add"
+          :active="$route.path === '/add'"
+          @click="drawer = false"
+        >
+          <template v-slot:prepend>
+            <v-icon>mdi-plus-circle</v-icon>
+          </template>
+          <v-list-item-title class="font-weight-bold">تسجيل متبرع</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
-
+    
     <v-main>
-      <v-app-bar app color="primary" dark>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      </v-app-bar>
       <router-view></router-view>
     </v-main>
-
-    <v-footer>
-      <v-row>
-        <v-col class="text-center">
-          <a href="mailto:nashaatfarrag@gmail.com">
-            <v-icon color="primary">mdi-mail</v-icon>
-            </a>
-            &copy; Copyright {{ new Date().getFullYear() }}
-        </v-col>
-      </v-row>
-    </v-footer>
   </v-app>
 </template>
 
 <script>
 export default {
-  name: "App",
-  mounted() {
-    this.$vuetify.rtl = true;
-  },
-
-  data: () => ({
-    group: null,
-    drawer: false,
-    //
-  }),
-};
+  name: 'App',
+  data() {
+    return {
+      drawer: false
+    }
+  }
+}
 </script>
-
-<style>
-@font-face {
-  font-family: myFirstFont;
-  src: url("./font/HelveticaNeueW23forSKY-Bd.ttf");
-}
-@font-face {
-  font-family: mySecFont;
-  src: url("./font/UniversNextArabic-Regular_2.ttf");
-}
-/* #main {
-  background-color: whitesmoke;
-} */
-#main {
-  font-family: "Helvetica", Helvetica, Arial, sans-serif;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-
-  /* color: #2c3e50; */
-}
-
-/* #nav a {
-  font-weight: bold;
-  color: #2c3e50;
-} */
-
-/* #nav a.router-link-exact-active {
-  color: #fb4334;
-} */
-.mainHeader {
-  font-family: myFirstFont;
-  /* color: #f5f5f5; */
-}
-</style>

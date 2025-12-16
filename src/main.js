@@ -1,40 +1,34 @@
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import VAnimateCss from "v-animate-css";
-import VueSweetalert2 from "vue-sweetalert2";
-import Clipboard from "v-clipboard";
+import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
-// If you don't need the styles, do not connect
-import "sweetalert2/dist/sweetalert2.min.css";
+import App from './App.vue'
+import DonorsTable from './pages/DonorsTable.vue'
+import AddDonor from './pages/AddDonor.vue'
 
-import {
-  FontAwesomeIcon,
-  FontAwesomeLayers,
-  FontAwesomeLayersText,
-} from "@fortawesome/vue-fontawesome";
+const vuetify = createVuetify({
+  components,
+  directives,
+  rtl: true,
+  theme: {
+    defaultTheme: 'light'
+  }
+})
 
-import vuetify from "./plugins/vuetify";
-import VueGtag from "vue-gtag";
+const routes = [
+  { path: '/', name: 'Donors', component: DonorsTable },
+  { path: '/add', name: 'Add Donor', component: AddDonor }
+]
 
-Vue.component("font-awesome-icon", FontAwesomeIcon);
-Vue.component("font-awesome-layers", FontAwesomeLayers);
-Vue.component("font-awesome-layers-text", FontAwesomeLayersText);
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
 
-Vue.use(Clipboard);
-Vue.use(VueSweetalert2);
-
-Vue.use(VueGtag, {
-  config: {
-    id: "G-D9DN1V31LJ",
-  },
-});
-
-Vue.use(VAnimateCss);
-Vue.config.productionTip = false;
-
-new Vue({
-  router,
-  vuetify,
-  render: (h) => h(App),
-}).$mount("#app");
+const app = createApp(App)
+app.use(router)
+app.use(vuetify)
+app.mount('#app')
