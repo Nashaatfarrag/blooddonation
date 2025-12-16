@@ -7,6 +7,8 @@
           label="إختر الفصيلة"
           v-model="selected"
           :items="options"
+          item-title="text"
+          item-value="value"
         ></v-select>
 
         <!-- mapping donors data into donor element -->
@@ -68,90 +70,86 @@
   </v-container>
 </template>
 
-<script>
-import Db from "../services/getDonors";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-const axios = require("axios");
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import Db from '../services/getDonors'
+import axios from 'axios'
 
-export default {
-  name: "home",
-  data() {
-    return {
-      pageCount: 0,
-      page: 1,
-      tableHeaders: [
-        { value: "name", text: "الإسم" },
-        { value: "bloodType", text: "الفصيلة" },
-        { value: "actions", text: "إتصل" },
-        { value: "status", text: "الحالة" },
-        { value: "age", text: "العمر" },
-        { value: "count", text: "عدد مرات التبرع" },
-      ],
-      myIcon: faSpinner,
-      selected: null,
-      options: [
-        { value: null, text: "كل الفصائل" },
-        { value: "O+", text: "O+" },
-        { value: "A+", text: "A+" },
-        { value: "B+", text: "B+" },
-        { value: "AB+", text: "AB+" },
-        { value: "O-", text: "O-" },
-        { value: "A-", text: "A-" },
-        { value: "B-", text: "B-" },
-        { value: "AB-", text: "AB-" },
-      ],
-      donors: null,
-      show: true,
-      OTP: "",
-    };
-  },
-  mounted() {
-    this.getAll();
-  },
-  methods: {
-    anyMethod(input) {
-      this.$gtag.event("changeTablePage", {
-        event_category: "Click",
-        event_label: "Change Page",
-        value: input,
-      });
-    },
-    calcAge(val) {
-      let x = new Date(val);
+const page = ref(1)
+const itemsPerPage = 7
+const tableHeaders = [
+  { value: 'name', text: 'الإسم' },
+  { value: 'bloodType', text: 'الفصيلة' },
+  { value: 'actions', text: 'إتصل' },
+  { value: 'status', text: 'الحالة' },
+  { value: 'age', text: 'العمر' },
+  { value: 'count', text: 'عدد مرات التبرع' },
+]
+const selected = ref(null)
+const options = [
+  { value: null, text: 'كل الفصائل' },
+  { value: 'O+', text: 'O+' },
+  { value: 'A+', text: 'A+' },
+  { value: 'B+', text: 'B+' },
+  { value: 'AB+', text: 'AB+' },
+  { value: 'O-', text: 'O-' },
+  { value: 'A-', text: 'A-' },
+  { value: 'B-', text: 'B-' },
+  { value: 'AB-', text: 'AB-' },
+]
+const donors = ref(null)
 
-      return Math.floor((Date.now() - x) / 3600000 / 365 / 24);
-    },
-    getStatus({ donationDates }) {
-      let min = 100000;
-      donationDates.forEach((element) => {
-        let x = new Date(element.when);
-        let diff = Math.floor((Date.now() - x) / 3600000 / 24);
+const fetchDonors = async () => {
+  try {
+    const res = await axios.get(Db.apiUrl)
+    donors.value = res.data
+  } catch (err) {
+    console.error(err)
+  }
+}
 
-        min = diff < min ? diff : min;
-      });
+onMounted(() => {
+  fetchDonors()
+})
 
-      return min < 120 ? "error" : "success";
-    },
-    getAll: async function () {
-      axios
-        .get(Db.apiUrl)
-        .then((response) => {
-          this.donors = response.data;
-        })
-        .catch(function (error) {
-          alert(error.errmsg);
-        });
-    },
-    myStyle: function (index) {
-      return "animation-delay : " + index * 500 + "ms";
-    },
-  },
-  computed: {
-    filtered: function () {
-      return this.donors.filter((donor) => donor.bloodType === this.selected);
-    },
-  },
-};
+function calcAge(val) {
+  const x = new Date(val)
+  return Math.floor((Date.now() - x) / 3600000 / 365 / 24)
+}
+
+function getStatus({ donationDates }) {
+  let min = 100000
+  donationDates.forEach((element) => {
+    const x = new Date(element.when)
+    const diff = Math.floor((Date.now() - x) / 3600000 / 24)
+    min = diff < min ? diff : min
+  })
+  return min < 120 ? 'error' : 'success'
+}
+
+const filtered = computed(() => {
+  if (!donors.value) return []
+  return donors.value.filter((donor) => donor.bloodType === selected.value)
+})
+
+const pageCount = computed(() => {
+  const total = selected.value ? filtered.value.length : (donors.value ? donors.value.length : 0)
+  return Math.max(1, Math.ceil(total / itemsPerPage))
+})
+
+const displayed = computed(() => {
+  const list = selected.value ? filtered.value : (donors.value || [])
+  const start = (page.value - 1) * itemsPerPage
+  return list.slice(start, start + itemsPerPage)
+})
+
+function anyMethod(_) {
+  // analytics noop
+}
+
+function myStyle(index) {
+  return `animation-delay : ${index * 500}ms`
+}
 </script>
 
 <style scoped>

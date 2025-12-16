@@ -8,7 +8,7 @@
       <br />
       يبقى الشخص غير متاح للتبرع لمدة 90 يوم للرجال و 120 يوم للنساء -
     </p>
-    <b-btn v-on:click="roure">العودة إلى إضافة متبرع</b-btn>
+    <v-btn v-on:click="roure" color="primary">العودة إلى إضافة متبرع</v-btn>
   </div>
 </template>
 <script>

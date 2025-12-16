@@ -31,9 +31,10 @@
 //   // }
 // ];
 
-const axios = require("axios");
-//let apiUrl = "http://localhost:5000/donor/";
-let apiUrl = "https://blooddonation-api-983366835228.europe-west9.run.app/donor/";
+import axios from 'axios'
+
+// let apiUrl = "http://localhost:5000/donor/";
+const apiUrl = 'https://blooddonation-api-983366835228.europe-west9.run.app/donor/'
 
 // function getAll() {
 //   axios
@@ -62,11 +63,11 @@ let apiUrl = "https://blooddonation-api-983366835228.europe-west9.run.app/donor/
 // };
 
 function add(element) {
-  axios
-    .post(apiUrl, element)
-    .catch(function (error) {
-      alert(error.response.data);
-    });
+  return axios.post(apiUrl, element).catch(function (error) {
+    // propagate or log error
+    // keep behavior similar by throwing so callers can handle
+    throw error
+  })
 }
 
-module.exports = { add, apiUrl };
+export default { add, apiUrl }

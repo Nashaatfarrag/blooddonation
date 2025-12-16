@@ -50,19 +50,15 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  name: "App",
-  mounted() {
-    this.$vuetify.rtl = true;
-  },
+<script setup>
+import { ref, onMounted } from 'vue'
 
-  data: () => ({
-    group: null,
-    drawer: false,
-    //
-  }),
-};
+const group = ref(null)
+const drawer = ref(false)
+
+onMounted(() => {
+  document.documentElement.dir = 'rtl'
+})
 </script>
 
 <style>
