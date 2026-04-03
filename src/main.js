@@ -9,19 +9,56 @@ import VueGtag from 'vue-gtag-next'
 import App from './App.vue'
 import DonorsTable from './pages/DonorsTable.vue'
 import AddDonor from './pages/AddDonor.vue'
+import Doctors from './pages/Doctors.vue'
 
 const vuetify = createVuetify({
   components,
   directives,
   rtl: true,
   theme: {
-    defaultTheme: 'light'
+    defaultTheme: 'bloodTheme',
+    themes: {
+      bloodTheme: {
+        dark: false,
+        colors: {
+          background: '#FAFAFA',
+          surface: '#FFFFFF',
+          primary: '#C62828',
+          'primary-darken-1': '#8E0000',
+          secondary: '#EF5350',
+          'secondary-darken-1': '#B71C1C',
+          accent: '#FF8A80',
+          error: '#D32F2F',
+          info: '#1565C0',
+          success: '#2E7D32',
+          warning: '#F9A825',
+        }
+      }
+    }
+  },
+  defaults: {
+    VBtn: {
+      rounded: 'lg',
+    },
+    VCard: {
+      rounded: 'xl',
+      elevation: 2,
+    },
+    VTextField: {
+      rounded: 'lg',
+      variant: 'outlined',
+    },
+    VSelect: {
+      rounded: 'lg',
+      variant: 'outlined',
+    },
   }
 })
 
 const routes = [
   { path: '/', name: 'Donors', component: DonorsTable },
-  { path: '/add', name: 'Add Donor', component: AddDonor }
+  { path: '/add', name: 'Add Donor', component: AddDonor },
+  { path: '/doctors', name: 'Doctors', component: Doctors }
 ]
 
 const router = createRouter({

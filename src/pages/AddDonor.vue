@@ -1,25 +1,43 @@
 <template>
-  <v-container class="py-4 py-md-8" dir="rtl">
+  <v-container class="py-6 py-md-10" dir="rtl">
     <v-row>
       <v-col cols="12" sm="10" md="8" lg="6" class="mx-auto">
-        <h1 class="mb-6">تسجيل متبرع جديد</h1>
         
-        <v-alert v-if="error" type="error" class="mb-4">
+        <!-- Hero header -->
+        <div class="text-center mb-8">
+          <v-avatar size="72" color="primary" class="mb-4 hero-icon">
+            <v-icon size="36" color="white">mdi-account-plus</v-icon>
+          </v-avatar>
+          <h1 class="text-h4 font-weight-bold text-grey-darken-3">تسجيل متبرع جديد</h1>
+          <p class="text-body-1 text-grey mt-2">أضف بيانات المتبرع للانضمام إلى قاعدة البيانات</p>
+        </div>
+        
+        <v-alert v-if="error" type="error" variant="tonal" border="start" class="mb-5" rounded="lg">
           {{ error }}
         </v-alert>
         
-        <v-alert v-if="success" type="success" class="mb-4">
-          تم تسجيل المتبرع بنجاح!
+        <v-alert v-if="success" type="success" variant="tonal" border="start" class="mb-5" rounded="lg">
+          <div class="d-flex align-center">
+            <v-icon class="me-2">mdi-check-circle</v-icon>
+            تم تسجيل المتبرع بنجاح! جاري التحويل...
+          </div>
         </v-alert>
         
         <v-form ref="form" @submit.prevent="submitForm">
-          <v-card class="pa-4 pa-md-6">
+          <v-card class="pa-5 pa-md-8 form-card">
+            
+            <!-- Personal Info Section -->
+            <div class="d-flex align-center mb-4">
+              <v-icon color="primary" class="me-2">mdi-account</v-icon>
+              <span class="text-subtitle-1 font-weight-bold text-grey-darken-2">المعلومات الشخصية</span>
+            </div>
+            
             <v-row>
               <v-col cols="12">
                 <v-text-field
                   v-model="form.name"
                   label="الاسم *"
-                  variant="outlined"
+                  prepend-inner-icon="mdi-account-outline"
                   :rules="rules.name"
                   required
                 ></v-text-field>
@@ -27,92 +45,114 @@
             </v-row>
 
             <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="form.mail"
-                  label="البريد الإلكتروني :"
-                  type="email"
-                  variant="outlined"
-                  :rules="rules.mail"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            
-            <v-row>
-              <v-col cols="12">
+              <v-col cols="12" sm="6">
                 <v-text-field
                   v-model="form.birthDate"
-                  label="تاريخ الميلاد : *"
+                  label="تاريخ الميلاد *"
                   type="date"
-                  variant="outlined"
+                  prepend-inner-icon="mdi-calendar"
                   :rules="rules.birthDate"
                   required
                 ></v-text-field>
               </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="form.tel"
-                  label="رقم الموبايل : *"
-                  variant="outlined"
-                  :rules="rules.tel"
-                  required
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            
-            <v-row>
-              <v-col cols="12">
+              <v-col cols="12" sm="6">
                 <v-select
                   v-model="form.gender"
-                  label="النوع : *"
+                  label="النوع *"
                   :items="genderOptions"
-                  variant="outlined"
+                  prepend-inner-icon="mdi-gender-male-female"
                   :rules="rules.gender"
                   required
                 ></v-select>
               </v-col>
             </v-row>
 
+            <v-divider class="my-5"></v-divider>
+
+            <!-- Medical Info Section -->
+            <div class="d-flex align-center mb-4">
+              <v-icon color="primary" class="me-2">mdi-water</v-icon>
+              <span class="text-subtitle-1 font-weight-bold text-grey-darken-2">معلومات التبرع</span>
+            </div>
+
             <v-row>
               <v-col cols="12">
                 <v-select
                   v-model="form.bloodType"
-                  label="فصيلة الدم : *"
+                  label="فصيلة الدم *"
                   :items="bloodTypes"
-                  variant="outlined"
+                  prepend-inner-icon="mdi-water-outline"
                   :rules="rules.bloodType"
                   required
-                ></v-select>
+                >
+                  <template v-slot:item="{ props, item }">
+                    <v-list-item v-bind="props">
+                      <template v-slot:prepend>
+                        <v-chip size="small" :color="getBloodColor(item.raw)" variant="flat" class="me-2 font-weight-bold">
+                          {{ item.raw }}
+                        </v-chip>
+                      </template>
+                    </v-list-item>
+                  </template>
+                </v-select>
+              </v-col>
+            </v-row>
+
+            <v-divider class="my-5"></v-divider>
+
+            <!-- Contact Info Section -->
+            <div class="d-flex align-center mb-4">
+              <v-icon color="primary" class="me-2">mdi-phone</v-icon>
+              <span class="text-subtitle-1 font-weight-bold text-grey-darken-2">معلومات الاتصال</span>
+            </div>
+
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="form.tel"
+                  label="رقم الموبايل *"
+                  prepend-inner-icon="mdi-cellphone"
+                  :rules="rules.tel"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="form.mail"
+                  label="البريد الإلكتروني"
+                  type="email"
+                  prepend-inner-icon="mdi-email-outline"
+                  :rules="rules.mail"
+                ></v-text-field>
               </v-col>
             </v-row>
             
             <!-- Actions -->
-            <v-row class="mt-6">
-              <v-col cols="12">
+            <v-row class="mt-8">
+              <v-col cols="12" sm="6">
                 <v-btn
                   type="submit"
                   block
                   color="primary"
-                  size="large"
+                  size="x-large"
                   :loading="submitting"
+                  rounded="lg"
+                  elevation="2"
                 >
-                  إرسال
+                  <v-icon start>mdi-check-circle</v-icon>
+                  تسجيل المتبرع
                 </v-btn>
               </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="12">
+              <v-col cols="12" sm="6">
                 <v-btn
                   block
-                  variant="outlined"
-                  color="error"
-                  size="large"
+                  variant="tonal"
+                  color="grey"
+                  size="x-large"
                   @click="resetForm"
+                  rounded="lg"
                 >
+                  <v-icon start>mdi-refresh</v-icon>
                   إعادة ملء
                 </v-btn>
               </v-col>
@@ -232,7 +272,26 @@ export default {
         tel: '',
         mail: ''
       }
+    },
+    getBloodColor(type) {
+      const colors = {
+        'O+': '#FF6B6B', 'O-': '#FFA07A',
+        'A+': '#4ECDC4', 'A-': '#45B7D1',
+        'B+': '#F7DC6F', 'B-': '#F39C12',
+        'AB+': '#BB8FCE', 'AB-': '#9B59B6'
+      }
+      return colors[type] || '#95A5A6'
     }
   }
 }
 </script>
+
+<style scoped>
+.hero-icon {
+  box-shadow: 0 8px 32px rgba(198, 40, 40, 0.3);
+}
+
+.form-card {
+  border-top: 4px solid #C62828;
+}
+</style>

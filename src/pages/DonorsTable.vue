@@ -1,23 +1,40 @@
 <template>
-  <v-container class="py-4 py-md-8" dir="rtl">
+  <v-container class="py-6 py-md-10" dir="rtl">
     <v-row>
       <v-col cols="12">
 
-        <v-progress-linear v-if="loading" indeterminate></v-progress-linear>
+        <!-- Hero header -->
+        <div class="text-center mb-8">
+          <v-avatar size="72" color="primary" class="mb-4 hero-icon">
+            <v-icon size="36" color="white">mdi-account-group</v-icon>
+          </v-avatar>
+          <h1 class="text-h4 font-weight-bold text-grey-darken-3">قائمة المتبرعين</h1>
+          <p class="text-body-1 text-grey mt-2">تصفح وابحث عن المتبرعين بالدم</p>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="loading" class="text-center py-16">
+          <v-progress-circular indeterminate color="primary" size="56" width="5"></v-progress-circular>
+          <p class="text-grey mt-4">جاري تحميل البيانات...</p>
+        </div>
         
-        <v-alert v-if="error" type="error" class="mb-4">
+        <v-alert v-if="error" type="error" variant="tonal" border="start" class="mb-5" rounded="lg">
           {{ error }}
         </v-alert>
         
         <!-- Filters -->
-        <v-card v-if="!loading" class="mb-6 pa-4">
-          <v-row>
+        <v-card v-if="!loading" class="mb-6 pa-5 filter-card">
+          <div class="d-flex align-center mb-4">
+            <v-icon color="primary" class="me-2">mdi-filter-variant</v-icon>
+            <span class="text-subtitle-1 font-weight-bold text-grey-darken-2">تصفية النتائج</span>
+          </div>
+          <v-row align="center">
             <v-col cols="12" sm="6" md="4">
               <v-select
                 v-model="filterBloodType"
                 :items="bloodTypeOptions"
                 label="فئة الدم"
-                variant="outlined"
+                prepend-inner-icon="mdi-water-outline"
                 clearable
                 @update:model-value="applyFilters"
                 dense
@@ -28,56 +45,92 @@
                 v-model="filterAgeRange"
                 :items="ageRangeOptions"
                 label="نطاق العمر"
-                variant="outlined"
+                prepend-inner-icon="mdi-calendar-range"
                 clearable
                 @update:model-value="applyFilters"
                 dense
               ></v-select>
             </v-col>
             <v-col cols="12" md="4">
-              <v-btn block @click="resetFilters" variant="outlined">
-                إعادة تعيين الفلاتر
+              <v-btn block @click="resetFilters" variant="tonal" color="grey" rounded="lg" size="large">
+                <v-icon start>mdi-filter-remove</v-icon>
+                إعادة تعيين
               </v-btn>
             </v-col>
           </v-row>
         </v-card>
+
+        <!-- Stats bar -->
+        <v-row v-if="!loading && filteredDonors.length > 0" class="mb-6">
+          <v-col cols="6" sm="3">
+            <v-card class="pa-4 text-center stat-card" variant="tonal" color="primary">
+              <div class="text-h5 font-weight-bold">{{ filteredDonors.length }}</div>
+              <div class="text-caption text-grey-darken-1">إجمالي المتبرعين</div>
+            </v-card>
+          </v-col>
+          <v-col cols="6" sm="3">
+            <v-card class="pa-4 text-center stat-card" variant="tonal" color="info">
+              <div class="text-h5 font-weight-bold">{{ uniqueBloodTypes }}</div>
+              <div class="text-caption text-grey-darken-1">فصائل الدم</div>
+            </v-card>
+          </v-col>
+          <v-col cols="6" sm="3">
+            <v-card class="pa-4 text-center stat-card" variant="tonal" color="success">
+              <div class="text-h5 font-weight-bold">{{ maleCount }}</div>
+              <div class="text-caption text-grey-darken-1">ذكور</div>
+            </v-card>
+          </v-col>
+          <v-col cols="6" sm="3">
+            <v-card class="pa-4 text-center stat-card" variant="tonal" color="secondary">
+              <div class="text-h5 font-weight-bold">{{ femaleCount }}</div>
+              <div class="text-caption text-grey-darken-1">إناث</div>
+            </v-card>
+          </v-col>
+        </v-row>
         
-        <v-card v-if="!loading">
+        <v-card v-if="!loading" class="table-card">
           <!-- Desktop Table -->
           <div class="d-none d-sm-block">
             <v-table hover>
               <thead>
-                <tr>
-                  <th>الاسم</th>
-                  <th>فئة الدم</th>
-                  <th>النوع</th>
-                  <th>الاتصال</th>
-                  <th>التبرعات</th>
+                <tr class="table-header">
+                  <th class="text-subtitle-2 font-weight-bold">الاسم</th>
+                  <th class="text-subtitle-2 font-weight-bold">فئة الدم</th>
+                  <th class="text-subtitle-2 font-weight-bold">النوع</th>
+                  <th class="text-subtitle-2 font-weight-bold">الاتصال</th>
+                  <th class="text-subtitle-2 font-weight-bold">التبرعات</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="donor in paginatedDonors" :key="donor._id">
-                  <td>{{ donor.name }}</td>
+                <tr v-for="donor in paginatedDonors" :key="donor._id" class="table-row">
+                  <td class="font-weight-medium">{{ donor.name }}</td>
                   <td>
-                    <v-chip :color="getBloodTypeColor(donor.bloodType)">
+                    <v-chip :color="getBloodTypeColor(donor.bloodType)" variant="flat" size="small" class="font-weight-bold">
                       {{ donor.bloodType }}
                     </v-chip>
                   </td>
-                  <td>{{ donor.basicInfo.gender === 'male' ? 'ذكر' : 'أنثى' }}</td>
+                  <td>
+                    <v-icon size="18" class="me-1" :color="donor.basicInfo.gender === 'male' ? 'info' : 'pink'">
+                      {{ donor.basicInfo.gender === 'male' ? 'mdi-gender-male' : 'mdi-gender-female' }}
+                    </v-icon>
+                    {{ donor.basicInfo.gender === 'male' ? 'ذكر' : 'أنثى' }}
+                  </td>
                   <td>
                     <v-btn
                       :href="`tel:${donor.contactInfo.tel}`"
                       icon="mdi-phone"
                       size="small"
-                      variant="text"
+                      variant="tonal"
+                      color="success"
                       :title="donor.contactInfo.tel"
                     ></v-btn>
                   </td>
                   <td>
-                    <v-chip v-if="donor.donationDates && donor.donationDates.length > 0">
+                    <v-chip v-if="donor.donationDates && donor.donationDates.length > 0" color="success" variant="tonal" size="small">
+                      <v-icon start size="14">mdi-heart-pulse</v-icon>
                       {{ donor.donationDates.length }}
                     </v-chip>
-                    <span v-else>-</span>
+                    <span v-else class="text-grey">-</span>
                   </td>
                 </tr>
               </tbody>
@@ -85,16 +138,28 @@
           </div>
           
           <!-- Mobile Cards -->
-          <div class="d-sm-none pa-3">
-            <v-card v-for="donor in paginatedDonors" :key="donor._id" class="mb-4 pa-4" rounded="lg" elevation="2">
+          <div class="d-sm-none pa-4">
+            <v-card 
+              v-for="donor in paginatedDonors" 
+              :key="donor._id" 
+              class="mb-4 pa-4 mobile-donor-card" 
+              rounded="xl" 
+              elevation="1"
+              border
+            >
               <v-card-item>
                 <div class="d-flex align-center justify-space-between">
-                  <div class="flex-grow-1">
-                    <v-card-title class="pa-0 text-body1 font-weight-bold">
+                  <div class="d-flex align-center flex-grow-1">
+                    <v-avatar size="40" :color="donor.basicInfo.gender === 'male' ? 'blue-lighten-4' : 'pink-lighten-4'" class="me-3">
+                      <v-icon :color="donor.basicInfo.gender === 'male' ? 'info' : 'pink'">
+                        {{ donor.basicInfo.gender === 'male' ? 'mdi-gender-male' : 'mdi-gender-female' }}
+                      </v-icon>
+                    </v-avatar>
+                    <v-card-title class="pa-0 text-body-1 font-weight-bold">
                       {{ donor.name }}
                     </v-card-title>
                   </div>
-                  <v-chip :color="getBloodTypeColor(donor.bloodType)" class="ms-2">
+                  <v-chip :color="getBloodTypeColor(donor.bloodType)" variant="flat" size="small" class="ms-2 font-weight-bold">
                     {{ donor.bloodType }}
                   </v-chip>
                 </div>
@@ -105,52 +170,50 @@
               <v-card-text class="pa-0">
                 <v-row no-gutters class="mb-3">
                   <v-col cols="6" class="pe-2">
-                    <div class="text-caption font-weight-bold text-disabled">النوع</div>
-                    <div class="text-body2">{{ donor.basicInfo.gender === 'male' ? 'ذكر' : 'أنثى' }}</div>
+                    <div class="text-caption font-weight-bold text-grey">النوع</div>
+                    <div class="text-body-2">{{ donor.basicInfo.gender === 'male' ? 'ذكر' : 'أنثى' }}</div>
                   </v-col>
                   <v-col cols="6" class="ps-2">
-                    <div class="text-caption font-weight-bold text-disabled">التبرعات</div>
-                    <div class="text-body2">
-                      <span v-if="donor.donationDates && donor.donationDates.length > 0">
+                    <div class="text-caption font-weight-bold text-grey">التبرعات</div>
+                    <div class="text-body-2">
+                      <v-chip v-if="donor.donationDates && donor.donationDates.length > 0" color="success" variant="tonal" size="x-small">
                         {{ donor.donationDates.length }}
-                      </span>
+                      </v-chip>
                       <span v-else>-</span>
                     </div>
                   </v-col>
                 </v-row>
               </v-card-text>
               
-              <v-divider class="my-3"></v-divider>
-              
               <v-btn
                 :href="`tel:${donor.contactInfo.tel}`"
                 block
                 prepend-icon="mdi-phone"
-                color="primary"
+                color="success"
                 variant="tonal"
-                rounded="md"
+                rounded="lg"
               >
                 {{ donor.contactInfo.tel }}
               </v-btn>
             </v-card>
           </div>
           
-          <v-card-text v-if="filteredDonors.length === 0" class="text-center py-8">
-            <p>لم يتم العثور على متبرعين</p>
+          <v-card-text v-if="filteredDonors.length === 0" class="text-center py-12">
+            <v-icon size="64" color="grey-lighten-1" class="mb-4">mdi-account-search</v-icon>
+            <p class="text-h6 text-grey">لم يتم العثور على متبرعين</p>
+            <p class="text-body-2 text-grey-lighten-1">جرب تعديل الفلاتر للحصول على نتائج</p>
           </v-card-text>
           
           <!-- Pagination -->
-          <v-row v-if="filteredDonors.length > 0" class="pa-6 justify-center">
+          <div v-if="filteredDonors.length > 0" class="d-flex justify-center pa-6">
             <v-pagination
               v-model="currentPage"
               :length="totalPages"
-              :total-visible="6"
+              :total-visible="5"
+              rounded="lg"
+              active-color="primary"
             ></v-pagination>
-          </v-row>
-          
-          <v-card-text class="text-center">
-            <small>إجمالي المتبرعين: {{ filteredDonors.length }}</small>
-          </v-card-text>
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -201,6 +264,15 @@ export default {
       const start = (this.currentPage - 1) * ITEMS_PER_PAGE
       const end = start + ITEMS_PER_PAGE
       return this.filteredDonors.slice(start, end)
+    },
+    uniqueBloodTypes() {
+      return new Set(this.filteredDonors.map(d => d.bloodType)).size
+    },
+    maleCount() {
+      return this.filteredDonors.filter(d => d.basicInfo.gender === 'male').length
+    },
+    femaleCount() {
+      return this.filteredDonors.filter(d => d.basicInfo.gender === 'female').length
     }
   },
   mounted() {
@@ -283,3 +355,42 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.hero-icon {
+  box-shadow: 0 8px 32px rgba(198, 40, 40, 0.3);
+}
+
+.filter-card {
+  border-right: 4px solid #C62828;
+}
+
+.stat-card {
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.table-card {
+  overflow: hidden;
+}
+
+.table-header {
+  background: #fef2f2 !important;
+}
+
+.table-row {
+  transition: background-color 0.2s ease;
+}
+
+.mobile-donor-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mobile-donor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+</style>
