@@ -12,17 +12,6 @@
           <p class="text-body-1 text-grey mt-2">أضف بيانات المتبرع للانضمام إلى قاعدة البيانات</p>
         </div>
         
-        <v-alert v-if="error" type="error" variant="tonal" border="start" class="mb-5" rounded="lg">
-          {{ error }}
-        </v-alert>
-        
-        <v-alert v-if="success" type="success" variant="tonal" border="start" class="mb-5" rounded="lg">
-          <div class="d-flex align-center">
-            <v-icon class="me-2">mdi-check-circle</v-icon>
-            تم تسجيل المتبرع بنجاح! جاري التحويل...
-          </div>
-        </v-alert>
-        
         <v-form ref="form" @submit.prevent="submitForm">
           <v-card class="pa-5 pa-md-8 form-card">
             
@@ -88,7 +77,7 @@
                   <template v-slot:item="{ props, item }">
                     <v-list-item v-bind="props">
                       <template v-slot:prepend>
-                        <v-chip size="small" :color="getBloodColor(item.raw)" variant="flat" class="me-2 font-weight-bold">
+                        <v-chip size="small" :color="getColor(item.raw)" variant="flat" class="me-2 font-weight-bold">
                           {{ item.raw }}
                         </v-chip>
                       </template>
@@ -114,6 +103,7 @@
                   prepend-inner-icon="mdi-cellphone"
                   :rules="rules.tel"
                   required
+                  placeholder="01XXXXXXXXX"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
@@ -165,9 +155,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-
-const API_URL = 'https://blooddonation-api-983366835228.europe-west9.run.app'
+import api from '@/utils/api'
+import { logAudit } from '@/utils/auth'
+import { BLOOD_TYPES, getBloodTypeColor, EGYPTIAN_PHONE_REGEX, calculateAge } from '@/utils/bloodTypes'
 
 export default {
   name: 'AddDonor',
@@ -181,7 +171,7 @@ export default {
         tel: '',
         mail: ''
       },
-      bloodTypes: ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'],
+      bloodTypes: BLOOD_TYPES,
       genderOptions: [
         { title: 'ذكر', value: 'male' },
         { title: 'أنثى', value: 'female' }
@@ -193,46 +183,47 @@ export default {
           v => (v && v.length <= 32) || 'الاسم يجب أن لا يتجاوز 32 حرف'
         ],
         gender: [
-          v => !!v || 'النوع مطلوب',
-          v => (v && v.length >= 3) || 'النوع يجب أن يكون 3 أحرف على الأقل',
-          v => (v && v.length <= 10) || 'النوع يجب أن لا يتجاوز 10 أحرف'
+          v => !!v || 'النوع مطلوب'
         ],
         bloodType: [
-          v => !!v || 'فصيلة الدم مطلوبة',
-          v => (v && v.length >= 1) || 'فصيلة الدم يجب أن تكون 1 حرف على الأقل',
-          v => (v && v.length <= 10) || 'فصيلة الدم يجب أن لا تتجاوز 10 أحرف'
+          v => !!v || 'فصيلة الدم مطلوبة'
         ],
         tel: [
           v => !!v || 'رقم الموبايل مطلوب',
-          v => (v && v.length >= 8) || 'رقم الموبايل يجب أن يكون 8 أرقام على الأقل',
-          v => (v && v.length <= 11) || 'رقم الموبايل يجب أن لا يتجاوز 11 رقم'
+          v => EGYPTIAN_PHONE_REGEX.test(v) || 'رقم الموبايل يجب أن يكون 01 ثم 9 أرقام'
         ],
         mail: [
           v => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'صيغة البريد الإلكتروني غير صحيحة'
         ],
         birthDate: [
           v => !!v || 'تاريخ الميلاد مطلوب',
-          v => (v && v.length >= 8) || 'تاريخ الميلاد يجب أن يكون 8 أحرف على الأقل',
-          v => (v && v.length <= 10) || 'تاريخ الميلاد يجب أن لا يتجاوز 10 أحرف'
+          v => {
+            if (!v) return true
+            const age = calculateAge(v)
+            if (age < 18) return 'يجب أن يكون العمر 18 سنة على الأقل'
+            if (age > 65) return 'يجب أن يكون العمر 65 سنة أو أقل'
+            return true
+          }
         ]
       },
       error: null,
-      success: false,
       submitting: false
     }
   },
   methods: {
     async submitForm() {
       try {
-        // Validate form before submission
-        const isValid = await this.$refs.form.validate()
-        if (!isValid) {
-          this.error = 'يرجى ملء جميع الحقول المطلوبة بشكل صحيح'
+        const { valid } = await this.$refs.form.validate()
+        if (!valid) {
+          this.$emit('show-toast', { 
+            message: 'يرجى ملء جميع الحقول المطلوبة بشكل صحيح', 
+            color: 'error', 
+            icon: 'mdi-alert-circle' 
+          })
           return
         }
 
         this.error = null
-        this.success = false
         this.submitting = true
 
         const payload = {
@@ -248,16 +239,26 @@ export default {
           }
         }
 
-        const response = await axios.post(`${API_URL}/donor`, payload)
+        await api.post('/donor', payload)
+        await logAudit('DONOR_ADDED', `تم إضافة متبرع جديد: ${this.form.name} (${this.form.bloodType})`)
         
-        this.success = true
+        this.$emit('show-toast', { 
+          message: 'تم تسجيل المتبرع بنجاح! 🎉', 
+          color: 'success', 
+          icon: 'mdi-check-circle' 
+        })
         this.resetForm()
         
         setTimeout(() => {
           this.$router.push('/')
         }, 2000)
       } catch (err) {
-        this.error = `فشل تسجيل المتبرع: ${err.response?.data?.message || err.message}`
+        this.$emit('show-toast', { 
+          message: `فشل تسجيل المتبرع: ${err.response?.data?.message || err.message}`, 
+          color: 'error', 
+          icon: 'mdi-alert-circle',
+          timeout: 5000
+        })
         console.error(err)
       } finally {
         this.submitting = false
@@ -273,14 +274,8 @@ export default {
         mail: ''
       }
     },
-    getBloodColor(type) {
-      const colors = {
-        'O+': '#FF6B6B', 'O-': '#FFA07A',
-        'A+': '#4ECDC4', 'A-': '#45B7D1',
-        'B+': '#F7DC6F', 'B-': '#F39C12',
-        'AB+': '#BB8FCE', 'AB-': '#9B59B6'
-      }
-      return colors[type] || '#95A5A6'
+    getColor(type) {
+      return getBloodTypeColor(type)
     }
   }
 }

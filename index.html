@@ -3,9 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نظام التبرع بالدم</title>
+  <title>نظام التبرع بالدم — تبرعك ينقذ حياة</title>
+  <meta name="description" content="نظام التبرع بالدم — سجل كمتبرع، ابحث عن متبرعين حسب فصيلة الدم، وتصفح دليل الأطباء. تبرعك بالدم ينقذ حياة.">
+  <meta name="keywords" content="تبرع بالدم, فصيلة الدم, متبرعين, أطباء, السنطه, تطاي, الجعفرية, طنطا">
+  <meta name="theme-color" content="#C62828">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="نظام التبرع بالدم">
+  <meta property="og:description" content="سجل كمتبرع، ابحث عن متبرعين حسب فصيلة الدم، وتصفح دليل الأطباء.">
+  <meta property="og:locale" content="ar_EG">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="التبرع بالدم">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalOrganization",
+    "name": "نظام التبرع بالدم",
+    "description": "منصة للتبرع بالدم وربط المتبرعين بالمحتاجين",
+    "areaServed": {
+      "@type": "AdministrativeArea",
+      "name": "محافظة الغربية، مصر"
+    }
+  }
+  </script>
+  
   <style>
     body {
       font-family: 'Cairo', sans-serif !important;
@@ -18,5 +54,13 @@
 <body>
   <div id="app"></div>
   <script type="module" src="/src/main.js"></script>
+  <script>
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {})
+      })
+    }
+  </script>
 </body>
 </html>

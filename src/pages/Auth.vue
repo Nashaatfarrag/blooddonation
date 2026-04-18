@@ -1,0 +1,153 @@
+<template>
+  <v-container class="py-6 py-md-10" dir="rtl" style="min-height: 80vh; display: flex; align-items: center;">
+    <v-row justify="center">
+      <v-col cols="12" sm="10" md="8" lg="5">
+        
+        <v-card class="pa-6" rounded="xl" elevation="4">
+          <div class="text-center mb-6">
+            <v-avatar size="64" color="primary" class="mb-3 hero-icon">
+              <v-icon size="32" color="white">mdi-shield-account</v-icon>
+            </v-avatar>
+            <h1 class="text-h5 font-weight-bold">{{ isLogin ? 'تسجيل الدخول' : 'إنشاء حساب جديد' }}</h1>
+            <p class="text-body-2 text-grey mt-1">
+              {{ isLogin ? 'أدخل بياناتك للوصول إلى حسابك' : 'انضم إلينا لتتمكن من إضافة متبرعين' }}
+            </p>
+          </div>
+
+          <v-alert v-if="errorMsg" type="error" variant="tonal" class="mb-4" closable @click:close="errorMsg = ''">
+            {{ errorMsg }}
+          </v-alert>
+
+          <v-form ref="form" @submit.prevent="handleSubmit">
+            <!-- Name (Only for Register) -->
+            <v-expand-transition>
+              <div v-show="!isLogin">
+                <v-text-field
+                  v-model="form.name"
+                  label="الاسم الكامل"
+                  prepend-inner-icon="mdi-account"
+                  :rules="!isLogin ? [v => !!v || 'الاسم مطلوب'] : []"
+                  class="mb-2"
+                ></v-text-field>
+              </div>
+            </v-expand-transition>
+
+            <v-text-field
+              v-model="form.email"
+              label="البريد الإلكتروني"
+              type="email"
+              prepend-inner-icon="mdi-email"
+              :rules="[v => !!v || 'البريد الإلكتروني مطلوب', v => /.+@.+\..+/.test(v) || 'بريد إلكتروني غير صالح']"
+              class="mb-2"
+            ></v-text-field>
+
+            <v-text-field
+              v-model="form.password"
+              :label="isLogin ? 'كلمة المرور' : 'كلمة المرور (6 أحرف على الأقل)'"
+              :type="showPassword ? 'text' : 'password'"
+              prepend-inner-icon="mdi-lock"
+              :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append-inner="showPassword = !showPassword"
+              :rules="[v => !!v || 'كلمة المرور مطلوبة', v => v.length >= 6 || '6 أحرف على الأقل']"
+              class="mb-4"
+            ></v-text-field>
+
+            <v-btn
+              type="submit"
+              block
+              color="primary"
+              size="x-large"
+              rounded="lg"
+              :loading="loading"
+            >
+              {{ isLogin ? 'دخول' : 'تسجيل حساب' }}
+            </v-btn>
+          </v-form>
+
+          <v-divider class="my-6"></v-divider>
+
+          <div class="text-center">
+            <span class="text-body-2 text-grey">
+              {{ isLogin ? 'ليس لديك حساب؟' : 'لديك حساب بالفعل؟' }}
+            </span>
+            <v-btn variant="text" color="primary" @click="toggleMode" class="font-weight-bold ms-1">
+              {{ isLogin ? 'إنشاء حساب جديد' : 'تسجيل الدخول' }}
+            </v-btn>
+          </div>
+        </v-card>
+
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import { login, register, logAudit } from '@/utils/auth'
+
+export default {
+  name: 'AuthPage',
+  data() {
+    return {
+      isLogin: true,
+      loading: false,
+      showPassword: false,
+      errorMsg: '',
+      form: {
+        name: '',
+        email: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    toggleMode() {
+      this.isLogin = !this.isLogin
+      this.errorMsg = ''
+      this.form.password = ''
+    },
+    async handleSubmit() {
+      const { valid } = await this.$refs.form.validate()
+      if (!valid) return
+
+      this.loading = true
+      this.errorMsg = ''
+
+      try {
+        let response
+        if (this.isLogin) {
+          response = await login(this.form.email, this.form.password)
+        } else {
+          response = await register(this.form.email, this.form.password, this.form.name)
+        }
+
+        if (response.error) {
+          this.errorMsg = response.error.message
+        } else {
+          await logAudit(this.isLogin ? 'LOGIN' : 'REGISTER', this.isLogin ? 'قام المستخدم بتسجيل الدخول بنجاح' : 'تم إنشاء حساب جديد')
+          // Success! Redirect to home or wherever they came from
+          this.$emit('show-toast', { 
+            message: this.isLogin ? 'تم تسجيل الدخول بنجاح!' : 'تم إنشاء الحساب بنجاح! الرجاء التحقق من بريدك الإلكتروني إذا تطلب الأمر.', 
+            color: 'success' 
+          })
+          
+          // Wait a moment before redirecting
+          setTimeout(() => {
+            const redirectPath = this.$route.query.redirect || '/'
+            this.$router.push(redirectPath)
+          }, 1000)
+        }
+      } catch (err) {
+        this.errorMsg = 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.'
+      } finally {
+        this.loading = false
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.hero-icon {
+  box-shadow: 0 4px 20px rgba(198, 40, 40, 0.3);
+}
+</style>
