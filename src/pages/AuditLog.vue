@@ -45,16 +45,16 @@
             <td class="text-body-2" style="white-space: nowrap;">
               {{ formatDate(log.created_at) }}
             </td>
-            <td class="text-body-2 font-weight-bold text-primary">
-              {{ log.user_email }}
+            <td class="text-body-2 font-weight-bold text-primary" dir="ltr" style="text-align: right;">
+              {{ formatUser(log.user_email) }}
             </td>
             <td>
-              <v-chip :color="getActionColor(log.action)" size="small" variant="flat" class="font-weight-bold">
+              <v-chip :color="getActionColor(log.action)" size="small" variant="flat" class="font-weight-bold text-white">
                 {{ translateAction(log.action) }}
               </v-chip>
             </td>
             <td class="text-body-2 text-grey-darken-1">
-              {{ log.description }}
+              {{ formatDescription(log.description) }}
             </td>
           </tr>
         </tbody>
@@ -113,7 +113,10 @@ export default {
         'REGISTER': 'حساب جديد',
         'LOGOUT': 'تسجيل خروج',
         'DONOR_ADDED': 'إضافة متبرع',
-        'EMERGENCY_REQUEST': 'طلب طوارئ'
+        'EMERGENCY_REQUEST': 'طلب طوارئ',
+        'CONTACT_DONOR': 'تواصل مع متبرع',
+        'CONTACT_DOCTOR': 'تواصل مع طبيب',
+        'CONTACT_EMERGENCY': 'تواصل طوارئ'
       }
       return map[action] || action
     },
@@ -123,9 +126,20 @@ export default {
         'REGISTER': 'info',
         'LOGOUT': 'grey',
         'DONOR_ADDED': 'primary',
-        'EMERGENCY_REQUEST': 'error'
+        'EMERGENCY_REQUEST': 'error',
+        'CONTACT_DONOR': 'teal',
+        'CONTACT_DOCTOR': 'blue',
+        'CONTACT_EMERGENCY': 'deep-orange'
       }
       return map[action] || 'grey'
+    },
+    formatDescription(desc) {
+      if (!desc) return '';
+      return desc.replace(/WhatsApp/gi, 'الواتساب').replace(/Phone/gi, 'الاتصال الهاتفي').replace(/System/gi, 'مستخدم غير مسجل');
+    },
+    formatUser(email) {
+      if (!email || email === 'System') return 'النظام (غير مسجل)';
+      return email;
     }
   }
 }

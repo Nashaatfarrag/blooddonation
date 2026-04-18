@@ -172,6 +172,7 @@
                     <div class="d-flex ga-1">
                       <v-btn
                         :href="`tel:${donor.contactInfo.tel}`"
+                        @click="logContact(donor.name, 'Phone')"
                         icon="mdi-phone"
                         size="small"
                         variant="tonal"
@@ -181,6 +182,7 @@
                       <v-btn
                         :href="`https://wa.me/${formatWhatsApp(donor.contactInfo.tel)}`"
                         target="_blank"
+                        @click="logContact(donor.name, 'WhatsApp')"
                         icon="mdi-whatsapp"
                         size="small"
                         variant="tonal"
