@@ -1,4 +1,4 @@
-const CACHE_NAME = 'blood-donation-v2'
+const CACHE_NAME = 'blood-donation-v3'
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -52,18 +52,22 @@ self.addEventListener('fetch', event => {
           caches.open(CACHE_NAME).then(cache => cache.put(request, clone))
           return response
         })
-        .catch(() => caches.match(request))
+        .catch(() => caches.match(request, { ignoreSearch: true }))
     )
     return
   }
 
-  // Static assets: cache-first
+  // Static assets: Stale-While-Revalidate
   event.respondWith(
     caches.match(request)
-      .then(cached => cached || fetch(request).then(response => {
-        const clone = response.clone()
-        caches.open(CACHE_NAME).then(cache => cache.put(request, clone))
-        return response
-      }))
+      .then(cached => {
+        const fetchPromise = fetch(request).then(response => {
+          const clone = response.clone()
+          caches.open(CACHE_NAME).then(cache => cache.put(request, clone))
+          return response
+        }).catch(() => {}) // Ignore errors if offline
+        
+        return cached || fetchPromise
+      })
   )
 })

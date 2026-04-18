@@ -17,6 +17,7 @@ const EligibilityChecker = () => import('./pages/EligibilityChecker.vue')
 const ShareRequest = () => import('./pages/ShareRequest.vue')
 const AuthPage = () => import('./pages/Auth.vue')
 const AuditLog = () => import('./pages/AuditLog.vue')
+const Profile = () => import('./pages/Profile.vue')
 
 import { supabase } from './utils/auth'
 
@@ -88,6 +89,7 @@ const routes = [
   { path: '/eligibility', name: 'Eligibility', component: EligibilityChecker, meta: { title: 'اختبار الأهلية' } },
   { path: '/emergency', name: 'Emergency', component: ShareRequest, meta: { title: 'طلب دم عاجل' } },
   { path: '/audit', name: 'AuditLog', component: AuditLog, meta: { title: 'سجل النشاطات', requiresAuth: true, requiresAdmin: true } },
+  { path: '/profile', name: 'Profile', component: Profile, meta: { title: 'إعدادات الحساب', requiresAuth: true } },
   { path: '/auth', name: 'Auth', component: AuthPage, meta: { title: 'تسجيل الدخول / الحساب' } }
 ]
 

@@ -28,18 +28,29 @@
         </v-btn>
 
         <!-- Auth Button -->
-        <v-btn
-          v-if="session"
-          @click="handleLogout"
-          variant="tonal"
-          color="white"
-          rounded="pill"
-          class="px-5 ms-2"
-          size="small"
-        >
-          <v-icon start size="18">mdi-logout</v-icon>
-          خروج
-        </v-btn>
+        <div v-if="session" class="d-flex align-center ms-2 ga-2">
+          <v-chip
+            to="/profile"
+            color="white"
+            variant="outlined"
+            size="small"
+            class="font-weight-bold px-3 nav-chip"
+          >
+            <v-icon start size="16">mdi-account-circle</v-icon>
+            {{ session.user.user_metadata?.full_name || session.user.email }}
+          </v-chip>
+          <v-btn
+            @click="handleLogout"
+            variant="tonal"
+            color="white"
+            rounded="pill"
+            class="px-5"
+            size="small"
+          >
+            <v-icon start size="18">mdi-logout</v-icon>
+            خروج
+          </v-btn>
+        </div>
         <v-btn
           v-else
           to="/auth"
@@ -76,6 +87,10 @@
       <div class="drawer-header pa-6">
         <v-icon size="48" color="white">mdi-water</v-icon>
         <h3 class="text-white mt-2">بنك الدم لقرية تطاي</h3>
+        <div v-if="session" class="mt-2 text-white d-flex align-center" style="opacity: 0.9;" @click="$router.push('/profile')">
+          <v-icon size="18" class="me-2 text-white">mdi-account-circle</v-icon>
+          <span class="text-body-2 font-weight-bold" style="cursor: pointer;">{{ session.user.user_metadata?.full_name || session.user.email }}</span>
+        </div>
       </div>
       <v-list class="mt-2">
         <v-list-item 
@@ -188,7 +203,8 @@ export default {
   computed: {
     filteredNavItems() {
       return this.navItems.filter(item => {
-        if (item.adminOnly) return this.isAdmin
+        if (item.adminOnly && !this.isAdmin) return false
+        if (item.authOnly && !this.session) return false
         return true
       })
     }
@@ -272,6 +288,15 @@ export default {
 
 .nav-btn:hover {
   background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.nav-chip {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-chip:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
 }
 
 .nav-btn-active {

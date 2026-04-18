@@ -76,6 +76,16 @@ export function onAuthStateChange(callback) {
 }
 
 /**
+ * Update current user profile or password
+ * updates: { data: { full_name: 'Name' } } or { password: 'new_password' }
+ */
+export async function updateProfile(updates) {
+  if (!supabase) return { error: { message: 'Supabase not configured' } }
+  const { data, error } = await supabase.auth.updateUser(updates)
+  return { data, error }
+}
+
+/**
  * Log an action to the audit log table
  */
 export async function logAudit(action, description) {
