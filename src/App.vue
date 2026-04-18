@@ -243,7 +243,6 @@ export default {
       }
     },
     async handleLogout() {
-      await logAudit('LOGOUT', 'قام المستخدم بتسجيل الخروج')
       await logout()
       this.showToast({ message: 'تم تسجيل الخروج بنجاح', color: 'info' })
       if (this.$route.meta.requiresAuth || this.$route.meta.requiresAdmin) {

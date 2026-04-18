@@ -240,7 +240,8 @@ export default {
     eligibleCount() {
       return this.donors.filter(d => {
         if (!d.donationDates || d.donationDates.length === 0) return true
-        const lastDate = d.donationDates[d.donationDates.length - 1]
+        const lastItem = d.donationDates[d.donationDates.length - 1]
+        const lastDate = lastItem.when || lastItem
         return checkDonationEligibility(lastDate).eligible
       }).length
     },

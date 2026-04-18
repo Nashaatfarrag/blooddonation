@@ -244,14 +244,16 @@
                   <v-col cols="4">
                     <div class="text-caption font-weight-bold text-grey">آخر تبرع</div>
                     <div class="text-body-2">
-                      <v-chip 
-                        v-if="getLastDonation(donor)"
-                        :color="getDonationEligibility(donor).eligible ? 'success' : 'warning'" 
-                        variant="tonal" 
-                        size="x-small"
-                      >
-                        {{ getDonationEligibility(donor).eligible ? 'مؤهل' : `${getDonationEligibility(donor).daysRemaining} يوم` }}
-                      </v-chip>
+                      <div v-if="getLastDonation(donor)" class="d-flex flex-column align-start">
+                        <span class="text-caption mb-1">{{ formatDate(getLastDonation(donor)) }}</span>
+                        <v-chip 
+                          :color="getDonationEligibility(donor).eligible ? 'success' : 'warning'" 
+                          variant="tonal" 
+                          size="x-small"
+                        >
+                          {{ getDonationEligibility(donor).eligible ? 'مؤهل' : `${getDonationEligibility(donor).daysRemaining} يوم` }}
+                        </v-chip>
+                      </div>
                       <span v-else>-</span>
                     </div>
                   </v-col>
@@ -440,7 +442,8 @@ export default {
     },
     getLastDonation(donor) {
       if (!donor.donationDates || donor.donationDates.length === 0) return null
-      const lastRaw = donor.donationDates[donor.donationDates.length - 1]
+      const lastItem = donor.donationDates[donor.donationDates.length - 1]
+      const lastRaw = lastItem.when || lastItem
       // Validate the date is parseable
       const parsed = this.parseDate(lastRaw)
       return parsed ? lastRaw : null

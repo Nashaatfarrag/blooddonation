@@ -50,6 +50,30 @@
                   persistent-hint
                 ></v-text-field>
               </v-col>
+              <v-col cols="12" md="12">
+                <v-text-field
+                  v-model="profile.phone"
+                  label="رقم الهاتف"
+                  prepend-inner-icon="mdi-phone"
+                  hint="لربط تبرعاتك السابقة (يجب أن يبدأ بـ 01)"
+                  persistent-hint
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="12" v-if="linkedDonorId">
+                <v-text-field
+                  v-model="profile.last_donated_at"
+                  label="تاريخ آخر مرة تبرعت فيها بالدم"
+                  prepend-inner-icon="mdi-calendar-heart"
+                  type="date"
+                  hint="أضف تاريخ آخر تبرع لك لتذكر متى يمكنك التبرع مرة أخرى"
+                  persistent-hint
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" v-else-if="profile.phone">
+                <v-alert type="warning" variant="tonal" class="mt-2 text-body-2">
+                  لم يتم العثور على متبرع بهذا الرقم. الرجاء التأكد من الرقم أو إضافة متبرع جديد.
+                </v-alert>
+              </v-col>
             </v-row>
             <div class="d-flex justify-end mt-4">
               <v-btn
@@ -126,6 +150,7 @@
 
 <script>
 import { getSession, updateProfile, logAudit } from '@/utils/auth'
+import api from '@/utils/api'
 
 export default {
   name: 'Profile',
@@ -139,8 +164,12 @@ export default {
       showPassword: false,
       profile: {
         name: '',
-        email: ''
+        email: '',
+        phone: '',
+        last_donated_at: ''
       },
+      linkedDonorId: null,
+      original_last_donated_at: '',
       passwords: {
         new: '',
         confirm: ''
@@ -166,9 +195,48 @@ export default {
     if (this.session && this.session.user) {
       this.profile.email = this.session.user.email
       this.profile.name = this.session.user.user_metadata?.full_name || ''
+      this.profile.phone = this.session.user.user_metadata?.phone || ''
+      this.fetchDonorByPhone()
+    }
+  },
+  watch: {
+    'profile.phone'(newVal, oldVal) {
+      if (newVal && newVal !== oldVal && newVal.length >= 10) {
+        // debounce check
+        clearTimeout(this.phoneCheckTimeout);
+        this.phoneCheckTimeout = setTimeout(() => {
+          this.fetchDonorByPhone()
+        }, 500)
+      } else if (!newVal) {
+        this.linkedDonorId = null
+      }
     }
   },
   methods: {
+    async fetchDonorByPhone() {
+      if (!this.profile.phone) return;
+      try {
+        const response = await api.get('/donor/' + this.profile.phone)
+        const donor = response.data
+        if (donor && donor._id) {
+          this.linkedDonorId = donor._id
+          if (donor.donationDates && donor.donationDates.length > 0) {
+            const lastDate = donor.donationDates[donor.donationDates.length - 1].when
+            const formattedDate = new Date(lastDate).toISOString().split('T')[0]
+            this.profile.last_donated_at = formattedDate
+            this.original_last_donated_at = formattedDate
+          } else {
+            this.profile.last_donated_at = ''
+            this.original_last_donated_at = ''
+          }
+        } else {
+          this.linkedDonorId = null
+        }
+      } catch (err) {
+        console.log('Donor not found with phone:', this.profile.phone)
+        this.linkedDonorId = null
+      }
+    },
     showAlert(message, type = 'success') {
       this.alert = { show: true, message, type }
       // Auto hide after 5 seconds
@@ -182,12 +250,27 @@ export default {
       this.profileLoading = true
       try {
         const { error } = await updateProfile({
-          data: { full_name: this.profile.name }
+          data: { 
+            full_name: this.profile.name,
+            phone: this.profile.phone
+          }
         })
         
         if (error) throw error
+
+        if (this.linkedDonorId && this.profile.last_donated_at && this.profile.last_donated_at !== this.original_last_donated_at) {
+          try {
+            await api.put('/donor/' + this.linkedDonorId, {
+              when: this.profile.last_donated_at
+            })
+            this.original_last_donated_at = this.profile.last_donated_at
+          } catch (err) {
+            console.error('Failed to save donation date to MongoDB', err)
+            throw new Error('فشل في حفظ تاريخ التبرع في قاعدة البيانات')
+          }
+        }
         
-        await logAudit('UPDATE_PROFILE', 'قام المستخدم بتحديث اسمه')
+        await logAudit('UPDATE_PROFILE', 'قام المستخدم بتحديث بياناته')
         this.showAlert('تم تحديث البيانات بنجاح!')
         
         this.$emit('show-toast', { message: 'تم تحديث الاسم بنجاح' })

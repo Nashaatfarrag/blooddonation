@@ -41,7 +41,7 @@ export async function login(email, password) {
 /**
  * Register a new user
  */
-export async function register(email, password, name) {
+export async function register(email, password, name, phone) {
   if (!supabase) return { error: { message: 'Supabase not configured' } }
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -49,6 +49,7 @@ export async function register(email, password, name) {
     options: {
       data: {
         full_name: name,
+        phone: phone || ''
       }
     }
   })

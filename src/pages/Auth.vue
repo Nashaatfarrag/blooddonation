@@ -29,6 +29,12 @@
                   :rules="!isLogin ? [v => !!v || 'الاسم مطلوب'] : []"
                   class="mb-2"
                 ></v-text-field>
+                <v-text-field
+                  v-model="form.phone"
+                  label="رقم الهاتف (لربط تبرعاتك)"
+                  prepend-inner-icon="mdi-phone"
+                  class="mb-2"
+                ></v-text-field>
               </div>
             </v-expand-transition>
 
@@ -95,7 +101,8 @@ export default {
       form: {
         name: '',
         email: '',
-        password: ''
+        password: '',
+        phone: ''
       }
     }
   },
@@ -117,13 +124,15 @@ export default {
         if (this.isLogin) {
           response = await login(this.form.email, this.form.password)
         } else {
-          response = await register(this.form.email, this.form.password, this.form.name)
+          response = await register(this.form.email, this.form.password, this.form.name, this.form.phone)
         }
 
         if (response.error) {
           this.errorMsg = response.error.message
         } else {
-          await logAudit(this.isLogin ? 'LOGIN' : 'REGISTER', this.isLogin ? 'قام المستخدم بتسجيل الدخول بنجاح' : 'تم إنشاء حساب جديد')
+          if (!this.isLogin) {
+            await logAudit('REGISTER', 'تم إنشاء حساب جديد')
+          }
           // Success! Redirect to home or wherever they came from
           this.$emit('show-toast', { 
             message: this.isLogin ? 'تم تسجيل الدخول بنجاح!' : 'تم إنشاء الحساب بنجاح! الرجاء التحقق من بريدك الإلكتروني إذا تطلب الأمر.', 
