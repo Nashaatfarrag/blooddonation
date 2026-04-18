@@ -4,12 +4,12 @@
       <v-col cols="12">
 
         <!-- Hero header -->
-        <div class="text-center mb-8">
-          <v-avatar size="72" color="primary" class="mb-4 hero-icon">
-            <v-icon size="36" color="white">mdi-account-group</v-icon>
+        <div class="text-center mb-4 mb-md-8">
+          <v-avatar :size="$vuetify.display.smAndDown ? 48 : 72" color="primary" :class="[$vuetify.display.smAndDown ? 'mb-2' : 'mb-4', 'hero-icon']">
+            <v-icon :size="$vuetify.display.smAndDown ? 24 : 36" color="white">mdi-account-group</v-icon>
           </v-avatar>
-          <h1 class="text-h4 font-weight-bold text-grey-darken-3">قائمة المتبرعين بتطاي</h1>
-          <p class="text-body-1 text-grey mt-2">تصفح وابحث عن المتبرعين بالدم في قرية تطاي</p>
+          <h1 :class="[$vuetify.display.smAndDown ? 'text-h5' : 'text-h4', 'font-weight-bold', 'text-grey-darken-3']">قائمة المتبرعين بتطاي</h1>
+          <p :class="[$vuetify.display.smAndDown ? 'text-body-2' : 'text-body-1', 'text-grey', 'mt-1']">تصفح وابحث عن المتبرعين بالدم في قرية تطاي</p>
         </div>
 
         <!-- Skeleton Loaders -->
@@ -36,8 +36,8 @@
           {{ error }}
         </v-alert>
         
-        <!-- Filters -->
-        <v-card v-if="!loading" class="mb-6 pa-5 filter-card">
+        <!-- Desktop Filters -->
+        <v-card v-if="!loading" class="mb-6 pa-5 filter-card d-none d-sm-block">
           <div class="d-flex align-center mb-4">
             <v-icon color="primary" class="me-2">mdi-filter-variant</v-icon>
             <span class="text-subtitle-1 font-weight-bold text-grey-darken-2">تصفية النتائج</span>
@@ -87,8 +87,70 @@
           </v-row>
         </v-card>
 
-        <!-- Stats bar with animated counters -->
-        <v-row v-if="!loading && filteredDonors.length > 0" class="mb-6">
+        <!-- Mobile Filters -->
+        <v-expansion-panels v-if="!loading" class="mb-6 d-sm-none" variant="accordion">
+          <v-expansion-panel class="filter-card">
+            <v-expansion-panel-title>
+              <v-row no-gutters>
+                <v-col cols="12" class="d-flex align-center">
+                  <v-icon color="primary" class="me-2">mdi-filter-variant</v-icon>
+                  <span class="text-subtitle-1 font-weight-bold text-grey-darken-2">تصفية النتائج ببحث مفصل</span>
+                </v-col>
+              </v-row>
+            </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <v-row align="center" dense>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="searchName"
+                    label="بحث بالاسم"
+                    prepend-inner-icon="mdi-magnify"
+                    clearable
+                    @update:model-value="applyFilters"
+                    hide-details
+                    density="compact"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-select
+                    v-model="filterBloodType"
+                    :items="bloodTypeOptions"
+                    label="فئة الدم"
+                    prepend-inner-icon="mdi-water-outline"
+                    clearable
+                    @update:model-value="applyFilters"
+                    hide-details
+                    density="compact"
+                    variant="outlined"
+                  ></v-select>
+                </v-col>
+                <v-col cols="6">
+                  <v-select
+                    v-model="filterAgeRange"
+                    :items="ageRangeOptions"
+                    label="نطاق العمر"
+                    prepend-inner-icon="mdi-calendar-range"
+                    clearable
+                    @update:model-value="applyFilters"
+                    hide-details
+                    density="compact"
+                    variant="outlined"
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" class="mt-2">
+                  <v-btn block @click="resetFilters" variant="tonal" color="grey" rounded="lg" size="small">
+                    <v-icon start size="small">mdi-filter-remove</v-icon>
+                    إعادة تعيين
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
+
+        <!-- Stats bar with animated counters (Hidden per user request) -->
+        <v-row v-if="false && !loading && filteredDonors.length > 0" class="mb-6">
           <v-col cols="6" sm="3">
             <v-card class="pa-4 text-center stat-card" variant="tonal" color="primary">
               <div class="text-h5 font-weight-bold">{{ animatedStats.total }}</div>
