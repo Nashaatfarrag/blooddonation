@@ -89,6 +89,10 @@ export async function updateProfile(updates) {
  * Log an action to the audit log table
  */
 export async function logAudit(action, description) {
+  if (import.meta.env.DEV) {
+    console.log(`[DEV] Audit Skipped: ${action}`, description)
+    return
+  }
   if (!supabase) return
   try {
     const { data: { session } } = await supabase.auth.getSession()

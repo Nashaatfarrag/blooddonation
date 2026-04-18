@@ -190,12 +190,12 @@ export default {
         timeout: 3000
       },
       navItems: [
+        { path: '/emergency', title: 'طلب دم عاجل', icon: 'mdi-alert-circle', subtitle: 'طلب تبرع طارئ' },
         { path: '/', title: 'المتبرعون', icon: 'mdi-account-multiple', subtitle: 'قائمة المتبرعين' },
         { path: '/add', title: 'تسجيل متبرع', icon: 'mdi-plus-circle', subtitle: 'إضافة متبرع جديد' },
+        { path: '/eligibility', title: 'اختبار الأهلية', icon: 'mdi-clipboard-check', subtitle: 'هل يمكنك التبرع؟' },
         { path: '/doctors', title: 'دليل الأطباء', icon: 'mdi-doctor', subtitle: 'بيانات الأطباء' },
         { path: '/dashboard', title: 'لوحة المعلومات', icon: 'mdi-chart-pie', subtitle: 'إحصائيات وتحليلات', adminOnly: true },
-        { path: '/eligibility', title: 'اختبار الأهلية', icon: 'mdi-clipboard-check', subtitle: 'هل يمكنك التبرع؟' },
-        { path: '/emergency', title: 'طلب دم عاجل', icon: 'mdi-alert-circle', subtitle: 'طلب تبرع طارئ' },
         { path: '/audit', title: 'سجل النشاطات', icon: 'mdi-history', subtitle: 'مراقبة النظام', adminOnly: true }
       ]
     }
