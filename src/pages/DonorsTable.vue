@@ -8,8 +8,8 @@
           <v-avatar size="72" color="primary" class="mb-4 hero-icon">
             <v-icon size="36" color="white">mdi-account-group</v-icon>
           </v-avatar>
-          <h1 class="text-h4 font-weight-bold text-grey-darken-3">قائمة المتبرعين</h1>
-          <p class="text-body-1 text-grey mt-2">تصفح وابحث عن المتبرعين بالدم</p>
+          <h1 class="text-h4 font-weight-bold text-grey-darken-3">قائمة المتبرعين بتطاي</h1>
+          <p class="text-body-1 text-grey mt-2">تصفح وابحث عن المتبرعين بالدم في قرية تطاي</p>
         </div>
 
         <!-- Skeleton Loaders -->

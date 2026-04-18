@@ -6,7 +6,7 @@
       <div class="d-flex align-center">
         <v-icon size="32" color="white" class="me-2">mdi-water</v-icon>
         <v-app-bar-title class="font-weight-bold text-h5 text-white">
-          نظام التبرع بالدم
+          بنك الدم لقرية تطاي
         </v-app-bar-title>
       </div>
       
@@ -75,7 +75,7 @@
     >
       <div class="drawer-header pa-6">
         <v-icon size="48" color="white">mdi-water</v-icon>
-        <h3 class="text-white mt-2">نظام التبرع بالدم</h3>
+        <h3 class="text-white mt-2">بنك الدم لقرية تطاي</h3>
       </div>
       <v-list class="mt-2">
         <v-list-item 

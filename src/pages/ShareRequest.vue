@@ -8,8 +8,8 @@
           <v-avatar size="72" color="error" class="mb-4 hero-icon-emergency">
             <v-icon size="36" color="white">mdi-alert-circle</v-icon>
           </v-avatar>
-          <h1 class="text-h4 font-weight-bold text-grey-darken-3">طلب دم عاجل</h1>
-          <p class="text-body-1 text-grey mt-2">أنشئ طلب تبرع طارئ وشاركه على واتساب</p>
+          <h1 class="text-h4 font-weight-bold text-grey-darken-3">طلب دم عاجل بتطاي</h1>
+          <p class="text-body-1 text-grey mt-2">أنشئ طلب تبرع طارئ بتطاي وما حولها وشاركه على واتساب</p>
         </div>
 
         <!-- Generated Card Preview -->

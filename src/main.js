@@ -131,7 +131,7 @@ router.beforeEach(async (to, from) => {
 
 // Update page title on route change
 router.afterEach((to) => {
-  document.title = `${to.meta.title || 'الرئيسية'} — نظام التبرع بالدم`
+  document.title = `${to.meta.title || 'الرئيسية'} — بنك الدم بقرية تطاي`
 })
 
 const app = createApp(App)
