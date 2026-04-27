@@ -128,7 +128,23 @@ export default {
         }
 
         if (response.error) {
-          this.errorMsg = response.error.message
+          // Translate common Supabase auth errors to Arabic
+          const msg = response.error.message || '';
+          if (msg.includes('Invalid login credentials')) {
+            this.errorMsg = 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+          } else if (msg.includes('User already registered')) {
+            this.errorMsg = 'هذا البريد الإلكتروني مسجل بالفعل.';
+          } else if (msg.includes('Password should be at least 6 characters')) {
+            this.errorMsg = 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.';
+          } else if (msg.includes('Email not confirmed')) {
+            this.errorMsg = 'يرجى تأكيد بريدك الإلكتروني أولاً.';
+          } else if (msg.toLowerCase().includes('rate limit')) {
+            this.errorMsg = 'محاولات كثيرة جداً. يرجى المحاولة لاحقاً.';
+          } else if (msg.includes('Email not found')) {
+            this.errorMsg = 'البريد الإلكتروني غير موجود.';
+          } else {
+            this.errorMsg = msg; // Fallback to original if we don't have a translation
+          }
         } else {
           if (!this.isLogin) {
             await logAudit('REGISTER', 'تم إنشاء حساب جديد')
