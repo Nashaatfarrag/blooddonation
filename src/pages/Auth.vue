@@ -127,21 +127,40 @@ export default {
           response = await register(this.form.email, this.form.password, this.form.name, this.form.phone)
         }
 
+        // Handle Supabase fake success when email already exists (identities array is empty)
+        if (!this.isLogin && !response.error && response.data?.user && response.data.user.identities && response.data.user.identities.length === 0) {
+          this.errorMsg = 'هذا البريد الإلكتروني مسجل بالفعل.';
+          this.loading = false;
+          return;
+        }
+
         if (response.error) {
           // Translate common Supabase auth errors to Arabic
           const msg = response.error.message || '';
-          if (msg.includes('Invalid login credentials')) {
+          const lowerMsg = msg.toLowerCase();
+          
+          if (lowerMsg.includes('invalid login credentials')) {
             this.errorMsg = 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
-          } else if (msg.includes('User already registered')) {
+          } else if (lowerMsg.includes('already registered')) {
             this.errorMsg = 'هذا البريد الإلكتروني مسجل بالفعل.';
-          } else if (msg.includes('Password should be at least 6 characters')) {
+          } else if (lowerMsg.includes('password should be at least 6 characters') || lowerMsg.includes('password must be at least')) {
             this.errorMsg = 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.';
-          } else if (msg.includes('Email not confirmed')) {
+          } else if (lowerMsg.includes('password should contain') || lowerMsg.includes('weak password')) {
+            this.errorMsg = 'كلمة المرور ضعيفة جداً. يرجى اختيار كلمة مرور أقوى.';
+          } else if (lowerMsg.includes('email not confirmed')) {
             this.errorMsg = 'يرجى تأكيد بريدك الإلكتروني أولاً.';
-          } else if (msg.toLowerCase().includes('rate limit')) {
+          } else if (lowerMsg.includes('rate limit') || lowerMsg.includes('too many requests')) {
             this.errorMsg = 'محاولات كثيرة جداً. يرجى المحاولة لاحقاً.';
-          } else if (msg.includes('Email not found')) {
+          } else if (lowerMsg.includes('email not found')) {
             this.errorMsg = 'البريد الإلكتروني غير موجود.';
+          } else if (lowerMsg.includes('unable to validate email') || lowerMsg.includes('invalid email')) {
+            this.errorMsg = 'صيغة البريد الإلكتروني غير صالحة.';
+          } else if (lowerMsg.includes('signups not allowed') || lowerMsg.includes('signups are disabled')) {
+            this.errorMsg = 'عذراً، تسجيل الحسابات الجديدة غير متاح في الوقت الحالي.';
+          } else if (lowerMsg.includes('failed to fetch') || lowerMsg.includes('network error')) {
+            this.errorMsg = 'لا يوجد اتصال بالإنترنت. يرجى التحقق من اتصالك والمحاولة مجدداً.';
+          } else if (lowerMsg.includes('database error')) {
+            this.errorMsg = 'حدث خطأ في قاعدة البيانات. يرجى المحاولة لاحقاً.';
           } else {
             this.errorMsg = msg; // Fallback to original if we don't have a translation
           }
@@ -162,7 +181,12 @@ export default {
           }, 1000)
         }
       } catch (err) {
-        this.errorMsg = 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.'
+        const errMsg = err?.message?.toLowerCase() || '';
+        if (errMsg.includes('failed to fetch') || errMsg.includes('network error')) {
+          this.errorMsg = 'لا يوجد اتصال بالإنترنت. يرجى التحقق من اتصالك والمحاولة مجدداً.';
+        } else {
+          this.errorMsg = 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.';
+        }
       } finally {
         this.loading = false
       }
