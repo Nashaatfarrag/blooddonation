@@ -174,6 +174,10 @@ import { useTheme } from 'vuetify'
 import { getSession, onAuthStateChange, logout, logAudit } from '@/utils/auth'
 
 export default {
+  setup() {
+    const theme = useTheme()
+    return { theme }
+  },
   name: 'App',
   data() {
     return {
@@ -195,6 +199,7 @@ export default {
         { path: '/add', title: 'تسجيل متبرع', icon: 'mdi-plus-circle', subtitle: 'إضافة متبرع جديد' },
         { path: '/eligibility', title: 'اختبار الأهلية', icon: 'mdi-clipboard-check', subtitle: 'هل يمكنك التبرع؟' },
         { path: '/doctors', title: 'دليل الأطباء', icon: 'mdi-doctor', subtitle: 'بيانات الأطباء' },
+        { path: '/profile', title: 'الملف الشخصي', icon: 'mdi-account-cog', subtitle: 'إعدادات الحساب', authOnly: true },
         { path: '/dashboard', title: 'لوحة المعلومات', icon: 'mdi-chart-pie', subtitle: 'إحصائيات وتحليلات', adminOnly: true },
         { path: '/audit', title: 'سجل النشاطات', icon: 'mdi-history', subtitle: 'مراقبة النظام', adminOnly: true }
       ]
@@ -255,8 +260,7 @@ export default {
       this.applyTheme()
     },
     applyTheme() {
-      const theme = useTheme()
-      theme.global.name.value = this.isDark ? 'darkTheme' : 'lightTheme'
+      this.theme.global.name.value = this.isDark ? 'darkTheme' : 'lightTheme'
     },
     showToast({ message, color = 'success', icon = 'mdi-check-circle', timeout = 3000 }) {
       this.toast = { show: true, message, color, icon, timeout }
