@@ -20,9 +20,9 @@ importers:
       vue:
         specifier: ^3.3.0
         version: 3.5.32
-      vue-gtag-next:
-        specifier: ^1.14.0
-        version: 1.14.0(vue@3.5.32)
+      vue-gtag:
+        specifier: ^3.7.1
+        version: 3.7.1(vue-router@4.6.4(vue@3.5.32))(vue@3.5.32)
       vue-router:
         specifier: ^4.2.0
         version: 4.6.4(vue@3.5.32)
@@ -518,10 +518,14 @@ packages:
       terser:
         optional: true
 
-  vue-gtag-next@1.14.0:
-    resolution: {integrity: sha512-iJl+cOG2GU5NuxqzSSIpt03WVOvZqyKB9TOy7d55KiuvRklcnb2nlqxW5B/a3/sbIt7fla+XEkRyMCcoz0zAHw==}
+  vue-gtag@3.7.1:
+    resolution: {integrity: sha512-V4S+ks1p/VdfTrxZrgrAjwdcBp3rGjuR4Ts/9KmNOeGlcATOsLZRjIxkrIDWW6oHy7HM4zcviYDEb2QOR9+AKQ==}
     peerDependencies:
-      vue: ^3.0.0-rc.11
+      vue: ^3.5.13
+      vue-router: ^4.5.0 || ^5.0.0
+    peerDependenciesMeta:
+      vue-router:
+        optional: true
 
   vue-router@4.6.4:
     resolution: {integrity: sha512-Hz9q5sa33Yhduglwz6g9skT8OBPii+4bFn88w6J+J4MfEo4KRRpmiNG/hHHkdbRFlLBOqxN8y8gf2Fb0MTUgVg==}
@@ -985,9 +989,11 @@ snapshots:
       '@types/node': 25.6.0
       fsevents: 2.3.3
 
-  vue-gtag-next@1.14.0(vue@3.5.32):
+  vue-gtag@3.7.1(vue-router@4.6.4(vue@3.5.32))(vue@3.5.32):
     dependencies:
       vue: 3.5.32
+    optionalDependencies:
+      vue-router: 4.6.4(vue@3.5.32)
 
   vue-router@4.6.4(vue@3.5.32):
     dependencies:
