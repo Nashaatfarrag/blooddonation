@@ -12,7 +12,7 @@
     "@supabase/supabase-js": "^2.103.3",
     "axios": "^1.6.0",
     "vue": "^3.3.0",
-    "vue-gtag": "^3.7.1",
+    "vue-gtag": "^2.1.2",
     "vue-router": "^4.2.0",
     "vuetify": "^3.3.0"
   },
